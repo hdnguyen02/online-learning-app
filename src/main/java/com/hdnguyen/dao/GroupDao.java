@@ -13,5 +13,7 @@ public interface GroupDao extends JpaRepository<Group, Long> {
 
     @Query("SELECT g FROM Group g WHERE CONCAT(g.name, ' ', g.description) LIKE %?1%")
     List<Group> searchGlobal(String searchTerm);
+    @Query("SELECT g FROM Group g WHERE g.isPublic = true")
+    List<Group> getGlobal();
 
 }

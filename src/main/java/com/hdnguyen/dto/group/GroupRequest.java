@@ -11,4 +11,5 @@ public class GroupRequest {
 //    private Long id;
     private String name;
     private String description;
+    private Boolean isPublic;
 }

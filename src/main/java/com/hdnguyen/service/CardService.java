@@ -1,5 +1,7 @@
 package com.hdnguyen.service;
 
+import com.hdnguyen.dao.CommonDeckDao;
+import com.hdnguyen.entity.CommonDeck;
 import com.hdnguyen.util.Helper;
 import com.hdnguyen.dao.CardDao;
 import com.hdnguyen.dao.DeckDao;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,6 +25,36 @@ public class CardService {
     private final DeckDao deckDao;
     private final Helper helper;
     private final FirebaseStorageService firebaseStorageService;
+    private final CommonDeckDao commonDeckDao;
+
+    // viết hàm thêm vào.
+    public boolean createCardWithCommonDeck(Long idCommonDeck, String term, String definition, String example,
+                                            MultipartFile image, MultipartFile audio) throws IOException {
+
+        CommonDeck commonDeck = commonDeckDao.findById(idCommonDeck).orElseThrow();
+
+        String imageUrl = image != null ? firebaseStorageService.save("image", image) : null;
+        String audioUrl = audio != null ? firebaseStorageService.save("audio", audio) : null;
+
+        Card card = Card.builder()
+                .term(term)
+                .definition(definition)
+                .example(example)
+                .image(imageUrl)
+                .audio(audioUrl)
+                .createAt(new Date())
+                .isFavourite(false)
+                .isRemembered(false)
+                .commonDeck(commonDeck)
+                .build();
+        try {
+            cardDao.save(card);
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+    }
 
 
     public CardResponse createCard(Long idDeck, String term, String definition, String example,
@@ -58,11 +91,13 @@ public class CardService {
 
 
 
+
+
     public CardResponse updateCard(Long id, Long idDeck, String term, String definition,
                                    String example, MultipartFile image, MultipartFile audio,
                                    Boolean isFavourite, Boolean isRemembered) throws Exception {
-        String emailUser = helper.getEmailUser();
-        Card card = cardDao.findFirstByIdAndDeckUserEmail(id, emailUser).orElseThrow();
+
+        Card card = cardDao.findById(id).orElseThrow();
         if (idDeck != null) {
             Deck deck = deckDao.findById(idDeck).orElseThrow();
             card.setDeck(deck);
@@ -100,7 +135,7 @@ public class CardService {
 
     public CardResponse getCardWithId(Long id) {
         String emailUser = helper.getEmailUser();
-        Card card = cardDao.findFirstByIdAndDeckUserEmail(id, emailUser).orElseThrow();
+        Card card = cardDao.findById(id).orElseThrow();
         return new CardResponse(card);
     }
 
@@ -128,11 +163,13 @@ public class CardService {
         return cardsDto;
     }
 
+    // xíu nữa sữa xóa update gì thì vào đây =>
+
     // xóa không trả về gì cả.
     public void deleteCards(long [] ids) {
         String emailUser = helper.getEmailUser();
         for (long id : ids) {
-            Card card = cardDao.findFirstByIdAndDeckUserEmail(id, emailUser).orElseThrow();
+            Card card = cardDao.findById(id).orElseThrow();
             cardDao.delete(card);
         }
     }

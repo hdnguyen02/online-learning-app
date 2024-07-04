@@ -4,7 +4,7 @@ import com.hdnguyen.util.Helper;
 import com.hdnguyen.dao.GroupDao;
 import com.hdnguyen.dao.UserDao;
 import com.hdnguyen.dao.UserGroupDao;
-import com.hdnguyen.dto.group.GroupDto;
+import com.hdnguyen.dto.group.GroupResponse;
 import com.hdnguyen.entity.Group;
 import com.hdnguyen.entity.User;
 import com.hdnguyen.entity.UserGroup;
@@ -30,12 +30,12 @@ public class GroupService {
     private final Helper helper;
     private final EmailServiceImpl emailServiceImpl;
 
-    public List<GroupDto> getGlobalGroups() {
-        List<Group> groups = groupRepository.findAll();
-        return groups.stream().map(GroupDto::mapToGroupDto).toList();
+    public List<GroupResponse> getGlobalGroups() {
+        List<Group> groups = groupRepository.getGlobal();
+        return groups.stream().map(GroupResponse::mapToGroupDto).toList();
     }
 
-    public GroupDto joinGroup(Long idGroup) throws Exception {
+    public GroupResponse joinGroup(Long idGroup) throws Exception {
         Group group = groupRepository.findById(idGroup).orElseThrow();
         String email = helper.getEmailUser();
         if (email.equals(group.getOwner().getEmail())) {
@@ -53,14 +53,14 @@ public class GroupService {
                 .build();
 
         group.getUserGroups().add(userGroupRepository.save(userGroup));
-        return GroupDto.mapToGroupDto(group);
+        return GroupResponse.mapToGroupDto(group);
 
     }
 
 
-    public List<GroupDto> searchGlobalGroups(String searchTerm) {
+    public List<GroupResponse> searchGlobalGroups(String searchTerm) {
         List<Group> groups = groupRepository.searchGlobal(searchTerm);
-        return groups.stream().map(GroupDto::mapToGroupDto).toList();
+        return groups.stream().map(GroupResponse::mapToGroupDto).toList();
     }
 
     public Boolean createGroup(GroupRequest groupRequest) {
@@ -75,6 +75,7 @@ public class GroupService {
         group.setOwner(owner);
         group.setCreated(created);
         group.setCreatedBy(emailOwner);
+        group.setIsPublic(groupRequest.getIsPublic());
 
         groupRepository.save(group);
 
@@ -87,11 +88,13 @@ public class GroupService {
 
         group.setName(groupRequest.getName());
         group.setDescription(groupRequest.getDescription());
+        group.setIsPublic(groupRequest.getIsPublic());
         group.setOwner(new User(email));
 
         Date modified = new Date();
         group.setModified(modified);
         group.setModifiedBy(email);
+        group.setIsPublic(groupRequest.getIsPublic());
 
         groupRepository.save(group);
 
@@ -99,22 +102,22 @@ public class GroupService {
     }
 
 
-    public GroupDto getGroupById(Long id) {
+    public GroupResponse getGroupById(Long id) {
         Group group = groupRepository.findById(id).orElseThrow();
-        return GroupDto.mapToGroupDtoDetail(group);
+        return GroupResponse.mapToGroupDtoDetail(group);
     }
 
 
-    public List<GroupDto> getGroupsByOwner() {
+    public List<GroupResponse> getGroupsByOwner() {
         User owner = helper.getUser(); // thông tin của người dùng
         List<Group> groups = groupRepository.findByOwner(owner);
-        List<GroupDto> groupDtos = new ArrayList<>();
+        List<GroupResponse> groupResponses = new ArrayList<>();
 
         groups.forEach(group -> {
-            groupDtos.add(GroupDto.mapToGroupDto(group));
+            groupResponses.add(GroupResponse.mapToGroupDto(group));
         });
 
-        return groupDtos;
+        return groupResponses;
     }
 
     public boolean deleteGroupById(Long id) {
@@ -215,29 +218,17 @@ public class GroupService {
         return true;
     }
 
-    public List<GroupDto> getGroupsByAttendance() {
+    public List<GroupResponse> getGroupsByAttendance() {
 
         User user = helper.getUser();
 
-        List<GroupDto> groupDtos = new ArrayList<>();
+        List<GroupResponse> groupResponses = new ArrayList<>();
 
         List<UserGroup> userGroups = userGroupRepository.findByUserAndIsActive(user, true);
         userGroups.forEach(ele -> {
-            groupDtos.add(GroupDto.mapToGroupDto(ele.getGroup()));
+            groupResponses.add(GroupResponse.mapToGroupDto(ele.getGroup()));
         });
 
-        return groupDtos;
+        return groupResponses;
     }
-    //    public List<UserDto> getUserOfGroup(Long id){
-    //        List<UserDto> userDtos = new ArrayList<>();
-    //        Group group = groupRepository.findById(id).orElseThrow();
-    //
-    //        List<UserGroup> userActiveGroup = group.getUserGroups().stream().filter(UserGroup::isActive).toList();
-    //        userActiveGroup.forEach(ele-> {
-    //            userDtos.add(new UserDto(ele.getUser()));
-    //        });
-    //        return userDtos;
-    //    }
-
-
 }

@@ -36,5 +36,8 @@ spring:
 system:
   version: "api/v1"
 
+server:
+  port: 0
+
 
 

@@ -33,6 +33,11 @@ public class CardResponse {
         this.createAt = card.getCreateAt();
         this.isFavourite = card.getIsFavourite();
         this.isRemembered = card.getIsRemembered();
-        this.deck = new DeckOfCard(card.getDeck());
+
+        if (card.getDeck() != null) {
+            this.deck = new DeckOfCard(card.getDeck()); // không cần thông tin này.
+        }
+
+
     }
 }

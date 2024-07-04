@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("${system.version}")
-public class CommentController {
+public class
+CommentController {
 
     private final CommentService commentService;
 

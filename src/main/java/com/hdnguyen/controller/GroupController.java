@@ -1,6 +1,6 @@
 package com.hdnguyen.controller;
 
-import com.hdnguyen.dto.group.GroupDto;
+import com.hdnguyen.dto.group.GroupResponse;
 import com.hdnguyen.dto.group.GroupRequest;
 import com.hdnguyen.dto.group.UserGroupRequest;
 import com.hdnguyen.dto.Response;
@@ -24,7 +24,7 @@ public class GroupController {
     @PostMapping("/groups/{idGroup}/join")
     public ResponseEntity<?> joinGroup(@PathVariable Long idGroup) throws Exception {
         Response response = Response.builder()
-                .message("Đã tham gia lớp học ")
+                .message("Query successful")
                 .data(groupService.joinGroup(idGroup)) // thêm vào danh sách lớp học của người dùng.
                 .success(true)
                 .build();
@@ -35,13 +35,13 @@ public class GroupController {
     public ResponseEntity<?> getGlobalGroups(@RequestParam(required = false) String searchTerm) {
 
         // lấy ra toàn bộ lớp học => nếu không search trả ra toàn bộ.
-        List<GroupDto> groupDtos;
-        if (searchTerm != null) groupDtos = groupService.searchGlobalGroups(searchTerm);
-        else groupDtos = groupService.getGlobalGroups();
+        List<GroupResponse> groupResponses;
+        if (searchTerm != null) groupResponses = groupService.searchGlobalGroups(searchTerm);
+        else groupResponses = groupService.getGlobalGroups();
 
         Response response = Response.builder()
-                .message("Truy vấn danh sách tìm kiếm")
-                .data(groupDtos)
+                .message("Query successful")
+                .data(groupResponses)
                 .success(true)
                 .build();
 
@@ -55,9 +55,11 @@ public class GroupController {
 
         Response response = new Response();
 
-        response.setData(groupService.createGroup(groupRequest));
         response.setSuccess(true);
-        response.setMessage("Tạo class thành công");
+        response.setMessage("Created successful");
+        response.setData(groupService.createGroup(groupRequest));
+
+
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -67,21 +69,23 @@ public class GroupController {
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> updateGroup(@PathVariable Long id , @RequestBody GroupRequest groupRequest) {
 
-        Response responseData = new Response();
-        responseData.setData(groupService.updateGroup(id, groupRequest));
-        responseData.setSuccess(true);
+        Response response = new Response();
+        response.setMessage("Updated successful");
+        response.setData(groupService.updateGroup(id, groupRequest));
+        response.setSuccess(true);
 
-        return ResponseEntity.status(HttpStatus.OK).body(responseData);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
 
     // chi tiết của 1 lớp học
     @GetMapping("/groups/{id}")
     public ResponseEntity<?> getGroupById(@PathVariable(name = "id") Long id) {
         Response response = new Response();
 
-        GroupDto groupDto = groupService.getGroupById(id);
-        response.setData(groupDto);
+        GroupResponse groupResponse = groupService.getGroupById(id);
+
+        response.setMessage("Query successful");
+        response.setData(groupResponse);
         response.setSuccess(true);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -90,11 +94,11 @@ public class GroupController {
     @PostMapping("/groups/delete-user")
     public ResponseEntity<?> deleteUserGroup(@RequestBody UserGroupRequest userGroupRequest) {
         // Xóa thành viên khỏi lớp học.
-        Response responseData = new Response();
-        responseData.setData(groupService.deleteUserGroupById(userGroupRequest));
-        responseData.setSuccess(true);
+        Response response = new Response();
+        response.setData(groupService.deleteUserGroupById(userGroupRequest));
+        response.setSuccess(true);
 
-        return ResponseEntity.status(HttpStatus.OK).body(responseData);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PreAuthorize("hasRole('TEACHER')")
@@ -102,42 +106,44 @@ public class GroupController {
     public ResponseEntity<?> inviteUserGroup(
             @PathVariable Long id, @RequestParam(name = "email-user") String emailUser) {
 
-        Response responseData = new Response();
+        Response response = new Response();
 
-        responseData.setData(groupService.inviteUserGroup(id, emailUser));
-        responseData.setSuccess(true);
-        responseData.setMessage("Gửi mail đến người dùng thành công");
+        response.setMessage("Sending email to user successfully");
+        response.setData(groupService.inviteUserGroup(id, emailUser));
+        response.setSuccess(true);
 
-        return ResponseEntity.status(HttpStatus.OK).body(responseData);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/groups/owner")
     public ResponseEntity<?> getGroupsByUser() {
-        Response responseData = new Response();
-        List<GroupDto> groupDtos = groupService.getGroupsByOwner();
-        responseData.setSuccess(true);
-        responseData.setData(groupDtos);
-        responseData.setMessage("Truy vấn thành công");
-        return ResponseEntity.status(HttpStatus.OK).body(responseData);
+        Response response = new Response();
+        List<GroupResponse> groupResponses = groupService.getGroupsByOwner();
+        response.setSuccess(true);
+        response.setData(groupResponses);
+        response.setMessage("Query successful");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/groups/attendance")
     public ResponseEntity<?> getGroupsByAttendance(){
-        Response responseData = new Response();
+        Response response = new Response();
 
-        responseData.setData(groupService.getGroupsByAttendance());
-        responseData.setSuccess(true);
-        responseData.setMessage("Truy vấn thành công");
+        response.setData(groupService.getGroupsByAttendance());
+        response.setSuccess(true);
+        response.setMessage("Query successful");
 
-        return ResponseEntity.status(HttpStatus.OK).body(responseData);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PreAuthorize("hasRole('TEACHER')")
     @DeleteMapping("/groups/{id}")
     public ResponseEntity<?> deleteGroupById(@PathVariable Long id) {
-        Response responseData = new Response();
-        responseData.setData(groupService.deleteGroupById(id));
-        responseData.setSuccess(true);
-        return ResponseEntity.status(HttpStatus.OK).body(responseData);
+        Response response = new Response();
+        response.setMessage("Successfully deleted group");
+        response.setData(groupService.deleteGroupById(id));
+        response.setSuccess(true);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

@@ -27,16 +27,19 @@ public class Group extends BaseEntity{
     @JoinColumn(name = "email_owner")
     private User owner;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "group", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private List<UserGroup> userGroups;
 
-    @OneToMany(mappedBy = "group", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private List<Assignment> assignments;
 
-    private Boolean isPublic; // lớp học có được public hay không.
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    private List<CommonDeck> commonDecks;
+
+    private Boolean isPublic;
 
     public Group(Long id) {
         this.id = id;

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -17,6 +18,32 @@ import java.util.List;
 @RequestMapping("${system.version}")
 public class CardController {
     private final CardService cardService;
+
+
+    // viết hàm tạo common deck
+    @PostMapping("common-cards")
+    public ResponseEntity<?> createCardWithCommonDeck(
+            @RequestParam Long idCommonDeck,
+            @RequestParam String term,
+            @RequestParam String definition,
+            @RequestParam (required = false) String example,
+            @RequestParam (required = false) MultipartFile image,
+            @RequestParam (required = false) MultipartFile audio
+    ) throws IOException {
+        // tiếp tục tạo.
+
+        Response response = Response.builder()
+                .message("Tạo thẻ thành công")
+                .data(cardService.createCardWithCommonDeck(idCommonDeck,term, definition, example, image, audio))
+                .success(true)
+
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+
+
+    }
+
     @PostMapping("cards")
     public ResponseEntity<Response> createCard(
             @RequestParam Long idDeck,
@@ -69,6 +96,7 @@ public class CardController {
 
     @DeleteMapping("cards")
     public ResponseEntity<Response> deleteCard(@RequestParam long [] ids) {
+
         String message = "Xóa thẻ thành công";
         cardService.deleteCards(ids);
         Response response = new Response(null, message, true);

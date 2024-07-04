@@ -38,6 +38,11 @@ public class Card {
     private Boolean isRemembered;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_deck", nullable = false)
+    @JoinColumn(name = "id_deck")
     private Deck deck;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_common_deck")
+    private CommonDeck commonDeck;
+
 }
