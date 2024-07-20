@@ -1,10 +1,16 @@
 package com.hdnguyen.controller;
 
 
+import com.hdnguyen.dto.Response;
+import com.hdnguyen.dto.auth.UserResponse;
+import com.hdnguyen.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -12,15 +18,37 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/admin")
 public class AdminController {
 
-        // liệt kê chức năng, hiển thị doanh thu
-        // số lượng thành viên đăng ký
-        // số bộ thẻ được tạo
-        // trả ra toàn bộ người dùng
-        @GetMapping("/users")
-        public ResponseEntity<?> getUser() throws Exception {
+    private final AdminService adminService;
 
-            return new ResponseEntity<>(null, HttpStatus.OK);
-        }
 
+    @GetMapping("/users")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getUsers() throws Exception {
+
+        List<UserResponse> userResponses = adminService.getUsers();
+
+        Response response = Response.builder()
+                .data(userResponses)
+                .message("Query successful")
+                .success(true)
+                .build();
+            return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/users")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> editUser(@RequestParam Boolean isEnabled, @RequestParam String emailUser) {
+        adminService.editUser(isEnabled, emailUser);
+        Response response = Response.builder()
+                .data(null)
+                .message("Update successful")
+                .success(true)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getInvoices() {
+        return null;
+    }
 
 }

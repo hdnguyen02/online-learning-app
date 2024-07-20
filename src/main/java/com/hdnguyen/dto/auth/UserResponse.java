@@ -24,6 +24,8 @@ public class UserResponse {
     private String gender;
     private String phone;
     private Integer age;
+    
+
     public UserResponse(User user) {
 
         roles = new ArrayList<>();

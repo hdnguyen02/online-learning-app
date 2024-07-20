@@ -33,7 +33,7 @@ public class CardController {
         // tiếp tục tạo.
 
         Response response = Response.builder()
-                .message("Tạo thẻ thành công")
+                .message("Card created successfully")
                 .data(cardService.createCardWithCommonDeck(idCommonDeck,term, definition, example, image, audio))
                 .success(true)
 
@@ -54,14 +54,14 @@ public class CardController {
             @RequestParam (required = false) MultipartFile audio) throws Exception {
 
         CardResponse cardDto = cardService.createCard(idDeck, term, definition, example, image, audio);
-        String message = "Tạo thẻ thành công";
+        String message = "Card created successfully";
         Response response = new Response(cardDto, message, true);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
     @GetMapping("/cards/search")
     public ResponseEntity<Response> searchCards(@RequestParam String content) {
         List<CardResponse> cardsDto = cardService.searchCards(content);
-        String message = "Truy vấn card thành công";
+        String message = "Query successful";
         Response response = new Response(cardsDto, message, true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -71,7 +71,7 @@ public class CardController {
                                                 @RequestParam (required = false) Boolean isFavourite,
                                                 @RequestParam (required = false) Boolean isRemembered) {
         List<CardResponse> cardsDto = cardService.filterCards(idDeck, isFavourite, isRemembered);
-        String message = "Truy vấn card thành công";
+        String message = "Query successful";
         Response response = new Response(cardsDto, message, true);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -81,7 +81,7 @@ public class CardController {
     @GetMapping("/cards")
     public ResponseEntity<Response> getCards() {
         List<CardResponse> cardsDto = cardService.getCards(); // thực hiện truy vấn tất cả.
-        String message = "Truy vấn card thành công";
+        String message = "Query successful";
         Response response = new Response(cardsDto, message, true);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -89,7 +89,7 @@ public class CardController {
     @GetMapping("cards/{id}")
     public ResponseEntity<Response> getCardWithId(@PathVariable Long id) throws Exception {
         CardResponse cardDto = cardService.getCardWithId(id);
-        String message = "Truy vấn thẻ thành công";
+        String message = "Query successful";
         Response response = new Response(cardDto, message, true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -97,7 +97,7 @@ public class CardController {
     @DeleteMapping("cards")
     public ResponseEntity<Response> deleteCard(@RequestParam long [] ids) {
 
-        String message = "Xóa thẻ thành công";
+        String message = "Card deleted successfully";
         cardService.deleteCards(ids);
         Response response = new Response(null, message, true);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -106,7 +106,7 @@ public class CardController {
     @DeleteMapping("cards/{id}")
     public ResponseEntity<Response> deleteCard(@PathVariable Long id) throws Exception {
         CardResponse cardDto = cardService.deleteCard(id);
-        String message = "Xoá thẻ thành công";
+        String message = "Card deleted successfully";
         Response response = new Response(cardDto, message, true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -123,7 +123,7 @@ public class CardController {
                                                @RequestParam (required = false) Boolean isRemembered) throws Exception {
         CardResponse cardDto = cardService.updateCard(id ,idDeck, term, definition,
                 example,image,audio,isFavourite, isRemembered);
-        String message = "Hiệu chỉnh thẻ thành công";
+        String message = "Card edited successfully";
         Response response = new Response(cardDto, message, true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

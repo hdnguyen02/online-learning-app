@@ -1,6 +1,7 @@
 package com.hdnguyen.service;
 
 
+import com.hdnguyen.entity.Role;
 import com.hdnguyen.util.Helper;
 import com.hdnguyen.dao.UserDao;
 import com.hdnguyen.dto.auth.UserResponse;
@@ -58,6 +59,9 @@ public class UserService {
     public UserResponse getInfoUser() {
         return new UserResponse(helper.getUser());
     }
+
+
+    // lấy ra thong tin nguoi dung.
     public UserResponse getInfoOtherUser(String email) {
         User user = userDao.findById(email).orElseThrow();
         return new UserResponse(user);
@@ -73,5 +77,12 @@ public class UserService {
         User user = helper.getUser();
         user.setPassword(passwordEncoder.encode(newPW));
         userDao.save(user);
+    }
+
+    // update role TEACHER
+    public void updateUserWithRoleTeacher(String emailUser) {
+        User userStored = userDao .findById(emailUser).orElseThrow();
+        userStored.getRoles().add(new Role("TEACHER"));
+        userDao.save(userStored);
     }
 }

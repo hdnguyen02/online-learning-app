@@ -1,6 +1,7 @@
 package com.hdnguyen.dao;
 
 import com.hdnguyen.entity.Deck;
+import com.hdnguyen.entity.Group;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;

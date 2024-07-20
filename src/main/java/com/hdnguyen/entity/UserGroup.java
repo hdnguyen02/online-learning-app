@@ -29,8 +29,3 @@ public class UserGroup {
     private String approachType; // SEND_MAIL, SUBMIT
 }
 
-// người dùng có thể xin vào group => tiến hành xin vào.
-// người dùng duyệt.
-
-// khi đăng nhập => bắt buộc nhập vào username.
-

@@ -13,7 +13,7 @@ import java.util.*;
 public class VnpayConfig {
 
     private final String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    private final String secretKey = "HENL6UZSLPSURL7PQ1NWS1AF770HJWJZ";
+    private final String secretKey = "1FDE7F8TP8E7KZ7F3C9AEKIIJQZDBFL3";
 
     public static String encodeEmail(String email) {
         return Base64.getUrlEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));

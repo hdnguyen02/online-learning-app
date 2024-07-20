@@ -67,8 +67,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserGroup> userGroups;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<HistorySearch> historySearches;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Invoice> invoices;
+
 
     @Override
     @Transactional
@@ -77,6 +78,7 @@ public class User implements UserDetails {
         this.roles.forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName())));
         return authorities;
     }
+
 
     @Override
     public String getUsername() {

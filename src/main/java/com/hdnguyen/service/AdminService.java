@@ -14,17 +14,18 @@ import java.util.List;
 public class AdminService {
     private final UserDao userDao;
 
-    List<UserResponse> getUsers() {
+    public List<UserResponse> getUsers() {
         List<User> users = userDao.findAll();
 
         return users.stream()
                 .map(UserResponse::new).toList();
     }
 
-    // bộ thẻ và thẻ làm trong thống kê
-
-    // lấy thông tin từ hóa đơn
-
+    public void editUser(boolean isEnabled, String emailUser) {
+        User userStored = userDao.findById(emailUser).orElseThrow();
+        userStored.setIsEnabled(isEnabled);
+        userDao.save(userStored);
+    }
 
 
 

@@ -15,7 +15,8 @@ public class PaymentService {
 
     private final VnpayConfig vnPayConfig;
 
-    public String createVnPayPayment(String email,  HttpServletRequest request) {
+    public String createVnPayPayment(HttpServletRequest request) {
+        String email = request.getParameter("email");
         long amount = 299000* 100L;
         String bankCode = request.getParameter("bankCode");
         Map<String, String> vnpParamsMap = vnPayConfig.getVNPayConfig(email);
@@ -31,4 +32,8 @@ public class PaymentService {
         queryUrl += "&vnp_SecureHash=" + vnpSecureHash;
         return vnPayConfig.getVnp_PayUrl() + "?" + queryUrl;
     }
+
+
+
+
 }

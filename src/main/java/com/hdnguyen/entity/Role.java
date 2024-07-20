@@ -12,10 +12,15 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class Role {
     @Id
     @Column(length = 50)
     private String name;
+
+
+    public Role(String name) {
+        this.name = name;
+    }
+
 }

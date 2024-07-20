@@ -55,7 +55,6 @@ public class UserController {
         userService.changePW(newPW);
         Response response = new Response(null, "Thay đổi mật khẩu thành công", true);
         return new ResponseEntity<>(response, HttpStatus.OK);
-
     }
 
 

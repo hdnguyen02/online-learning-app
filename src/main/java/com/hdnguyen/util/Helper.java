@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -28,4 +29,12 @@ public class Helper {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return ((User) authentication.getPrincipal()).getEmail();
     }
+
+    public static Date convertTimestampToDate(String timestamp) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        return dateFormat.parse(timestamp);
+    }
+
+
+
 }

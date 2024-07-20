@@ -116,6 +116,9 @@ public class DeckService {
         if (deckRequest.getDescription() != null) {
             deck.setDescription(deckRequest.getDescription());
         }
+        if (deckRequest.getIsPublic() != null) {
+            deck.setIsPublic(deckRequest.getIsPublic());
+        }
         return new DeckResponse(deckDao.save(deck));
     }
 

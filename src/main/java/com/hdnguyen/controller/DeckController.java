@@ -23,9 +23,6 @@ public class DeckController {
     private final DeckService deckService;
 
 
-    // tạo thêm hàm clone + lấy ra bộ thẻ
-
-
     @GetMapping("/global/decks")
     public ResponseEntity<?> getGlobalDecks(@RequestParam(required = false) String searchTerm) {
 
@@ -34,7 +31,7 @@ public class DeckController {
         else deckResponses = deckService.getGlobalDecks();
 
         Response response = Response.builder()
-                .message("Danh sách bộ thẻ")
+                .message("Query successful")
                 .data(deckResponses)
                 .success(true)
                 .build();
@@ -48,7 +45,7 @@ public class DeckController {
 
         boolean result = deckService.cloneDeck(idDeck);
         Response response = Response.builder()
-                .message("Clone bộ thẻ thành công")
+                .message("Copy the card set successfully")
                 .data(result)
                 .success(true)
                 .build();
@@ -68,7 +65,7 @@ public class DeckController {
         else {
             decksDto = deckService.searchDecks(searchTerm);
         }
-        String message = "Truy vấn danh sách bộ thẻ thành công";
+        String message = "Query successful";
         Response response = new Response(decksDto, message, true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -76,7 +73,7 @@ public class DeckController {
     @PostMapping("/decks")
     public ResponseEntity<Response> createDeck(@RequestBody DeckRequest deckRequest) {
         DeckResponse deckResponse = deckService.createDeck(deckRequest);
-        String message = "Tạo bộ thẻ thành công";
+        String message = "Create a successful card set";
         Response response = new Response(deckResponse, message, true);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -84,7 +81,7 @@ public class DeckController {
     @DeleteMapping("/decks/{id}")
     public ResponseEntity<Response> deleteDeck(@PathVariable Long id) {
         DeckResponse deckResponse = deckService.deleteDeck(id);
-        String message = "Xóa bộ thẻ thành công";
+        String message = "Deleted card set successfully";
         Response response = new Response(deckResponse, message, true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -92,7 +89,7 @@ public class DeckController {
     @PutMapping("/decks/{id}")
     public ResponseEntity<Response> updateDeck(@PathVariable Long id,@RequestBody DeckRequest deckRequest)  {
         DeckResponse deckResponse = deckService.updateDeck(id, deckRequest);
-        String message = "Hiệu chỉnh bộ thẻ thành công";
+        String message = "Edit card set was successful";
         Response response = new Response(deckResponse, message, true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -100,7 +97,7 @@ public class DeckController {
     @GetMapping("decks/{id}")
     public ResponseEntity<Response> getDeckWithId(@PathVariable Long id) {
         DetailDeckResponse deckDto = deckService.getDeckWithId(id);
-        String message = "Truy vấn bộ thẻ thành công";
+        String message = "Query successful";
         Response response = new Response(deckDto, message, true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

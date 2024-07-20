@@ -39,11 +39,11 @@ public class GroupService {
         Group group = groupRepository.findById(idGroup).orElseThrow();
         String email = helper.getEmailUser();
         if (email.equals(group.getOwner().getEmail())) {
-            throw new Exception("Bạn đã tham lớp học!");
+            throw new Exception("You've joined the class!");
         }
 
         boolean notAttended = group.getUserGroups().stream().noneMatch(userGroup -> userGroup.getUser().getEmail().equals(email));
-        if (!notAttended) throw new Exception("Bạn đã tham gia lớp học!");
+        if (!notAttended) throw new Exception("You've joined the class!");
         UserGroup userGroup = UserGroup.builder()
                 .group(group)
                 .user(helper.getUser())
@@ -131,7 +131,7 @@ public class GroupService {
 
         Optional<User> userOptional = userRepository.findById(emailUser);
         if (userOptional.isEmpty()) {
-            throw new UsernameNotFoundException("Người dùng có mail không tồn tại!");
+                throw new UsernameNotFoundException("User whose email does not exist!");
         }
 
         List<UserGroup> userGroups = userGroupRepository.findByUserAndGroup(new User(emailUser),
@@ -180,12 +180,12 @@ public class GroupService {
 
     private void sendMailAddGroup(Long groupId, String emailTo, String token) {
         EmailDetail details = new EmailDetail();
-        details.setSubject("Thư mời tham gia lớp học");
+        details.setSubject("Invitation letter to join the class");
         details.setRecipient(emailTo);
         String link = "http://localhost:8080/groups/"+groupId+"/active?token=" + token;
         details.setMsgBody("<p>Xin chào bạn,</p>" +
-                "<p>Bạn vui lòng nhấn vào <a href=\'"+link+"\'>link này</a> để tham gia lớp học.</p>" +
-                "    <p>Trân trọng,</p>");
+                "<p>Please click <a href=\'"+link+"\'>this link</a> to join class.</p>" +
+                "    <p>Best regards,</p>");
         emailServiceImpl.sendMailWithAttachment(details);
     }
 
@@ -205,13 +205,13 @@ public class GroupService {
     public boolean deleteUserGroupById(UserGroupRequest userGroupRequest) {
         Optional<User> userOptional = userRepository.findById(userGroupRequest.getEmail());
         if (userOptional.isEmpty()) {
-            throw new UsernameNotFoundException("Người dùng có mail không tồn tại!");
+            throw new UsernameNotFoundException("User whose email does not exist!");
         }
         List<UserGroup> userGroups = userGroupRepository.findByUserAndGroup(new User(userGroupRequest.getEmail()),
                 new Group(userGroupRequest.getIdGroup())
         );
         if (userGroups.isEmpty()){
-            throw new UsernameNotFoundException("Người dùng có mail không có trong nhóm!");
+            throw new UsernameNotFoundException("User whose email is not in the group!");
         }
 
         userGroupRepository.delete(userGroups.get(0));
