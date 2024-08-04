@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'com.hdnguyen.learn-english' is invalid and this project uses 'com.hdnguyen.learnenglish' instead.
+* The original package name 'com.online_learning.learn-english' is invalid and this project uses 'com.online_learning.learnenglish' instead.
 
 # Getting Started
 

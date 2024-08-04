@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.hdnguyen</groupId>
-	<artifactId>learn-english</artifactId>
+	<artifactId>online-learning</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>learn-english</name>
-	<description> Learn English</description>
+	<name>online-learning</name>
+
 	<properties>
 		<java.version>17</java.version>
 	</properties>
