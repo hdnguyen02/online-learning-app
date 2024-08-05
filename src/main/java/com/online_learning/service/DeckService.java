@@ -47,7 +47,7 @@ public class DeckService {
                     .user(user)
                     .isPublic(false)
                     .createAt(new Date())
-                    .quantityClone(0)
+                    .quantityClones(0)
                     .build();
 
             Deck deckCloneSaved = deckDao.save(deckClone);
@@ -62,7 +62,7 @@ public class DeckService {
                             .createAt(new Date())
                             .build()).toList();
             cardDao.saveAll(cardsClone); // lưu lại.
-            deck.setQuantityClone(deckCloneSaved.getQuantityClone() + 1);
+            deck.setQuantityClones(deckCloneSaved.getQuantityClones() + 1);
             deckDao.save(deck);
             return true;
         }
@@ -77,10 +77,10 @@ public class DeckService {
         Deck deck = Deck.builder()
                 .name(deckRequest.getName())
                 .description(deckRequest.getDescription())
-                .isPublic(deckRequest.getIsPublic()) // cho phép clone
+                .isPublic(deckRequest.getIsPublic())
                 .createAt(new Date())
                 .user(user)
-                .quantityClone(0)
+                .quantityClones(0)
                 .build();
         return new DeckResponse(deckDao.save(deck));
     }
@@ -141,7 +141,7 @@ public class DeckService {
                 .isPublic(true)
                 .createAt(new Date())
                 .user(new User("n20dccn047@student.ptithcm.edu.vn"))
-                .quantityClone(0)
+                .quantityClones(0)
                 .build();
 
         Deck deckB2 = Deck.builder()
@@ -150,7 +150,7 @@ public class DeckService {
                 .isPublic(true)
                 .createAt(new Date())
                 .user(new User("n20dccn047@student.ptithcm.edu.vn"))
-                .quantityClone(0)
+                .quantityClones(0)
                 .build();
         Deck deckB1Stored = deckDao.save(deckB1);
 
@@ -196,15 +196,19 @@ public class DeckService {
                 .build();
 
         Card card07 = Card.builder()
-                .term("Pen")
-                .definition("Book")
-                .example("Quyen sach")
+                .term("Book")
+                .definition("Quyen sach")
+                .example("My book")
                 .deck(deckB1Stored)
                 .build();
 
-
-        cards.add(card01); cards.add(card02); cards.add(card03); cards.add(card04);
-        cards.add(card05); cards.add(card06); cards.add(card07);
+        cards.add(card01);
+        cards.add(card02);
+        cards.add(card03);
+        cards.add(card04);
+        cards.add(card05);
+        cards.add(card06);
+        cards.add(card07);
 
         cardDao.saveAll(cards);
         deckDao.save(deckB2);

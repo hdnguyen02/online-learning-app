@@ -23,7 +23,6 @@ public class DetailCommonDeckResponse {
     private Date createAt;
     private List<CardOfDeck> cards;
     private Boolean isPublic;
-    private Integer quantityClone;
     private UserResponse user;
     private Integer quantityCards;
     private GroupResponse group;
@@ -37,7 +36,6 @@ public class DetailCommonDeckResponse {
         commonDeck.getCards().forEach(card -> {
             this.cards.add(new CardOfDeck(card));
         });
-        this.quantityClone = commonDeck.getQuantityClone();
         this.quantityCards = commonDeck.getCards() == null ? 0 : commonDeck.getCards().size();
         this.group = GroupResponse.mapToGroupDto(commonDeck.getGroup());
     }

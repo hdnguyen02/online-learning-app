@@ -23,7 +23,6 @@ public class UserResponse {
     private String avatar;
     private String gender;
     private String phone;
-    private Integer age;
     
 
     public UserResponse(User user) {

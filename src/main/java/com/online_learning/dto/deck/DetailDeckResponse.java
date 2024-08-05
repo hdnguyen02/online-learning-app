@@ -34,7 +34,7 @@ public class DetailDeckResponse {
             this.cards.add(new CardOfDeck(card));
         });
         this.isPublic = deck.getIsPublic();
-        this.quantityClones = deck.getQuantityClone();
+        this.quantityClones = deck.getQuantityClones();
         this.user = new UserResponse(deck.getUser());
         this.quantityCards = this.cards.size();
     }

@@ -24,9 +24,7 @@ public class AdminService {
 
     public List<UserResponse> getUsers() {
         List<User> users = userDao.findAll();
-
-        return users.stream()
-                .map(UserResponse::new).toList();
+        return users.stream().map(UserResponse::new).toList();
     }
 
     public void editUser(boolean isEnabled, String emailUser) {

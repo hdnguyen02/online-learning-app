@@ -17,7 +17,7 @@ public interface DeckDao extends JpaRepository<Deck, Long>, PagingAndSortingRepo
 
     // viết 1 hàm chỉ lấy ra với public = true
 
-    @Query("SELECT d FROM Deck d WHERE d.isPublic = true")
+    @Query("SELECT d FROM Deck d WHERE d.isPublic = true ORDER BY d.quantityClones DESC")
     List<Deck> getGlobal();
 
     @Query("SELECT d FROM Deck d WHERE d.user.email = ?1 AND CONCAT(d.name, ' ', d.description) LIKE %?2%")

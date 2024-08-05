@@ -95,10 +95,21 @@ public class AuthService {
         Set<Role> rolesStudent = new HashSet<>();
         rolesStudent.add(new Role("STUDENT"));
 
-        User student = User.builder()
+        User student01 = User.builder()
                 .email("n20dccn047@student.ptithcm.edu.vn")
                 .firstName("Nguyen Tien")
                 .lastName("Dung")
+                .password(passwordEncoder.encode("123456"))
+                .createAt(new Date())
+                .roles(rolesStudent)
+                .isEnabled(true)
+                .build();
+
+
+        User student02 = User.builder()
+                .email("hoducnguyen@gmail.com")
+                .firstName("Ho Duc")
+                .lastName("Nguyen")
                 .password(passwordEncoder.encode("123456"))
                 .createAt(new Date())
                 .roles(rolesStudent)
@@ -135,7 +146,8 @@ public class AuthService {
                 .isEnabled(true)
                 .build();
 
-        userDao.save(student);
+        userDao.save(student01);
+        userDao.save(student02);
         userDao.save(teacher);
         userDao.save(admin);
     }

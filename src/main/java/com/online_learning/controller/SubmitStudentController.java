@@ -17,7 +17,7 @@ public class SubmitStudentController {
 
     private final SubmitService submitService;
 
-    @PostMapping("student/submits")
+    @PostMapping("/student/submits")
     public ResponseEntity<?> createGroup(@RequestParam Long idGroup,
                                          @RequestParam Long idAssignment,
                                          @RequestParam MultipartFile file

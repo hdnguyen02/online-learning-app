@@ -18,7 +18,6 @@ public class Role {
     @Column(length = 50)
     private String name;
 
-
     public Role(String name) {
         this.name = name;
     }

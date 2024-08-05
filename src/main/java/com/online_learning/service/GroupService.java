@@ -36,6 +36,7 @@ public class GroupService {
     }
 
     public GroupResponse joinGroup(Long idGroup) throws Exception {
+
         Group group = groupRepository.findById(idGroup).orElseThrow();
         String email = helper.getEmailUser();
         if (email.equals(group.getOwner().getEmail())) {
@@ -243,14 +244,28 @@ public class GroupService {
         group.setCreatedBy("hdnguyen7702@gmail.com");
         group.setIsPublic(true);
 
-        // thêm vào 2 thành viên lớp học
-        UserGroup userGroup01 = UserGroup.builder()
+        Group groupStored =  groupRepository.save(group);
 
+        // thêm vào 2 thành viên vào lớp học
+        UserGroup userGroup01 = UserGroup.builder()
+                .group(groupStored)
+                .user(new User("n20dccn047@student.ptithcm.edu.vn"))
+                .approachType("SUBMIT")
+                .isActive(true)
+                .tokenActive(null)
                 .build();
 
+        UserGroup userGroup02 = UserGroup.builder()
+                .group(groupStored)
+                .user(new User("hoducnguyen@gmail.com"))
+                .approachType("SUBMIT")
+                .isActive(true)
+                .tokenActive(null)
+                .build();
 
-        // đủ thông tin. lưu lại
-        groupRepository.save(group);
+        userGroupRepository.save(userGroup01);
+        userGroupRepository.save(userGroup02);
+
     }
 
 }

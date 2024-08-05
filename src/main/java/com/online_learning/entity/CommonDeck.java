@@ -30,8 +30,6 @@ public class CommonDeck {
 
     private Date createAt;
 
-    private Integer quantityClone; // số lần bộ thẻ này được clone ra
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_group", nullable = false)
     private Group group;

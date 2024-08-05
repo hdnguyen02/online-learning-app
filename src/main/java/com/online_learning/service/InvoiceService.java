@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -68,6 +70,32 @@ public class InvoiceService {
 
     public List<InvoiceResponse> getInvoices() {
         return invoiceDao.findAll().stream().map(InvoiceResponse::new).toList();
+    }
+
+    // khởi tạo invoice
+    public void initInvoice() {
+        if (!invoiceDao.findAll().isEmpty())  return;
+
+        List<Invoice> invoices = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        Random random = new Random();
+
+        for (int i = 0; i < 12; i++) {
+            LocalDateTime payDate = now.minusMonths(i);
+            Invoice invoice = Invoice.builder()
+                    .user(new User("hdnguyen7702@gmail.com"))
+                    .vnpResponseCode("00")
+                    .vnpAmount(BigDecimal.valueOf(1000 + random.nextInt(9000)))
+                    .vnpBankCode("VCB")
+                    .vnpCardType("ATM")
+                    .vnpOrderInfo("Order " + (i + 1))
+                    .vnpPayDate(Date.from(payDate.atZone(ZoneId.systemDefault()).toInstant()))
+                    .build();
+            invoices.add(invoice);
+
+            invoiceDao.saveAll(invoices);
+        }
+
     }
 
 }

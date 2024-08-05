@@ -19,7 +19,7 @@ public class DeckResponse {
     private Date createAt;
     private Boolean isPublic;
     private Integer quantityClones;
-    private UserResponse user; // thông tin của chủ thẻ
+    private UserResponse user;
 
     public DeckResponse(Deck deck) {
         this.id = deck.getId();
@@ -28,7 +28,7 @@ public class DeckResponse {
         this.quantityCards = deck.getCards() == null ? 0 : deck.getCards().size();
         this.createAt = deck.getCreateAt();
         this.isPublic = deck.getIsPublic();
-        this.quantityClones = deck.getQuantityClone();
+        this.quantityClones = deck.getQuantityClones();
         this.user = new UserResponse(deck.getUser());
 
     }

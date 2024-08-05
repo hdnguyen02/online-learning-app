@@ -33,10 +33,8 @@ public class Deck {
 
     private Date createAt;
 
+    private Boolean isPublic;
 
-    // cho phép người dùng public bộ thẻ ra
-    private Boolean isPublic; // khi tạo bộ thẻ => chỉ ra.
-
-    private Integer quantityClone; // số lần bộ thẻ này được clone ra
+    private Integer quantityClones;
 
 }

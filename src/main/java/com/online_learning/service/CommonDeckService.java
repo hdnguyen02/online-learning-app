@@ -1,10 +1,12 @@
 package com.online_learning.service;
 
+import com.online_learning.dao.CardDao;
 import com.online_learning.dao.CommonDeckDao;
 import com.online_learning.dao.GroupDao;
 import com.online_learning.dto.deck.CommonDeckRequest;
 import com.online_learning.dto.deck.CommonDeckResponse;
 import com.online_learning.dto.deck.DetailCommonDeckResponse;
+import com.online_learning.entity.Card;
 import com.online_learning.entity.CommonDeck;
 import com.online_learning.entity.Group;
 import lombok.RequiredArgsConstructor;
@@ -19,19 +21,16 @@ import java.util.List;
 public class CommonDeckService {
 
     private final CommonDeckDao commonDeckDao;
+    private final CardDao cardDao;
     private final GroupDao groupDao;
-
-    // tạo, hiệu chỉnh => chỉ có bên giáo viên có => yêu cầu role giáo viên.
 
     public boolean createCommonDeck(CommonDeckRequest commonDeckRequest) {
         Group group = groupDao.findById(commonDeckRequest.getIdGroup()).orElseThrow();
 
         CommonDeck commonDeck = CommonDeck.builder()
-
                 .name(commonDeckRequest.getName())
                 .description(commonDeckRequest.getDescription())
                 .createAt(new Date())
-                .quantityClone(0)
                 .group(group)
                 .build();
         try {
@@ -52,9 +51,7 @@ public class CommonDeckService {
         return new DetailCommonDeckResponse(commonDeckDao.findById(idCommonDeck).orElseThrow());
     }
 
-    // viết hàm tạo bộ thẻ => gọi lên hàm cardService      EC
 
-    // viết hàm hiệu chỉnh Common Deck
     public boolean editCommonDeck(Long idCommonDeck, CommonDeckRequest commonDeckRequest) {
 
         CommonDeck commonDeck = commonDeckDao.findById(idCommonDeck).orElseThrow();
@@ -69,7 +66,6 @@ public class CommonDeckService {
         }
     }
 
-    // viết hàm xóa học phần
     public boolean deleteCommonDeck(Long idCommonDeck) {
         try {
             commonDeckDao.deleteById(idCommonDeck);
@@ -78,6 +74,76 @@ public class CommonDeckService {
         catch (Exception e) {
             return false;
         }
+    }
+
+
+    public void initCommonDeck() {
+        if (!commonDeckDao.findAll().isEmpty())  return;
+
+        CommonDeck commonDeck = CommonDeck.builder()
+                .name("Tu vung A1")
+                .description("Bo the tu vung A1")
+                .createAt(new Date())
+                .group(new Group(1L))
+                .build();
+
+        CommonDeck commonDeckStored = commonDeckDao.save(commonDeck);
+
+        Card card01 = Card.builder()
+                .term("Hello")
+                .definition("Xin chao")
+                .example("Hello Marry")
+                .commonDeck(commonDeckStored)
+                .build();
+
+        Card card02 = Card.builder()
+                .term("Hi")
+                .definition("Xin chao")
+                .example("Hi Marry")
+                .commonDeck(commonDeckStored)
+                .build();
+        Card card03 = Card.builder()
+                .term("Jar")
+                .definition("Xin chao")
+                .example("My jar")
+                .commonDeck(commonDeckStored)
+                .build();
+        Card card04 = Card.builder()
+                .term("Table")
+                .definition("Cai ban")
+                .example("My table")
+                .commonDeck(commonDeckStored)
+                .build();
+
+        Card card05 = Card.builder()
+                .term("Computer")
+                .definition("May tinh")
+                .example("My computer")
+                .commonDeck(commonDeckStored)
+                .build();
+
+        Card card06 = Card.builder()
+                .term("Pen")
+                .definition("cay but")
+                .example("My pen")
+                .commonDeck(commonDeckStored)
+                .build();
+
+        Card card07 = Card.builder()
+                .term("Book")
+                .definition("Quyen sach")
+                .example("My book")
+                .commonDeck(commonDeckStored)
+                .build();
+
+        cardDao.save(card01);
+        cardDao.save(card02);
+        cardDao.save(card03);
+        cardDao.save(card04);
+        cardDao.save(card05);
+        cardDao.save(card06);
+        cardDao.save(card07);
+
     }
 
 

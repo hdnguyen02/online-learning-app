@@ -25,7 +25,7 @@ public class GroupController {
     public ResponseEntity<?> joinGroup(@PathVariable Long idGroup) throws Exception {
         Response response = Response.builder()
                 .message("Query successful")
-                .data(groupService.joinGroup(idGroup)) // thêm vào danh sách lớp học của người dùng.
+                .data(groupService.joinGroup(idGroup))
                 .success(true)
                 .build();
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -108,22 +108,26 @@ public class GroupController {
         response.setData(groupService.inviteUserGroup(id, emailUser));
         response.setSuccess(true);
 
-
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/groups/owner")
     public ResponseEntity<?> getGroupsByUser() {
-        Response response = new Response();
+
+
         List<GroupResponse> groupResponses = groupService.getGroupsByOwner();
+
+        Response response = new Response();
         response.setSuccess(true);
         response.setData(groupResponses);
         response.setMessage("Query successful");
+
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/groups/attendance")
     public ResponseEntity<?> getGroupsByAttendance(){
+
         Response response = new Response();
 
         response.setData(groupService.getGroupsByAttendance());
@@ -131,15 +135,19 @@ public class GroupController {
         response.setMessage("Query successful");
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
+
     }
 
     @PreAuthorize("hasRole('TEACHER')")
     @DeleteMapping("/groups/{id}")
     public ResponseEntity<?> deleteGroupById(@PathVariable Long id) {
+
         Response response = new Response();
         response.setMessage("Deleted successfully");
         response.setData(groupService.deleteGroupById(id));
         response.setSuccess(true);
+
         return ResponseEntity.status(HttpStatus.OK).body(response);
+
     }
 }

@@ -20,7 +20,7 @@ public class ForgotPWController {
     private final UserDao userDao;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
-    @PostMapping("/forgot-password")
+    @PostMapping("/api/v1/forgot-password")
     public Response forgotPassword(@RequestBody Map<String, String> maps)  {
         String email = maps.get("email");
         User user = userDao.findById(email).orElseThrow();
@@ -36,6 +36,7 @@ public class ForgotPWController {
 
     @PostMapping("/api/v1/reset-password")
     public Response resetPassword(@RequestBody Map<String, String> maps) {
+        System.out.println("vào được");
         String newPassword = maps.get("newPassword");
         String accessToken = maps.get("accessToken");
         String email = jwtService.extractUsername(accessToken);
