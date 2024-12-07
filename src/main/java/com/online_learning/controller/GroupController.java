@@ -100,12 +100,12 @@ public class GroupController {
     @PreAuthorize("hasRole('TEACHER')")
     @PostMapping("/groups/{id}/invite")
     public ResponseEntity<?> inviteUserGroup(
-            @PathVariable Long id, @RequestParam(name = "email-user") String emailUser) {
+            @PathVariable Long id, @RequestParam(name = "email") String email) throws Exception {
 
         Response response = new Response();
 
         response.setMessage("Sending email to user successfully");
-        response.setData(groupService.inviteUserGroup(id, emailUser));
+        response.setData(groupService.inviteUserGroup(id, email));
         response.setSuccess(true);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);

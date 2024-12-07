@@ -26,6 +26,7 @@ public class DeckService {
     private final CardDao cardDao;
 
     public List<DeckResponse> getGlobalDecks() {
+        System.out.println("chạy vào service");
         return deckDao.getGlobal().stream().map(DeckResponse::new).toList();
     }
 
@@ -35,18 +36,17 @@ public class DeckService {
     }
 
     @Transactional
-    public boolean cloneDeck(Long idDeck){
-        try {
+    public boolean cloneDeck(Long id){
 
             User user = helper.getUser();
-            Deck deck = deckDao.findById(idDeck).orElseThrow();
+            Deck deck = deckDao.findById(id).orElseThrow();
 
             Deck deckClone = Deck.builder()
                     .name(deck.getName())
                     .description(deck.getDescription())
+                    .configLanguage(deck.getConfigLanguage())
                     .user(user)
                     .isPublic(false)
-                    .createAt(new Date())
                     .quantityClones(0)
                     .build();
 
@@ -59,16 +59,13 @@ public class DeckService {
                             .term(card.getTerm())
                             .definition(card.getDefinition())
                             .example(card.getExample())
-                            .createAt(new Date())
                             .build()).toList();
             cardDao.saveAll(cardsClone); // lưu lại.
             deck.setQuantityClones(deckCloneSaved.getQuantityClones() + 1);
             deckDao.save(deck);
             return true;
-        }
-        catch (Exception e) {
-            return false;
-        }
+
+
     }
 
 
@@ -78,11 +75,16 @@ public class DeckService {
                 .name(deckRequest.getName())
                 .description(deckRequest.getDescription())
                 .isPublic(deckRequest.getIsPublic())
-                .createAt(new Date())
+
                 .user(user)
                 .quantityClones(0)
                 .build();
         return new DeckResponse(deckDao.save(deck));
+    }
+
+    public void createDeckV2() {
+        // send deck + cards
+
     }
 
 
@@ -139,7 +141,7 @@ public class DeckService {
                 .name("Tu Vung B1")
                 .description("Bo The Tu Vung B1")
                 .isPublic(true)
-                .createAt(new Date())
+
                 .user(new User("n20dccn047@student.ptithcm.edu.vn"))
                 .quantityClones(0)
                 .build();
@@ -148,7 +150,7 @@ public class DeckService {
                 .name("Tu vung B2")
                 .description("Bo The Tu Vung B2")
                 .isPublic(true)
-                .createAt(new Date())
+
                 .user(new User("n20dccn047@student.ptithcm.edu.vn"))
                 .quantityClones(0)
                 .build();

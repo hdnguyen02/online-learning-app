@@ -1,5 +1,6 @@
 package com.online_learning.entity;
 
+import com.online_learning.core.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,12 +16,8 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comment extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-
-    @ManyToOne()
+public class Comment extends BaseEntity {
+    @ManyToOne
     @JoinColumn(name = "parentId")
     private Comment comment;
 
@@ -30,7 +27,7 @@ public class Comment extends BaseEntity{
     @OneToMany(mappedBy = "comment")
     private List<Comment> comments = new ArrayList<>();
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "email_user")
     private User user;
 
@@ -38,7 +35,7 @@ public class Comment extends BaseEntity{
     @JoinColumn(name = "group_id")
     private Group group;
 
-    public  Comment(Long id) {
-        this.id = id;
+    public Comment(Long id) {
+        super((id));
     }
 }

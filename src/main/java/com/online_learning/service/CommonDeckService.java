@@ -5,14 +5,12 @@ import com.online_learning.dao.CommonDeckDao;
 import com.online_learning.dao.GroupDao;
 import com.online_learning.dto.deck.CommonDeckRequest;
 import com.online_learning.dto.deck.CommonDeckResponse;
-import com.online_learning.dto.deck.DetailCommonDeckResponse;
-import com.online_learning.entity.Card;
+import com.online_learning.dto.common_deckv2.QueryCommonDeck;
 import com.online_learning.entity.CommonDeck;
 import com.online_learning.entity.Group;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 
@@ -30,7 +28,7 @@ public class CommonDeckService {
         CommonDeck commonDeck = CommonDeck.builder()
                 .name(commonDeckRequest.getName())
                 .description(commonDeckRequest.getDescription())
-                .createAt(new Date())
+                .configLanguage(commonDeckRequest.getConfigLanguage())
                 .group(group)
                 .build();
         try {
@@ -47,8 +45,8 @@ public class CommonDeckService {
                 .map(CommonDeckResponse::new).toList();
     }
 
-    public DetailCommonDeckResponse getCommonDeck(Long idCommonDeck) {
-        return new DetailCommonDeckResponse(commonDeckDao.findById(idCommonDeck).orElseThrow());
+    public QueryCommonDeck getCommonDeck(Long idCommonDeck) {
+        return new QueryCommonDeck(commonDeckDao.findById(idCommonDeck).orElseThrow());
     }
 
 
@@ -66,9 +64,9 @@ public class CommonDeckService {
         }
     }
 
-    public boolean deleteCommonDeck(Long idCommonDeck) {
+    public boolean deleteCommonDeck(Long id) {
         try {
-            commonDeckDao.deleteById(idCommonDeck);
+            commonDeckDao.deleteById(id);
             return true;
         }
         catch (Exception e) {
@@ -83,66 +81,66 @@ public class CommonDeckService {
         CommonDeck commonDeck = CommonDeck.builder()
                 .name("Tu vung A1")
                 .description("Bo the tu vung A1")
-                .createAt(new Date())
+
                 .group(new Group(1L))
                 .build();
 
         CommonDeck commonDeckStored = commonDeckDao.save(commonDeck);
 
-        Card card01 = Card.builder()
-                .term("Hello")
-                .definition("Xin chao")
-                .example("Hello Marry")
-                .commonDeck(commonDeckStored)
-                .build();
-
-        Card card02 = Card.builder()
-                .term("Hi")
-                .definition("Xin chao")
-                .example("Hi Marry")
-                .commonDeck(commonDeckStored)
-                .build();
-        Card card03 = Card.builder()
-                .term("Jar")
-                .definition("Xin chao")
-                .example("My jar")
-                .commonDeck(commonDeckStored)
-                .build();
-        Card card04 = Card.builder()
-                .term("Table")
-                .definition("Cai ban")
-                .example("My table")
-                .commonDeck(commonDeckStored)
-                .build();
-
-        Card card05 = Card.builder()
-                .term("Computer")
-                .definition("May tinh")
-                .example("My computer")
-                .commonDeck(commonDeckStored)
-                .build();
-
-        Card card06 = Card.builder()
-                .term("Pen")
-                .definition("cay but")
-                .example("My pen")
-                .commonDeck(commonDeckStored)
-                .build();
-
-        Card card07 = Card.builder()
-                .term("Book")
-                .definition("Quyen sach")
-                .example("My book")
-                .commonDeck(commonDeckStored)
-                .build();
-
-        cardDao.save(card01);
-        cardDao.save(card02);
-        cardDao.save(card03);
-        cardDao.save(card04);
-        cardDao.save(card05);
-        cardDao.save(card06);
-        cardDao.save(card07);
+//        Card card01 = Card.builder()
+//                .term("Hello")
+//                .definition("Xin chao")
+//                .example("Hello Marry")
+//                .commonDeck(commonDeckStored)
+//                .build();
+//
+//        Card card02 = Card.builder()
+//                .term("Hi")
+//                .definition("Xin chao")
+//                .example("Hi Marry")
+//                .commonDeck(commonDeckStored)
+//                .build();
+//        Card card03 = Card.builder()
+//                .term("Jar")
+//                .definition("Xin chao")
+//                .example("My jar")
+//                .commonDeck(commonDeckStored)
+//                .build();
+//        Card card04 = Card.builder()
+//                .term("Table")
+//                .definition("Cai ban")
+//                .example("My table")
+//                .commonDeck(commonDeckStored)
+//                .build();
+//
+//        Card card05 = Card.builder()
+//                .term("Computer")
+//                .definition("May tinh")
+//                .example("My computer")
+//                .commonDeck(commonDeckStored)
+//                .build();
+//
+//        Card card06 = Card.builder()
+//                .term("Pen")
+//                .definition("cay but")
+//                .example("My pen")
+//                .commonDeck(commonDeckStored)
+//                .build();
+//
+//        Card card07 = Card.builder()
+//                .term("Book")
+//                .definition("Quyen sach")
+//                .example("My book")
+//                .commonDeck(commonDeckStored)
+//                .build();
+//
+//        cardDao.save(card01);
+//        cardDao.save(card02);
+//        cardDao.save(card03);
+//        cardDao.save(card04);
+//        cardDao.save(card05);
+//        cardDao.save(card06);
+//        cardDao.save(card07);
 
     }
 

@@ -18,14 +18,15 @@ public class CommentResponse {
     private String content;
     private UserResponse user;
     private List<CommentResponse> commentsChild = new ArrayList<>();
-    private Date created;
+    private Date createdDate;
 
     public static CommentResponse mapToCommentDto(Comment comment){
         CommentResponse commentResponse = new CommentResponse();
         commentResponse.setId(comment.getId());
         commentResponse.setContent(comment.getContent());
         commentResponse.setUser(new UserResponse(comment.getUser()));
-        commentResponse.setCreated(comment.getCreated());
+        commentResponse.setCreatedDate(comment.getCreatedDate());
+
 
         List<CommentResponse> commentResponses = new ArrayList<>();
         comment.getComments().forEach(commentDB -> {

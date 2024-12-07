@@ -1,5 +1,6 @@
 package com.online_learning.entity;
 
+import com.online_learning.core.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

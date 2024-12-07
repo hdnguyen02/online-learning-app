@@ -3,7 +3,7 @@ package com.online_learning.config;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.online_learning.dao.UserDao;
+import com.online_learning.dao.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,11 +24,11 @@ import org.springframework.core.io.Resource;
 @Configuration
 @RequiredArgsConstructor
 public class BeanConfig {
-    private final UserDao userDao;
+    private final UserRepository userRepository;
 
     @Bean
     public UserDetailsService userDetailsService()  {
-        return email -> userDao.findById(email).orElseThrow(() -> new UsernameNotFoundException("not found user!"));
+        return email -> userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("not found user!"));
     }
     @Bean
     public PasswordEncoder passwordEncoder() {

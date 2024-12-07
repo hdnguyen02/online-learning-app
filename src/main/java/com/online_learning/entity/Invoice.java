@@ -1,6 +1,7 @@
 package com.online_learning.entity;
 
 
+import com.online_learning.core.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,11 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @ToString
-public class Invoice {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-
+public class Invoice extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "email_user", updatable = false)
     private User user;

@@ -8,4 +8,5 @@ public class CommonDeckRequest {
     private Long idGroup; // khởi tạo bao gồm id group vào => biết được nó thuộc thằng nào.
     private String name;
     private String description;
+    private String configLanguage;
 }

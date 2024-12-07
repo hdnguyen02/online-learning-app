@@ -17,19 +17,21 @@ public class DetailDeckResponse {
     private Long id;
     private String description;
     private String name;
-    private Date createAt;
+    private Date createdDate;
     private List<CardOfDeck> cards;
     private Boolean isPublic;
     private Integer quantityClones;
     private UserResponse user;
     private Integer quantityCards;
+    private String configLanguage;
+
 
     public DetailDeckResponse(Deck deck) {
         cards = new ArrayList<>();
         this.id = deck.getId();
         this.description = deck.getDescription();
         this.name = deck.getName();
-        this.createAt = deck.getCreateAt();
+
         deck.getCards().forEach(card -> {
             this.cards.add(new CardOfDeck(card));
         });
@@ -37,5 +39,7 @@ public class DetailDeckResponse {
         this.quantityClones = deck.getQuantityClones();
         this.user = new UserResponse(deck.getUser());
         this.quantityCards = this.cards.size();
+        this.createdDate = deck.getCreatedDate();
+        this.configLanguage = deck.getConfigLanguage();
     }
 }

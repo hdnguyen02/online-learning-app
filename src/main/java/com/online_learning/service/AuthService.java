@@ -1,8 +1,9 @@
 package com.online_learning.service;
 
+import com.online_learning.core.EnumRole;
 import com.online_learning.util.Helper;
 import com.online_learning.dao.TokenDao;
-import com.online_learning.dao.UserDao;
+import com.online_learning.dao.UserRepository;
 import com.online_learning.dto.auth.UserResponse;
 import com.online_learning.entity.Role;
 import com.online_learning.entity.Token;
@@ -21,7 +22,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-    private final UserDao userDao;
+    private final UserRepository userRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
@@ -46,24 +47,23 @@ public class AuthService {
         String password = signUpRequest.getPassword();
         Boolean isRemember = signUpRequest.getIsRemember() != null;
 
-        Role role = new Role("STUDENT");
+        Role role = new Role(EnumRole.STUDENT.toString());
         Set<Role> roles = new HashSet<>();
         roles.add(role);
 
-        User userCheck =  userDao.findById(signUpRequest.getEmail()).orElse(null);
-        if (userCheck != null) throw new Exception("Email đã được sử dụng!");
-        if (signUpRequest.getPassword().length() < 6) throw new Exception("Password cần phải >= 6 ký tự!");
+        User userCheck =  userRepository.findByEmail(signUpRequest.getEmail()).orElse(null);
+        if (userCheck != null) throw new Exception("email has been used!");
+        if (signUpRequest.getPassword().length() < 6) throw new Exception("Password needs to be >= 6 characters!");
         var user = User.builder()
                 .email(email)
                 .firstName(signUpRequest.getFirstName())
                 .lastName(signUpRequest.getLastName())
                 .password(passwordEncoder.encode(password))
-                .createAt(new Date())
                 .isEnabled(true)
                 .roles(roles)
                 .build();
 
-        String accessToken = jwtService.generateToken(userDao.save(user), isRemember);
+        String accessToken = jwtService.generateToken(userRepository.save(user), isRemember);
         return AuthResponse.builder()
                 .accessToken(accessToken)
                 .user(new UserResponse(user))
@@ -77,7 +77,7 @@ public class AuthService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 email, password
         ));
-        User user = userDao.findById(email).orElseThrow();
+        User user = userRepository.findByEmail(email).orElseThrow();
         String accessToken = jwtService.generateToken(user, isRemember);
 
         return AuthResponse.builder()
@@ -86,11 +86,9 @@ public class AuthService {
                 .build();
     }
 
-    // viết 1 hàm khởi tạo tài khoản khi trong table chưa có tài khoản nào
     public void initUser() {
-        List<User> users = userDao.findAll();
+        List<User> users = userRepository.findAll();
         if (!users.isEmpty()) return;
-        // thêm người dùng và
 
         Set<Role> rolesStudent = new HashSet<>();
         rolesStudent.add(new Role("STUDENT"));
@@ -100,7 +98,7 @@ public class AuthService {
                 .firstName("Nguyen Tien")
                 .lastName("Dung")
                 .password(passwordEncoder.encode("123456"))
-                .createAt(new Date())
+
                 .roles(rolesStudent)
                 .isEnabled(true)
                 .build();
@@ -111,7 +109,7 @@ public class AuthService {
                 .firstName("Ho Duc")
                 .lastName("Nguyen")
                 .password(passwordEncoder.encode("123456"))
-                .createAt(new Date())
+
                 .roles(rolesStudent)
                 .isEnabled(true)
                 .build();
@@ -126,7 +124,7 @@ public class AuthService {
                 .firstName("Ho Duc")
                 .lastName("Nguyen")
                 .password(passwordEncoder.encode("123456"))
-                .createAt(new Date())
+
                 .roles(rolesTeacher)
                 .isEnabled(true)
                 .build();
@@ -141,15 +139,15 @@ public class AuthService {
                 .firstName("Ho")
                 .lastName("Lan")
                 .password(passwordEncoder.encode("123456"))
-                .createAt(new Date())
+
                 .roles(rolesAdmin)
                 .isEnabled(true)
                 .build();
 
-        userDao.save(student01);
-        userDao.save(student02);
-        userDao.save(teacher);
-        userDao.save(admin);
+        userRepository.save(student01);
+        userRepository.save(student02);
+        userRepository.save(teacher);
+        userRepository.save(admin);
     }
 
 }

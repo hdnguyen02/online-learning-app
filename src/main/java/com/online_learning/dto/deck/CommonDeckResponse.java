@@ -17,8 +17,7 @@ public class CommonDeckResponse {
     private String name;
     private String description;
     private Integer quantityCards;
-    @JsonFormat(timezone = "yyyy-MM-dd")
-    private Date createAt;
+    private Date createdDate;
     private GroupResponse group;
 
     public CommonDeckResponse(CommonDeck commonDeck) {
@@ -26,7 +25,8 @@ public class CommonDeckResponse {
         this.name = commonDeck.getName();
         this.description = commonDeck.getDescription();
         this.quantityCards = commonDeck.getCards() == null ? 0 : commonDeck.getCards().size();
-        this.createAt = commonDeck.getCreateAt();
+        this.createdDate= commonDeck.getCreatedDate();
+
         this.group = GroupResponse.mapToGroupDto(commonDeck.getGroup());
     }
 }

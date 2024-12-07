@@ -9,7 +9,7 @@ import lombok.Getter;
 public class SignUpRequest {
     private String email;
     private String password;
-    private String firstName; // đảm bảo thông tin cần điền
-    private String lastName; // đảm bảo thông tin cần điền
+    private String firstName;
+    private String lastName;
     private Boolean isRemember;
 }

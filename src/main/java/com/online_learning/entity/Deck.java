@@ -1,5 +1,6 @@
 package com.online_learning.entity;
 
+import com.online_learning.core.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,15 +15,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Deck {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-
+public class Deck extends BaseEntity {
     @Column(nullable = false, length = 50)
     private String name;
 
     private String description;
+    
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="email_user")
@@ -31,10 +29,9 @@ public class Deck {
     @OneToMany(mappedBy = "deck",fetch = FetchType.EAGER)
     private List<Card> cards;
 
-    private Date createAt;
-
     private Boolean isPublic;
 
     private Integer quantityClones;
 
-}
+    private String configLanguage; // lưu lại config.
+}   

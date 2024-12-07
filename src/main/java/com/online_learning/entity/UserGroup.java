@@ -1,5 +1,6 @@
 package com.online_learning.entity;
 
+import com.online_learning.core.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,10 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserGroup {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+public class UserGroup extends BaseEntity {
 
     @ManyToOne()
     @JoinColumn(name = "email_user")

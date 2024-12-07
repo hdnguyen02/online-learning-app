@@ -27,6 +27,6 @@ public interface DeckDao extends JpaRepository<Deck, Long>, PagingAndSortingRepo
     @Query("SELECT d FROM Deck d WHERE CONCAT(d.name, ' ', d.description) LIKE %?1%")
     List<Deck> searchGlobal(String searchTerm);
 
-    @Query("SELECT d FROM Deck d WHERE d.user.email = ?1 AND d.isPublic = true")
-    List<Deck> getGlobalOfUser(String emailUser);
+    @Query("SELECT d FROM Deck d WHERE d.user.id = ?1 AND d.isPublic = true")
+    List<Deck> getDecks(Long id);
 }

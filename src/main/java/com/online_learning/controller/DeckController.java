@@ -5,12 +5,18 @@ import com.online_learning.dto.deck.DetailDeckResponse;
 import com.online_learning.dto.deck.DeckResponse;
 import com.online_learning.dto.deck.DeckRequest;
 import com.online_learning.dto.Response;
+import com.online_learning.dto.deckv2.CreateDeck;
+import com.online_learning.dto.deckv2.JoinCardResponse;
+import com.online_learning.dto.deckv2.Question;
+import com.online_learning.dto.deckv2.UpdateDeck;
 import com.online_learning.service.DeckService;
+import com.online_learning.service.DeckServiceV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Console;
 import java.util.List;
 
 @RestController
@@ -20,10 +26,12 @@ import java.util.List;
 public class DeckController {
 
     private final DeckService deckService;
-
+    private final DeckServiceV2 deckServiceV2;
 
     @GetMapping("/global/decks")
     public ResponseEntity<?> getGlobalDecks(@RequestParam(required = false) String searchTerm) {
+
+        System.out.println("Có chạy vào");
 
         List<DeckResponse> deckResponses;
         if (searchTerm != null) deckResponses = deckService.searchGlobalDecks(searchTerm);
@@ -55,8 +63,8 @@ public class DeckController {
     @GetMapping("/decks")
     public ResponseEntity<Response> getDecks(@RequestParam(required = false) String searchTerm) {
         List<DeckResponse> decksDto;
-        if (searchTerm == null) {
-            decksDto = deckService.getDesks();
+            if (searchTerm == null) {
+                decksDto = deckService.getDesks();
         }
         else {
             decksDto = deckService.searchDecks(searchTerm);
@@ -67,12 +75,12 @@ public class DeckController {
     }
 
     @PostMapping("/decks")
-    public ResponseEntity<Response> createDeck(@RequestBody DeckRequest deckRequest) {
-        DeckResponse deckResponse = deckService.createDeck(deckRequest);
-        String message = "Create a successful card set";
-        Response response = new Response(deckResponse, message, true);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    public ResponseEntity<?> createDeck(@RequestBody CreateDeck createDeck) {
+        deckServiceV2.createDeckV2(createDeck);
+        return new ResponseEntity<>(true, HttpStatus.CREATED);
     }
+
+    
 
     @DeleteMapping("/decks/{id}")
     public ResponseEntity<Response> deleteDeck(@PathVariable Long id) {
@@ -82,11 +90,18 @@ public class DeckController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/decks/{id}")
-    public ResponseEntity<Response> updateDeck(@PathVariable Long id,@RequestBody DeckRequest deckRequest)  {
-        DeckResponse deckResponse = deckService.updateDeck(id, deckRequest);
-        String message = "Edit card set was successful";
-        Response response = new Response(deckResponse, message, true);
+//    @PutMapping("/decks/{id}")
+//    public ResponseEntity<Response> updateDeck(@PathVariable Long id,@RequestBody DeckRequest deckRequest)  {
+//        DeckResponse deckResponse = deckService.updateDeck(id, deckRequest);
+//        String message = "Edit card set was successful";
+//        Response response = new Response(deckResponse, message, true);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
+
+    @PutMapping("/decks")
+    public ResponseEntity<Response> updateDeck(@RequestBody UpdateDeck updateDeck) {
+        deckServiceV2.updateDeckV2(updateDeck);
+        Response response = new Response(true, "Edit card set was successful", true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -95,6 +110,26 @@ public class DeckController {
         DetailDeckResponse deckDto = deckService.getDeckWithId(id);
         String message = "Query successful";
         Response response = new Response(deckDto, message, true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/decks/{id}/join-card")
+    public ResponseEntity<?> getJoinCard(@PathVariable long id, @RequestParam boolean isOnlyFavorite) {
+        JoinCardResponse joinCardResponse = deckServiceV2.joinCards(id, isOnlyFavorite);
+        Response response = new Response(joinCardResponse, "Query successful", true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/decks/{id}/question-card")
+    public ResponseEntity<?> getQuestionCard(
+            @PathVariable long id,
+            @RequestParam int numberOfQuestions,
+            @RequestParam String optionType
+    ) {
+        List<Question> questions = deckServiceV2.generateQuiz(id, numberOfQuestions, optionType);
+        Response response = new Response(questions, "Query successful", true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

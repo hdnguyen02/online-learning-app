@@ -13,7 +13,7 @@ import java.util.*;
 public class VnpayConfig {
 
     private final String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    private final String secretKey = "1FDE7F8TP8E7KZ7F3C9AEKIIJQZDBFL3";
+    private final String secretKey = "R8WXYRKAE6413DQFJLQPZ3SY0DNTYESO";
 
     public static String encodeEmail(String email) {
         return Base64.getUrlEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
@@ -33,7 +33,7 @@ public class VnpayConfig {
         String orderType = "other";
         vnpParamsMap.put("vnp_OrderType", orderType);
         vnpParamsMap.put("vnp_Locale", "vn");
-        String vnp_ReturnUrl = "http://backend:8080/api/v1/payment-callback?email=" + email;
+        String vnp_ReturnUrl = "http://localhost:8080/api/v1/payment-callback?email=" + email;
         vnpParamsMap.put("vnp_ReturnUrl", vnp_ReturnUrl);
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");

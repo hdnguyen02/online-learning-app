@@ -1,5 +1,7 @@
 package com.online_learning.entity;
 
+import com.online_learning.core.BaseEntity;
+import com.online_learning.core.Gender;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.*;
@@ -9,16 +11,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.*;
 
 
-@Table(name="users")
+@Table(name="users", indexes = {@Index(name = "idx_email", columnList = "email")})
 @Entity
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements UserDetails {
-
-    @Id
+public class User extends BaseEntity implements UserDetails {
     @Column(length = 100)
     private String email;
 
@@ -31,16 +31,13 @@ public class User implements UserDetails {
     @Column(length = 100)
     private String lastName;
 
-
-    private String dateOfBirth;
-    private Date createAt;
+    private Date dateOfBirth;
 
     @Column(name = "is_enabled")
     private Boolean isEnabled;
 
-
-    @Column(length = 10)
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @Column(length = 20)
     private String phone;
@@ -48,27 +45,17 @@ public class User implements UserDetails {
     private String avatar;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Submit> submits;
-
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Deck> decks;
-
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable( name = "user_role", joinColumns = @JoinColumn(name = "email_user"),inverseJoinColumns = @JoinColumn(name = "name_role"))
     private Set<Role> roles;
-
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<Token> tokens;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserGroup> userGroups;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Invoice> invoices;
-
 
     @Override
     @Transactional
@@ -78,12 +65,10 @@ public class User implements UserDetails {
         return authorities;
     }
 
-
     @Override
     public String getUsername() {
         return this.email;
     }
-
 
     @Override
     public boolean isEnabled() {
@@ -92,5 +77,8 @@ public class User implements UserDetails {
 
     public User(String email) {
         this.email = email;
+    }
+    public User(Long id) {
+        this.setId(id);
     }
 }

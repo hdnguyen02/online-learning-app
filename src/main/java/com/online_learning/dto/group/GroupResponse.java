@@ -22,9 +22,8 @@ public class GroupResponse {
     private Integer quantityMembers;
     private Integer quantityComments;
     private Integer quantityCommonDecks;
-    private Integer quantityAssignments;
     private Boolean isPublic;
-    private Date created;
+    private Date createdDate;
     List<UserGroupResponse> userGroups = new ArrayList<>();
 
 
@@ -36,10 +35,8 @@ public class GroupResponse {
         groupResponse.setDescription(group.getDescription());
         groupResponse.setIsPublic(group.getIsPublic());
         groupResponse.setQuantityMembers((int)group.getUserGroups().stream().filter(UserGroup::isActive).count());
-
+        groupResponse.setCreatedDate(group.getCreatedDate());
         // assignment
-        int quantityAssignment = group.getAssignments() != null ? group.getAssignments().size() : 0;
-        groupResponse.setQuantityAssignments(quantityAssignment);
 
         // comments
         int quantityComments = group.getComments() != null ? group.getComments().size() : 0;
@@ -49,7 +46,7 @@ public class GroupResponse {
         int quantityCommonDecks = group.getCommonDecks() != null ? group.getCommonDecks().size() : 0;
 
         groupResponse.setQuantityCommonDecks(quantityCommonDecks);
-        groupResponse.setCreated(group.getCreated());
+
 
 
 
@@ -70,8 +67,6 @@ public class GroupResponse {
         userGroupsActive.forEach(ele->{
             userResponses.add(new UserGroupResponse(ele));
         });
-        int quantityAssignment = group.getAssignments() != null ? group.getAssignments().size() : 0;
-        groupResponse.setQuantityAssignments(quantityAssignment);
 
         // comments
         int quantityComments = group.getComments() != null ? group.getComments().size() : 0;
@@ -81,13 +76,13 @@ public class GroupResponse {
         int quantityCommonDecks = group.getCommonDecks() != null ? group.getCommonDecks().size() : 0;
 
         groupResponse.setQuantityCommonDecks(quantityCommonDecks);
-        groupResponse.setCreated(group.getCreated());
+
 
         groupResponse.setUserGroups(userResponses);
 
         groupResponse.setQuantityMembers(userGroupsActive.size());
 
-        groupResponse.setCreated(group.getCreated());
+
 
         return groupResponse;
     }

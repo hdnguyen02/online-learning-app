@@ -1,5 +1,6 @@
 package com.online_learning.entity;
 
+import com.online_learning.core.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,11 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Group extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-
+public class Group extends BaseEntity {
     private String name;
 
     @Column(length = Integer.MAX_VALUE)
@@ -35,20 +32,11 @@ public class Group extends BaseEntity{
     private List<UserGroup> userGroups;
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
-    private List<Assignment> assignments;
-
-    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private List<CommonDeck> commonDecks;
 
     private Boolean isPublic;
 
     public Group(Long id) {
-        this.id = id;
+        super(id);
     }
-
-    @PrePersist
-    public void prePersist() {
-        this.setCreated(new Date());
-    }
-
 }

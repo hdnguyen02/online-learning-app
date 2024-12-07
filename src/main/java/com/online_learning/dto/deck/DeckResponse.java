@@ -16,7 +16,7 @@ public class DeckResponse {
     private String name;
     private String description;
     private Integer quantityCards;
-    private Date createAt;
+    private Date createdDate;
     private Boolean isPublic;
     private Integer quantityClones;
     private UserResponse user;
@@ -26,10 +26,11 @@ public class DeckResponse {
         this.name = deck.getName();
         this.description = deck.getDescription();
         this.quantityCards = deck.getCards() == null ? 0 : deck.getCards().size();
-        this.createAt = deck.getCreateAt();
+
         this.isPublic = deck.getIsPublic();
         this.quantityClones = deck.getQuantityClones();
         this.user = new UserResponse(deck.getUser());
+        this.createdDate = deck.getCreatedDate();
 
     }
 }

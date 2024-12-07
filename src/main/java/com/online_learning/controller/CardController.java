@@ -63,16 +63,16 @@ public class CardController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/cards/filter")
-    public ResponseEntity<Response> filterCards(@RequestParam (required = false) Long idDeck,
-                                                @RequestParam (required = false) Boolean isFavourite,
-                                                @RequestParam (required = false) Boolean isRemembered) {
-        List<CardResponse> cardsDto = cardService.filterCards(idDeck, isFavourite, isRemembered);
-        String message = "Query successful";
-        Response response = new Response(cardsDto, message, true);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+//    @GetMapping("/cards/filter")
+//    public ResponseEntity<Response> filterCards(@RequestParam (required = false) Long idDeck,
+//                                                @RequestParam (required = false) Boolean isFavourite,
+//                                                @RequestParam (required = false) Boolean isRemembered) {
+//        List<CardResponse> cardsDto = cardService.filterCards(idDeck, isFavourite, isRemembered);
+//        String message = "Query successful";
+//        Response response = new Response(cardsDto, message, true);
+//
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
 
 
     @GetMapping("/cards")
@@ -83,13 +83,13 @@ public class CardController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    @GetMapping("/cards/{id}")
-    public ResponseEntity<Response> getCardWithId(@PathVariable Long id) throws Exception {
-        CardResponse cardDto = cardService.getCardWithId(id);
-        String message = "Query successful";
-        Response response = new Response(cardDto, message, true);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+//    @GetMapping("/cards/{id}")
+//    public ResponseEntity<Response> getCardWithId(@PathVariable Long id) throws Exception {
+//        CardResponse cardDto = cardService.getCardWithId(id);
+//        String message = "Query successful";
+//        Response response = new Response(cardDto, message, true);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
 
     @DeleteMapping("/cards")
     public ResponseEntity<Response> deleteCard(@RequestParam long [] ids) {
@@ -100,28 +100,28 @@ public class CardController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/cards/{id}")
-    public ResponseEntity<Response> deleteCard(@PathVariable Long id) throws Exception {
-        CardResponse cardDto = cardService.deleteCard(id);
-        String message = "Deleted successfully";
-        Response response = new Response(cardDto, message, true);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+//    @DeleteMapping("/cards/{id}")
+//    public ResponseEntity<Response> deleteCard(@PathVariable Long id) throws Exception {
+//        CardResponse cardDto = cardService.deleteCard(id);
+//        String message = "Deleted successfully";
+//        Response response = new Response(cardDto, message, true);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
 
-    @PutMapping("/cards/{id}")
-    public ResponseEntity<Response> updateCard(@PathVariable Long id,
-                                               @RequestParam (required = false) Long idDeck,
-                                               @RequestParam (required = false) String term,
-                                               @RequestParam (required = false) String definition,
-                                               @RequestParam (required = false) String example,
-                                               @RequestParam (required = false) MultipartFile image,
-                                               @RequestParam (required = false) MultipartFile audio,
-                                               @RequestParam (required = false) Boolean isFavourite,
-                                               @RequestParam (required = false) Boolean isRemembered) throws Exception {
-        CardResponse cardDto = cardService.updateCard(id ,idDeck, term, definition,
-                example,image,audio,isFavourite, isRemembered);
-        String message = "Edited successfully";
-        Response response = new Response(cardDto, message, true);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+//    @PutMapping("/cards/{id}")
+//    public ResponseEntity<Response> updateCard(@PathVariable Long id,
+//                                               @RequestParam (required = false) Long idDeck,
+//                                               @RequestParam (required = false) String term,
+//                                               @RequestParam (required = false) String definition,
+//                                               @RequestParam (required = false) String example,
+//                                               @RequestParam (required = false) MultipartFile image,
+//                                               @RequestParam (required = false) MultipartFile audio,
+//                                               @RequestParam (required = false) Boolean isFavourite,
+//                                               @RequestParam (required = false) Boolean isRemembered) throws Exception {
+//        CardResponse cardDto = cardService.updateCard(id ,idDeck, term, definition,
+//                example,image,audio,isFavourite, isRemembered);
+//        String message = "Edited successfully";
+//        Response response = new Response(cardDto, message, true);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+//    }
 }

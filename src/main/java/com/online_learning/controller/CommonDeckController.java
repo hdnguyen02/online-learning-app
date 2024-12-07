@@ -2,8 +2,10 @@ package com.online_learning.controller;
 
 
 import com.online_learning.dto.Response;
+import com.online_learning.dto.common_deckv2.UpdateCommonDeck;
 import com.online_learning.dto.deck.CommonDeckRequest;
 import com.online_learning.service.CommonDeckService;
+import com.online_learning.service.CommonDeckServiceV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,10 @@ import org.springframework.web.bind.annotation.*;
 public class CommonDeckController {
 
     private final CommonDeckService commonDeckService;
+    private final CommonDeckServiceV2 commonDeckServiceV2;
 
 
-    @PreAuthorize("hasRole('TEACHER')")
+//    @PreAuthorize("hasRole('TEACHER')")
     @PostMapping("/common-decks")
     public ResponseEntity<?> createCommonDeck(@RequestBody CommonDeckRequest commonDeckRequest) {
 
@@ -46,12 +49,12 @@ public class CommonDeckController {
     }
 
     // lấy ra chi tiết cái đã
-    @GetMapping("/common-decks/{idCommonDeck}")
-    public ResponseEntity<?> getCommonDeck(@PathVariable Long idCommonDeck) {
+    @GetMapping("/common-decks/{id}")
+    public ResponseEntity<?> getCommonDeck(@PathVariable Long id) {
 
         Response response = Response.builder()
                 .message("Query successful")
-                .data(commonDeckService.getCommonDeck(idCommonDeck))
+                .data(commonDeckService.getCommonDeck(id))
                 .success(true)
                 .build();
 
@@ -60,7 +63,7 @@ public class CommonDeckController {
 
     // hiệu chỉnh bộ thẻ => đưa lên 2 thông tin
 
-    @PreAuthorize("hasRole('TEACHER')")
+//    @PreAuthorize("hasRole('TEACHER')")
     @PutMapping("/common-decks/{idCommonDeck}")
     public ResponseEntity<?> editCommonDeck(@PathVariable Long idCommonDeck, @RequestBody CommonDeckRequest commonDeckRequest) {
 
@@ -73,14 +76,22 @@ public class CommonDeckController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PutMapping("/common-decks")
+    public ResponseEntity<?> updateCommonDeckV2(@RequestBody UpdateCommonDeck updateCommonDeck) {
+        commonDeckServiceV2.updateDeckV2(updateCommonDeck);
+        Response response = new Response(true, "Edit common card set was successful", true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-    @PreAuthorize("hasRole('TEACHER')")
-    @DeleteMapping("/common-decks/{idCommonDeck}")
-    public ResponseEntity<?> deleteCommonDeck(@PathVariable Long idCommonDeck) {
+
+
+//    @PreAuthorize("hasRole('TEACHER')")
+    @DeleteMapping("/common-decks/{id}")
+    public ResponseEntity<?> deleteCommonDeck(@PathVariable Long id) {
 
         Response response = Response.builder()
                 .message("Deleted successfully")
-                .data(commonDeckService.deleteCommonDeck(idCommonDeck))
+                .data(commonDeckService.deleteCommonDeck(id))
                 .success(true)
                 .build();
 

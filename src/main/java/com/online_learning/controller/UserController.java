@@ -20,14 +20,14 @@ import java.util.Map;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/users/info")
-    public ResponseEntity<Response> getInfoUser(@RequestParam(required = false) String email) {
+    @GetMapping("/users")
+    public ResponseEntity<Response> getInfoUser(@RequestParam(required = false) Long id) {
         UserResponse userResponse;
-        if (email == null) {
+        if (id == null) {
             userResponse = userService.getInfoUser();
         }
         else {
-            userResponse = userService.getInfoOtherUser(email);
+            userResponse = userService.getInfoOtherUser(id);
         }
         Response response = new Response(userResponse, "Query successful", true);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -56,10 +56,10 @@ public class UserController {
     }
 
     @GetMapping("/users/decks")
-    public ResponseEntity<Response> getDeckOfUser(@RequestParam String emailUser) {
+    public ResponseEntity<Response> getDeckOfUser(@RequestParam Long id) {
 
         Response response = Response.builder()
-                .data(userService.getDecksOfUser(emailUser))
+                .data(userService.getDecks(id))
                 .message("Query successful")
                 .success(true)
                 .build();

@@ -34,4 +34,4 @@ public class Helper {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
         return dateFormat.parse(timestamp);
     }
-}
+}      

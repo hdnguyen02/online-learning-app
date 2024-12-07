@@ -1,4 +1,4 @@
-package com.online_learning.dto.deck;
+package com.online_learning.dto.common_deckv2;
 
 import com.online_learning.dto.auth.UserResponse;
 import com.online_learning.dto.card.CardOfDeck;
@@ -10,33 +10,27 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-@Builder
-public class DetailCommonDeckResponse {
+public class QueryCommonDeck {
     private Long id;
     private String description;
     private String name;
-    private Date createAt;
-    private List<CardOfDeck> cards;
-    private Boolean isPublic;
-    private UserResponse user;
-    private Integer quantityCards;
+    private String configLanguage;
+    private Date createdDate;
+    private List<QueryCommonCard> cards;
     private GroupResponse group;
 
-    public DetailCommonDeckResponse(CommonDeck commonDeck) {
-        cards = new ArrayList<>();
+    public QueryCommonDeck(CommonDeck commonDeck) {
+        this.cards = new ArrayList<>();
         this.id = commonDeck.getId();
         this.description = commonDeck.getDescription();
         this.name = commonDeck.getName();
-        this.createAt = commonDeck.getCreateAt();
+        this.configLanguage = commonDeck.getConfigLanguage();
+        this.createdDate = commonDeck.getCreatedDate();
         commonDeck.getCards().forEach(card -> {
-            this.cards.add(new CardOfDeck(card));
+            this.cards.add(new QueryCommonCard(card));
         });
-        this.quantityCards = commonDeck.getCards() == null ? 0 : commonDeck.getCards().size();
         this.group = GroupResponse.mapToGroupDto(commonDeck.getGroup());
     }
 }

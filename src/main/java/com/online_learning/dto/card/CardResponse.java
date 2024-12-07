@@ -17,7 +17,7 @@ public class CardResponse {
     private String image;
     private String audio;
     private String example;
-    private Date createAt;
+    private Date createdDate;
     private Boolean isFavourite;
     private Boolean isRemembered;
     private DeckOfCard deck;
@@ -29,9 +29,9 @@ public class CardResponse {
         this.image = card.getImage();
         this.audio = card.getAudio();
         this.example = card.getExample();
-        this.createAt = card.getCreateAt();
+
         this.isFavourite = card.getIsFavourite();
-        this.isRemembered = card.getIsRemembered();
+        this.createdDate = card.getCreatedDate();
 
         if (card.getDeck() != null) {
             this.deck = new DeckOfCard(card.getDeck()); // không cần thông tin này.

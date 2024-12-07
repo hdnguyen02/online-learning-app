@@ -14,8 +14,8 @@ public class UserGroupResponse {
     private String email;
     private String firstName;
     private String lastName;
-    private String dateOfBirth;
-    private Date createAt;
+    private Date dateOfBirth;
+    private Date createdDate;
     private Boolean isEnabled;
     private List<String> roles;
     private String avatar;
@@ -31,9 +31,10 @@ public class UserGroupResponse {
         firstName = userGroup.getUser().getFirstName();
         lastName = userGroup.getUser().getLastName();
         dateOfBirth = userGroup.getUser().getDateOfBirth();
-        createAt = userGroup.getUser().getCreateAt();
+        createdDate = userGroup.getCreatedDate();
+
         isEnabled = userGroup.getUser().getIsEnabled();
-        gender = userGroup.getUser().getGender();
+
         phone = userGroup.getUser().getPhone();
 
         userGroup.getUser().getRoles().forEach(role -> {

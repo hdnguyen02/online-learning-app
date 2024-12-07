@@ -19,7 +19,6 @@ public class CardOfDeck {
     private String example;
     private Date createAt;
     private Boolean isFavourite;
-    private Boolean isRemembered;
 
     public CardOfDeck(Card card){
         this.id = card.getId();
@@ -28,8 +27,7 @@ public class CardOfDeck {
         this.image = card.getImage();
         this.audio = card.getAudio();
         this.example = card.getExample();
-        this.createAt = card.getCreateAt();
+
         this.isFavourite = card.getIsFavourite();
-        this.isRemembered = card.getIsRemembered();
     }
 }

@@ -2,7 +2,7 @@ package com.online_learning.service;
 
 import com.online_learning.util.Helper;
 import com.online_learning.dao.GroupDao;
-import com.online_learning.dao.UserDao;
+import com.online_learning.dao.UserRepository;
 import com.online_learning.dao.UserGroupDao;
 import com.online_learning.dto.group.GroupResponse;
 import com.online_learning.entity.Group;
@@ -12,6 +12,7 @@ import com.online_learning.dto.group.GroupRequest;
 import com.online_learning.dto.group.UserGroupRequest;
 import com.online_learning.sendmail.EmailDetail;
 import com.online_learning.sendmail.EmailServiceImpl;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class GroupService {
 
     private final GroupDao groupRepository;
     private final UserGroupDao userGroupRepository;
-    private final UserDao userRepository;
+    private final UserRepository userRepository;
     private final Helper helper;
     private final EmailServiceImpl emailServiceImpl;
 
@@ -74,7 +75,7 @@ public class GroupService {
         group.setName(groupRequest.getName());
         group.setDescription(groupRequest.getDescription());
         group.setOwner(owner);
-        group.setCreated(created);
+
         group.setCreatedBy(emailOwner);
         group.setIsPublic(groupRequest.getIsPublic());
 
@@ -84,18 +85,15 @@ public class GroupService {
     }
 
     public boolean updateGroup(Long id, GroupRequest groupRequest) {
-        String email = helper.getEmailUser();
+
+
+        User user = helper.getUser();
         Group group = groupRepository.findById(id).orElseThrow();
 
         group.setName(groupRequest.getName());
         group.setDescription(groupRequest.getDescription());
         group.setIsPublic(groupRequest.getIsPublic());
-        group.setOwner(new User(email));
-
-        Date modified = new Date();
-        group.setModified(modified);
-        group.setModifiedBy(email);
-        group.setIsPublic(groupRequest.getIsPublic());
+        group.setOwner(user);
 
         groupRepository.save(group);
 
@@ -128,16 +126,17 @@ public class GroupService {
     }
 
 
-    public boolean inviteUserGroup(Long id, String emailUser) {
+    public boolean inviteUserGroup(Long id, String email) throws Exception {
 
-        Optional<User> userOptional = userRepository.findById(emailUser);
-        if (userOptional.isEmpty()) {
-                throw new UsernameNotFoundException("User whose email does not exist!");
-        }
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isEmpty()) throw new UsernameNotFoundException("User whose email does not exist!");
 
-        List<UserGroup> userGroups = userGroupRepository.findByUserAndGroup(new User(emailUser),
-                new Group(id)
-        );
+        Optional<Group> groupOptional = groupRepository.findById(id);
+        if (groupOptional.isEmpty()) throw new Exception("Group does not exist!");
+        User user = userOptional.get();
+        Group group = groupOptional.get();
+
+        List<UserGroup> userGroups = userGroupRepository.findByUserAndGroup(user, group);
         String token = UUID.randomUUID().toString();
         if (!userGroups.isEmpty()) {
             UserGroup userGroupDB = userGroups.get(0);
@@ -148,7 +147,7 @@ public class GroupService {
                 });
 
                 Thread threadSendMail = new Thread(()->{
-                    sendMailAddGroup(id, emailUser, token);
+                    sendMailAddGroup(id, email, token);
                 });
 
                 threadSendMail.start();
@@ -159,12 +158,12 @@ public class GroupService {
             UserGroup userGroup =  new UserGroup();
             userGroup.setTokenActive(token);
 
-            userGroup.setUser(new User(emailUser));
-            userGroup.setGroup(new Group(id));
+            userGroup.setUser(user);
+            userGroup.setGroup(group);
             userGroup.setActive(false);
 
             Thread threadSendMail = new Thread(()->{
-                sendMailAddGroup(id, emailUser, token);
+                sendMailAddGroup(id, email, token);
             });
 
             Thread threadSaveData = new Thread(()-> {
@@ -173,7 +172,6 @@ public class GroupService {
 
             threadSendMail.start();
             threadSaveData.start();
-
         }
 
         return true;
@@ -191,20 +189,29 @@ public class GroupService {
     }
 
     public boolean activeUserGroup(Long id, String token) {
-        Optional<UserGroup> userGroupOptional = userGroupRepository.findByGroupAndTokenActive(new Group(id), token);
+        // Lấy Group từ database
+        Optional<Group> groupOptional = groupRepository.findById(id);
+        if (groupOptional.isEmpty()) {
+            throw new EntityNotFoundException("Group does not exist!");
+        }
+        Group group = groupOptional.get();
 
+        // Tìm UserGroup với Group đã được quản lý
+        Optional<UserGroup> userGroupOptional = userGroupRepository.findByGroupAndTokenActive(group, token);
         if (userGroupOptional.isEmpty()) {
             return false;
         }
 
+        // Kích hoạt UserGroup
         UserGroup userGroup = userGroupOptional.get();
         userGroup.setActive(true);
         userGroupRepository.save(userGroup);
         return true;
     }
 
+
     public boolean deleteUserGroupById(UserGroupRequest userGroupRequest) {
-        Optional<User> userOptional = userRepository.findById(userGroupRequest.getEmail());
+        Optional<User> userOptional = userRepository.findByEmail(userGroupRequest.getEmail());
         if (userOptional.isEmpty()) {
             throw new UsernameNotFoundException("User whose email does not exist!");
         }

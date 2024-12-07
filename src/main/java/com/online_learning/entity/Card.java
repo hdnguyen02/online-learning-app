@@ -1,9 +1,8 @@
 package com.online_learning.entity;
 
+import com.online_learning.core.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Date;
 
 @Table(name="cards")
 @Entity
@@ -12,38 +11,30 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Card {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+public class Card extends BaseEntity {
     @Column(nullable = false)
     private String term;
+
     @Column(nullable = false)
     private String definition;
-    private String image;
-    private String audio;
-    private String example;
-    private Date createAt;
 
-    @Column(name = "is_favourite")
+    private String image;
+
+    private String audio;
+
+    private String example;
+
     private Boolean isFavourite;
 
-    @Column(name = "is_remembered")
-    private Boolean isRemembered;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_deck")
     private Deck deck;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_common_deck")
-    private CommonDeck commonDeck;
 
     @PrePersist
     public void  prePersist() {
-        this.createAt = new Date();
+        super.prePersist();
         this.isFavourite = false;
-        this.isRemembered = false;
     }
-
 }
