@@ -3,12 +3,8 @@ package com.online_learning.controller;
 
 import com.online_learning.dto.deck.DetailDeckResponse;
 import com.online_learning.dto.deck.DeckResponse;
-import com.online_learning.dto.deck.DeckRequest;
 import com.online_learning.dto.Response;
-import com.online_learning.dto.deckv2.CreateDeck;
-import com.online_learning.dto.deckv2.JoinCardResponse;
-import com.online_learning.dto.deckv2.Question;
-import com.online_learning.dto.deckv2.UpdateDeck;
+import com.online_learning.dto.deckv2.*;
 import com.online_learning.service.DeckService;
 import com.online_learning.service.DeckServiceV2;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.Console;
 import java.util.List;
 
 @RestController
@@ -114,10 +109,10 @@ public class DeckController {
     }
 
 
-    @GetMapping("/decks/{id}/join-card")
-    public ResponseEntity<?> getJoinCard(@PathVariable long id, @RequestParam boolean isOnlyFavorite) {
-        JoinCardResponse joinCardResponse = deckServiceV2.joinCards(id, isOnlyFavorite);
-        Response response = new Response(joinCardResponse, "Query successful", true);
+    @GetMapping("/decks/{id}/join-cards")
+    public ResponseEntity<?> getJoinCards(@PathVariable long id, @RequestParam boolean isOnlyFavorite) {
+        List<JoinCardElement> joinCardElements = deckServiceV2.getJoinCards(id, isOnlyFavorite);
+        Response response = new Response(joinCardElements, "Query successful", true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

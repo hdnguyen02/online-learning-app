@@ -5,12 +5,11 @@ import com.online_learning.dao.CardDao;
 import com.online_learning.dao.DeckDao;
 import com.online_learning.dto.deckv2.*;
 import com.online_learning.entity.Card;
+import com.online_learning.entity.CommonCard;
 import com.online_learning.entity.Deck;
 import com.online_learning.entity.User;
 import com.online_learning.util.Helper;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.A;
-import org.hibernate.mapping.Join;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -119,50 +118,55 @@ public class DeckServiceV2 {
     }
 
 
-    public JoinCardResponse joinCards(long id, boolean isOnlyFavorite) {
+    public List<JoinCardElement> getJoinCards(long id, boolean isOnlyFavorite) {
         Deck deck = deckRepository.findById(id).orElseThrow();
-        JoinCardResponse joinCardResponse = new JoinCardResponse();
+
+
+        List<JoinCardElement> joinCardElements = new ArrayList<>();
 
         List<Card> cards = isOnlyFavorite
                 ? deck.getCards().stream().filter(Card::getIsFavourite).toList()
                 : deck.getCards();
 
-        // Xử lý danh sách thẻ
-        List<JoinCardTerm> joinCardTerms = new ArrayList<>();
-        List<JoinCardDefinition> joinCardDefinitions = new ArrayList<>();
+
 
         cards.forEach(card -> {
             String randomUUID = UUID.randomUUID().toString();
+            JoinCardElement joinCardElementTerm = new JoinCardElement();
+            joinCardElementTerm.setContent(card.getTerm());
+            joinCardElementTerm.setKey(randomUUID);
+            joinCardElementTerm.setId(UUID.randomUUID().toString());
 
-            JoinCardTerm joinCardTerm = createJoinCardTerm(card.getTerm(), randomUUID);
-            JoinCardDefinition joinCardDefinition = createJoinCardDefinition(card.getDefinition(), randomUUID);
+            JoinCardElement joinCardElementDefinition = new JoinCardElement();
+            joinCardElementDefinition.setContent(card.getDefinition());
+            joinCardElementDefinition.setKey(randomUUID);
+            joinCardElementDefinition.setId(UUID.randomUUID().toString());
 
-            joinCardTerms.add(joinCardTerm);
-            joinCardDefinitions.add(joinCardDefinition);
+            joinCardElements.add(joinCardElementTerm);
+            joinCardElements.add(joinCardElementDefinition);
+
         });
 
-        joinCardResponse.setNumberCard(cards.size());
-        joinCardResponse.setJoinCardTerms(joinCardTerms);
-        joinCardResponse.setJoinCardDefinitions(joinCardDefinitions);
+        Collections.shuffle(joinCardElements);
 
-        return joinCardResponse;
+        return joinCardElements;
     }
 
     // Phương thức tạo JoinCardTerm
-    private JoinCardTerm createJoinCardTerm(String term, String key) {
-        JoinCardTerm joinCardTerm = new JoinCardTerm();
-        joinCardTerm.setTerm(term);
-        joinCardTerm.setKey(key);
-        return joinCardTerm;
-    }
+//    private JoinCardTerm createJoinCardTerm(String term, String key) {
+//        JoinCardTerm joinCardTerm = new JoinCardTerm();
+//        joinCardTerm.setTerm(term);
+//        joinCardTerm.setKey(key);
+//        return joinCardTerm;
+//    }
 
     // Phương thức tạo JoinCardDefinition
-    private JoinCardDefinition createJoinCardDefinition(String definition, String key) {
-        JoinCardDefinition joinCardDefinition = new JoinCardDefinition();
-        joinCardDefinition.setDefinition(definition);
-        joinCardDefinition.setKey(key);
-        return joinCardDefinition;
-    }
+//    private JoinCardDefinition createJoinCardDefinition(String definition, String key) {
+//        JoinCardDefinition joinCardDefinition = new JoinCardDefinition();
+//        joinCardDefinition.setDefinition(definition);
+//        joinCardDefinition.setKey(key);
+//        return joinCardDefinition;
+//    }
 
     // Làm bài kiểm tra
     public List<Question> generateQuiz(long id, int numberOfQuestions, String optionType) {

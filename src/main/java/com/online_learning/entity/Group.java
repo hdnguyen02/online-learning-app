@@ -36,6 +36,7 @@ public class Group extends BaseEntity {
 
     private Boolean isPublic;
 
+
     public Group(Long id) {
         super(id);
     }

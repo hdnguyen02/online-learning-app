@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,4 +30,10 @@ public interface DeckDao extends JpaRepository<Deck, Long>, PagingAndSortingRepo
 
     @Query("SELECT d FROM Deck d WHERE d.user.id = ?1 AND d.isPublic = true")
     List<Deck> getDecks(Long id);
+
+
+    long countByCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+
+    @Query("SELECT COUNT(d) FROM Deck d WHERE d.configLanguage = ?1")
+    int countByConfigLanguage(String configLanguage);
 }

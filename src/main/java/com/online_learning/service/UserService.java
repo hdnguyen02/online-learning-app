@@ -3,6 +3,9 @@ package com.online_learning.service;
 
 import com.online_learning.dao.DeckDao;
 import com.online_learning.dto.deck.DeckResponse;
+import com.online_learning.dto.userv2.UpdateAvatarUser;
+import com.online_learning.dto.userv2.UpdatePWUser;
+import com.online_learning.dto.userv2.UpdateUser;
 import com.online_learning.entity.Deck;
 import com.online_learning.entity.Role;
 import com.online_learning.util.Helper;
@@ -14,9 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -28,39 +29,22 @@ public class UserService {
     private final FirebaseStorageService firebaseStorageService;
     private final PasswordEncoder passwordEncoder;
 
-    // update thông tin theo.  name, gender, age, phone, dataOfBirth, avatar
-    public UserResponse updateUser(String firstName, String lastName, String gender, String phone, String dataOfBirth, MultipartFile avatar) throws IOException {
-        // kiểm tra thông tin nào cập nhập thì cập nhập. thông tin còn lại hông quan tâm
-//        User user = helper.getUser();
-//        if (firstName!= null) {
-//            user.setFirstName(firstName);
-//        }
-//        if (lastName != null) {
-//            user.setLastName(lastName);
-//        }
-//        if (gender != null) {
-//            user.setGender(gender);
-//        }
-//
-//        if (phone != null) {
-//            user.setPhone(phone);
-//        }
-//        if (dataOfBirth != null) {
-//            user.setDateOfBirth(dataOfBirth);
-//        }
-//
-//
-//        if (avatar != null) {
-//            String url =  firebaseStorageService.save("avatar", avatar);
-//            user.setAvatar(url);
-//        }
-//
-//        return new UserResponse(userDao.save(user));
-        return null;
+
+    public  boolean updateUser(UpdateUser updateUser) {
+
+        User user = helper.getUser();
+        user.setFirstName(updateUser.getFirstName());
+        user.setLastName(updateUser.getLastName());
+        user.setPhone(updateUser.getPhone());
+        user.setDateOfBirth(updateUser.getDateOfBirth());
+        user.setGender(updateUser.getGender());
+
+        userRepository.save(user);
+        return true;
+
     }
 
-
-    public UserResponse getInfoUser() {
+    public UserResponse getProfileUser() {
         return new UserResponse(helper.getUser());
     }
 
@@ -77,10 +61,26 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("not found user!"));
     }
 
-    public void changePW(String newPW) {
+    public boolean updateAvatarUser(UpdateAvatarUser updateAvatarUser) {
         User user = helper.getUser();
+        user.setAvatar(updateAvatarUser.getAvatar());
+        userRepository.save(user);
+        return true;
+    }
+
+    public boolean updatePWUser(UpdatePWUser updatePWUser) throws Exception {
+        User user = helper.getUser();
+
+        String newPW = updatePWUser.getNewPW();
+        String confirmPW = updatePWUser.getConfirmPW();
+        String oldPW = updatePWUser.getOldPW();
+
+        if (!passwordEncoder.matches(oldPW, user.getPassword())) throw new Exception("Mật khẩu cũ không chính xác!");
+        if (!newPW.equals(confirmPW)) throw new Exception("Mật khẩu mới và xác nhận không khớp!");
+
         user.setPassword(passwordEncoder.encode(newPW));
         userRepository.save(user);
+        return true;
     }
 
     // update role TEACHER

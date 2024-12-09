@@ -3,16 +3,22 @@ package com.online_learning.controller;
 
 import com.online_learning.dto.Response;
 import com.online_learning.dto.auth.UserResponse;
+import com.online_learning.dto.statistic.StatisticLanguage;
 import com.online_learning.entity.Invoice;
 import com.online_learning.service.AdminService;
 import com.online_learning.service.InvoiceService;
+import com.online_learning.service.StatisticsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
@@ -22,6 +28,7 @@ public class AdminController {
 
     private final AdminService adminService;
     private final InvoiceService invoiceService;
+    private final StatisticsService statisticsService;
 
 
     @GetMapping("/admin/users")
@@ -82,6 +89,46 @@ public class AdminController {
 
         Response response = Response.builder()
                 .data(adminService.getCommonStatistics())
+                .message("Query successful")
+                .success(true)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/admin/statistics-users-decks")
+    public ResponseEntity<?> getStatisticsDecksAndUsers(
+            @RequestParam("startMonth") @DateTimeFormat(pattern = "yyyy-MM") YearMonth startMonth,
+            @RequestParam("endMonth") @DateTimeFormat(pattern = "yyyy-MM") YearMonth endMonth) {
+        LocalDate startMonthLocalDate = startMonth.atDay(1);
+        LocalDate endDateLocalDate = endMonth.atEndOfMonth();
+        Response response = Response.builder()
+                .data(statisticsService.getStatisticsDecksAndUsers(startMonthLocalDate, endDateLocalDate))
+                .message("Query successful")
+                .success(true)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/admin/statistics-decks-cards")
+    public ResponseEntity<?> getStatisticsDecksAndCards(
+            @RequestParam("startMonth") @DateTimeFormat(pattern = "yyyy-MM") YearMonth startMonth,
+            @RequestParam("endMonth") @DateTimeFormat(pattern = "yyyy-MM") YearMonth endMonth) {
+        LocalDate startMonthLocalDate = startMonth.atDay(1);
+        LocalDate endDateLocalDate = endMonth.atEndOfMonth();
+        Response response = Response.builder()
+                .data(statisticsService.getStatisticsDecksAndCards(startMonthLocalDate, endDateLocalDate))
+                .message("Query successful")
+                .success(true)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/admin/statistics-languages")
+    public ResponseEntity<?> getStatisticsLanguage() {
+        List<StatisticLanguage> statisticLanguages = statisticsService.getDeckCountByLanguage();
+        Response response = Response.builder()
+                .data(statisticLanguages)
                 .message("Query successful")
                 .success(true)
                 .build();
