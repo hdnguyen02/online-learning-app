@@ -1,5 +1,6 @@
 package com.online_learning.controller;
 
+import com.google.api.Http;
 import com.online_learning.dto.card.CardResponse;
 import com.online_learning.dto.Response;
 import com.online_learning.service.CardService;
@@ -63,18 +64,6 @@ public class CardController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-//    @GetMapping("/cards/filter")
-//    public ResponseEntity<Response> filterCards(@RequestParam (required = false) Long idDeck,
-//                                                @RequestParam (required = false) Boolean isFavourite,
-//                                                @RequestParam (required = false) Boolean isRemembered) {
-//        List<CardResponse> cardsDto = cardService.filterCards(idDeck, isFavourite, isRemembered);
-//        String message = "Query successful";
-//        Response response = new Response(cardsDto, message, true);
-//
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
-
-
     @GetMapping("/cards")
     public ResponseEntity<Response> getCards() {
         List<CardResponse> cardsDto = cardService.getCards(); // thực hiện truy vấn tất cả.
@@ -83,6 +72,14 @@ public class CardController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @PutMapping("/cards/{id}/favourite")
+    public ResponseEntity<?> updateFavourite(@PathVariable long id, @RequestParam boolean value) {
+        cardService.updateFavourite(id, value);
+
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
 //    @GetMapping("/cards/{id}")
 //    public ResponseEntity<Response> getCardWithId(@PathVariable Long id) throws Exception {
 //        CardResponse cardDto = cardService.getCardWithId(id);

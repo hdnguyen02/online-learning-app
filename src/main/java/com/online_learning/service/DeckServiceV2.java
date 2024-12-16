@@ -3,9 +3,9 @@ package com.online_learning.service;
 
 import com.online_learning.dao.CardDao;
 import com.online_learning.dao.DeckDao;
+import com.online_learning.dto.card.CardResponse;
 import com.online_learning.dto.deckv2.*;
 import com.online_learning.entity.Card;
-import com.online_learning.entity.CommonCard;
 import com.online_learning.entity.Deck;
 import com.online_learning.entity.User;
 import com.online_learning.util.Helper;
@@ -169,12 +169,17 @@ public class DeckServiceV2 {
 //    }
 
     // Làm bài kiểm tra
-    public List<Question> generateQuiz(long id, int numberOfQuestions, String optionType) {
+    public List<Question> generateQuiz(long id, int numberOfQuestions, String optionType, boolean isOnlyFavorite) {
         int maxQuestion = 15;
         numberOfQuestions = Math.min(numberOfQuestions, maxQuestion);
 
         Deck deck = deckRepository.findById(id).orElseThrow();
         List<Card> cards = deck.getCards();
+
+        // Lọc thẻ dựa trên isOnlyFavorite
+        if (isOnlyFavorite) {
+            cards = cards.stream().filter(Card::getIsFavourite).collect(Collectors.toList());
+        }
 
         // Shuffle cards để random hóa
         Collections.shuffle(cards);
@@ -187,28 +192,41 @@ public class DeckServiceV2 {
             Card card = cards.get(i);
 
             // Tạo câu hỏi tùy theo optionType
+            String audio = card.getAudio();
+            String image = card.getImage();
             String questionContent;
-            String correctAnswer;
+            Answer correctAnswer = new Answer();
+            String contentCorrectAnswer;
+            String idContentCorrectAnswer;
+            String type;
+
 
             if ("TERM".equalsIgnoreCase(optionType)) {
                 questionContent = card.getTerm();
-                correctAnswer = card.getDefinition();
+                contentCorrectAnswer = card.getDefinition();
+                type = "Thuật ngữ";
             } else if ("DEFINITION".equalsIgnoreCase(optionType)) {
                 questionContent = card.getDefinition();
-                correctAnswer = card.getTerm();
+                contentCorrectAnswer = card.getTerm();
+                type = "Định nghĩa";
             } else {
                 // Random chọn TERM hoặc DEFINITION khi optionType là "BOTH"
                 if (new Random().nextBoolean()) {
                     questionContent = card.getTerm();
-                    correctAnswer = card.getDefinition();
+                    contentCorrectAnswer = card.getDefinition();
+                    type = "Thuật ngữ";
                 } else {
                     questionContent = card.getDefinition();
-                    correctAnswer = card.getTerm();
+                    contentCorrectAnswer = card.getTerm();
+                    type = "Định nghĩa";
                 }
             }
 
+            correctAnswer.setContentAnswer(contentCorrectAnswer);
+            correctAnswer.setId(UUID.randomUUID().toString());
+
             // Tạo danh sách đáp án
-            List<String> answers = new ArrayList<>();
+            List<Answer> answers = new ArrayList<>();
             answers.add(correctAnswer);
 
             // Thêm 3 đáp án sai
@@ -220,17 +238,33 @@ public class DeckServiceV2 {
                 String wrongAnswer = "TERM".equalsIgnoreCase(optionType) || new Random().nextBoolean()
                         ? wrongCard.getDefinition()
                         : wrongCard.getTerm();
-                answers.add(wrongAnswer);
+                answers.add(new Answer(UUID.randomUUID().toString(), wrongAnswer));
             }
 
             Collections.shuffle(answers);
 
             // Tạo câu hỏi
-            Question question = new Question(questionContent, answers, correctAnswer);
+            Question question = Question.builder()
+                    .id(UUID.randomUUID().toString())
+                    .questionContent(questionContent)
+                    .correctAnswer(correctAnswer)
+                    .answers(answers)
+                    .type(type)
+                    .audio(audio)
+                    .image(image)
+                    .build();
             questions.add(question);
         }
         return questions;
     }
 
 
+    public List<CardResponse> getStudyCards(long id, boolean isFavorite) {
+        Deck deck = deckRepository.findById(id).orElseThrow();
+        List<Card> cards = deck.getCards();
+        if (isFavorite) {
+            cards = cards.stream().filter(Card::getIsFavourite).collect(Collectors.toList());
+        }
+        return cards.stream().map(CardResponse::new).collect(Collectors.toList());
+    }
 }

@@ -92,10 +92,6 @@ public class UserService {
 
     public List<DeckResponse> getDecks(Long id) {
         List<Deck> decks = deckDao.getDecks(id);
-
-        System.out.println("Có chạy vào!");
-        System.out.println(decks.size());
-
         return decks.stream().map(DeckResponse::new).toList();
     }
 }

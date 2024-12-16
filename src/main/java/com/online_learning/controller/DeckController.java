@@ -1,10 +1,12 @@
 package com.online_learning.controller;
 
 
+import com.online_learning.dto.card.CardResponse;
 import com.online_learning.dto.deck.DetailDeckResponse;
 import com.online_learning.dto.deck.DeckResponse;
 import com.online_learning.dto.Response;
 import com.online_learning.dto.deckv2.*;
+import com.online_learning.service.CardService;
 import com.online_learning.service.DeckService;
 import com.online_learning.service.DeckServiceV2;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +24,10 @@ public class DeckController {
 
     private final DeckService deckService;
     private final DeckServiceV2 deckServiceV2;
+    private final CardService cardService;
 
     @GetMapping("/global/decks")
     public ResponseEntity<?> getGlobalDecks(@RequestParam(required = false) String searchTerm) {
-
-        System.out.println("Có chạy vào");
 
         List<DeckResponse> deckResponses;
         if (searchTerm != null) deckResponses = deckService.searchGlobalDecks(searchTerm);
@@ -116,14 +117,25 @@ public class DeckController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/decks/{id}/study-cards")
+    public ResponseEntity<Response> getStudyCards(@PathVariable long id,
+                                                @RequestParam (required = false) boolean isFavorite
+                                        ) {
+        List<CardResponse> cardsDto = deckServiceV2.getStudyCards(id, isFavorite);
+        String message = "Query successful";
+        Response response = new Response(cardsDto, message, true);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-    @GetMapping("/decks/{id}/question-card")
+
+    @GetMapping("/decks/{id}/question-cards")
     public ResponseEntity<?> getQuestionCard(
             @PathVariable long id,
             @RequestParam int numberOfQuestions,
-            @RequestParam String optionType
+            @RequestParam String optionType,
+            @RequestParam boolean isOnlyFavorite
     ) {
-        List<Question> questions = deckServiceV2.generateQuiz(id, numberOfQuestions, optionType);
+        List<Question> questions = deckServiceV2.generateQuiz(id, numberOfQuestions, optionType, isOnlyFavorite);
         Response response = new Response(questions, "Query successful", true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

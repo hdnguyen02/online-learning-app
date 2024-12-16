@@ -148,14 +148,11 @@ public class CardService {
         return cardsDto;
     }
 
-//    public List<CardResponse> filterCards(Long idDeck, Boolean isFavourite, Boolean isRemembered) {
-//        String emailUser = helper.getEmailUser();
-//        List<Card> cards = cardDao.filter(emailUser, idDeck, isFavourite, isRemembered);
-//        List<CardResponse> cardsDto = new ArrayList<>();
-//        cards.forEach(card -> cardsDto.add(new CardResponse(card)));
-//        return cardsDto;
-//    }
-
+    public void updateFavourite(long id, boolean value) {
+        Card card = cardDao.findById(id).orElseThrow();
+        card.setIsFavourite(value);
+        cardDao.save(card);
+    }
     // xíu nữa sữa xóa update gì thì vào đây =>
 
     // xóa không trả về gì cả.

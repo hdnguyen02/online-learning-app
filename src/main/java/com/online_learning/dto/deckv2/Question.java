@@ -1,9 +1,6 @@
 package com.online_learning.dto.deckv2;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -11,8 +8,14 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Question {
+    private String id;
     private String questionContent; // Nội dung câu hỏi
-    private List<String> answers;  // Danh sách đáp án (bao gồm đúng và sai)
-    private String correctAnswer;  // Đáp án đúng
+//    private List<String> answers;  // Danh sách đáp án (bao gồm đúng và sai)
+    private List<Answer> answers;
+    private Answer correctAnswer;  // Đáp án đúng
+    private String type;
+    private String audio;
+    private String image;
 }
