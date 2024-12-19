@@ -2,6 +2,7 @@ package com.online_learning.service;
 
 
 import com.online_learning.dao.InvoiceDao;
+import com.online_learning.dao.UserRepository;
 import com.online_learning.dto.invoice.InvoiceResponse;
 import com.online_learning.entity.Invoice;
 import com.online_learning.entity.User;
@@ -17,13 +18,15 @@ import java.util.*;
 @RequiredArgsConstructor
 public class InvoiceService {
     private final InvoiceDao invoiceDao;
+    private final UserRepository userRepository;
 
     public void createInvoice(String emailUser, String vnpResponseCode, BigDecimal vnpAmount,
                               String vnpBankCode, String vnpCardType, String vnpOrderInfo, Date vnpPayDate
                               ) {
 
+        User user = userRepository.findByEmail(emailUser).orElseThrow();
         Invoice invoice = Invoice.builder()
-                .user(new User(emailUser))
+                .user(user)
                 .vnpResponseCode(vnpResponseCode)
                 .vnpAmount(vnpAmount)
                 .vnpBankCode(vnpBankCode)

@@ -13,7 +13,7 @@ import java.util.*;
 public class VnpayConfig {
 
     private final String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    private final String secretKey = "R8WXYRKAE6413DQFJLQPZ3SY0DNTYESO";
+    private final String secretKey = "WJUOJ1BON06SPHM766BZ5H4HX2MKFDJW";
 
     public static String encodeEmail(String email) {
         return Base64.getUrlEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
@@ -25,7 +25,7 @@ public class VnpayConfig {
         vnpParamsMap.put("vnp_Version", vnp_Version);
         String vnp_Command = "pay";
         vnpParamsMap.put("vnp_Command", vnp_Command);
-        String vnp_TmnCode = "5CQ6M9O1";
+        String vnp_TmnCode = "9JVNKK6K";
         vnpParamsMap.put("vnp_TmnCode", vnp_TmnCode);
         vnpParamsMap.put("vnp_CurrCode", "VND");
         vnpParamsMap.put("vnp_TxnRef",  VNPayUtil.getRandomNumber(8));
