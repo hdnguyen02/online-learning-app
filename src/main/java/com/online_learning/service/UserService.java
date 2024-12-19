@@ -48,7 +48,6 @@ public class UserService {
         return new UserResponse(helper.getUser());
     }
 
-    // lấy ra thong tin nguoi dung.
     public UserResponse getInfoOtherUser(Long id) {
         User user = userRepository.findById(id).orElseThrow();
         return new UserResponse(user);

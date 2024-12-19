@@ -4,10 +4,8 @@ import com.online_learning.dao.LanguageDao;
 import com.online_learning.dto.LanguageRequest;
 import com.online_learning.entity.Language;
 import lombok.RequiredArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,8 +26,6 @@ public class LanguageService {
     }
 
     public void initLanguages() {
-
-        // khởi tạo cái này. Tiếng anh, pháp, tiếng việt
         List<Language> languages = languageDao.findAll();
         if (!languages.isEmpty())
             return;

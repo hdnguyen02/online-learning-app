@@ -19,7 +19,7 @@ public class VnpayConfig {
         return Base64.getUrlEncoder().encodeToString(email.getBytes(StandardCharsets.UTF_8));
     }
 
-    public Map<String, String> getVNPayConfig(String email) {
+    public Map<String, String> getVnPayConfig(String email) {
         Map<String, String> vnpParamsMap = new HashMap<>();
         String vnp_Version = "2.1.0";
         vnpParamsMap.put("vnp_Version", vnp_Version);

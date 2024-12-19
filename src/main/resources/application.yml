@@ -11,13 +11,6 @@ spring:
     username: ${MYSQL_USER:root}
     password: ${MYSQL_PASSWORD:123456}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    initialization-mode: always
-
-
-  servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
 
   mail:
     host: smtp.gmail.com
@@ -34,6 +27,9 @@ spring:
           connectiontimeout: 5000
           timeout: 5000
           writetimeout: 5000
+  sql:
+    init:
+      mode: always
 
 system:
   version: "api/v1"

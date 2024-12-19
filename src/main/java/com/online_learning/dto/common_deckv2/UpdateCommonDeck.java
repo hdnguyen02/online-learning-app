@@ -8,7 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 public class UpdateCommonDeck {
-    private Long id; // id deck cần chỉnh sữa
+    private long id;
     private String name;
     private String description;
     private String configLanguage;

@@ -1,6 +1,5 @@
 package com.online_learning.service;
 
-
 import com.online_learning.dao.CardDao;
 import com.online_learning.dao.DeckDao;
 import com.online_learning.dao.LanguageDao;
@@ -15,9 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +24,6 @@ public class StatisticsService {
     private final CardDao cardDao;
     private final UserRepository userRepository;
     private final LanguageDao languageDao;
-
 
     public List<StatisticUserAndDeck> getStatisticsDecksAndUsers(LocalDate start, LocalDate end) {
         List<StatisticUserAndDeck> stats = new ArrayList<>();
@@ -39,7 +35,8 @@ public class StatisticsService {
         // Lặp qua từng tháng trong khoảng thời gian
         while (!startDate.isAfter(endDate)) {
             // Ngày đầu và cuối của tháng hiện tại
-            LocalDateTime startOfMonth = startDate.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+            LocalDateTime startOfMonth = startDate.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0)
+                    .withNano(0);
             LocalDateTime endOfMonth = startOfMonth.plusMonths(1).minusSeconds(1);
 
             // Lấy số lượng người dùng tạo trong tháng
@@ -55,19 +52,19 @@ public class StatisticsService {
             startDate = startDate.plusMonths(1);
         }
 
-    return stats;
+        return stats;
     }
 
     // Thống kê theo số ngôn ngữ được sử dụng => biểu đồ tròn.
     public List<StatisticLanguage> getDeckCountByLanguage() {
         List<Language> languages = languageDao.findAll();
-//        Map<String, Integer> statistics = new HashMap<>();
+        // Map<String, Integer> statistics = new HashMap<>();
         List<StatisticLanguage> statisticLanguages = new ArrayList<>();
-
 
         for (Language language : languages) {
             int count = deckRepository.countByConfigLanguage(language.getCode());
-            statisticLanguages.add(new StatisticLanguage(language.getNameInternational(), language.getNameVietnamese(), count));
+            statisticLanguages
+                    .add(new StatisticLanguage(language.getNameInternational(), language.getNameVietnamese(), count));
         }
         return statisticLanguages;
     }
@@ -82,7 +79,8 @@ public class StatisticsService {
         // Lặp qua từng tháng trong khoảng thời gian
         while (!startDate.isAfter(endDate)) {
             // Ngày đầu và cuối của tháng hiện tại
-            LocalDateTime startOfMonth = startDate.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+            LocalDateTime startOfMonth = startDate.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0)
+                    .withNano(0);
             LocalDateTime endOfMonth = startOfMonth.plusMonths(1).minusSeconds(1);
 
             // Lấy số lượng Deck được tạo trong tháng

@@ -21,7 +21,6 @@ public class GroupController {
 
     private final GroupService groupService;
 
-
     @PostMapping("/groups/common-decks/{id}/clone")
     public ResponseEntity<?> cloneCommonDeck(@PathVariable long id) {
         groupService.cloneDeck(id);
@@ -43,12 +42,15 @@ public class GroupController {
         groupService.outGroup(id);
         return ResponseEntity.status(HttpStatus.CREATED).body(true);
     }
+
     @GetMapping("/global/groups")
     public ResponseEntity<?> getGlobalGroups(@RequestParam(required = false) String searchTerm) {
 
         List<GroupResponse> groupResponses;
-        if (searchTerm != null) groupResponses = groupService.searchGlobalGroups(searchTerm);
-        else groupResponses = groupService.getGlobalGroups();
+        if (searchTerm != null)
+            groupResponses = groupService.searchGlobalGroups(searchTerm);
+        else
+            groupResponses = groupService.getGlobalGroups();
 
         Response response = Response.builder()
                 .message("Query successful")
@@ -61,7 +63,7 @@ public class GroupController {
 
     @PostMapping("/groups")
     @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> createGroup(@RequestBody GroupRequest groupRequest){
+    public ResponseEntity<?> createGroup(@RequestBody GroupRequest groupRequest) {
 
         Response response = new Response();
 
@@ -69,14 +71,12 @@ public class GroupController {
         response.setMessage("Created successful");
         response.setData(groupService.createGroup(groupRequest));
 
-
-
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/groups/{id}")
     @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> updateGroup(@PathVariable Long id , @RequestBody GroupRequest groupRequest) {
+    public ResponseEntity<?> updateGroup(@PathVariable Long id, @RequestBody GroupRequest groupRequest) {
 
         Response response = new Response();
         response.setMessage("Updated successful");
@@ -87,7 +87,7 @@ public class GroupController {
     }
 
     @GetMapping("/groups/{id}")
-    public ResponseEntity<?> getGroupById(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<?> getGroupById(@PathVariable long id) {
         Response response = new Response();
 
         GroupResponse groupResponse = groupService.getGroupById(id);
@@ -101,7 +101,6 @@ public class GroupController {
 
     @PostMapping("/groups/delete-user")
     public ResponseEntity<?> deleteUserGroup(@RequestBody UserGroupRequest userGroupRequest) {
-        // Xóa thành viên khỏi lớp học.
         Response response = new Response();
         response.setData(groupService.deleteUserGroupById(userGroupRequest));
         response.setSuccess(true);
@@ -109,8 +108,8 @@ public class GroupController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
     @PostMapping("/groups/{id}/invite")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> inviteUserGroup(
             @PathVariable Long id, @RequestParam(name = "email") String email) throws Exception {
 
@@ -126,7 +125,6 @@ public class GroupController {
     @GetMapping("/groups/owner")
     public ResponseEntity<?> getGroupsByUser() {
 
-
         List<GroupResponse> groupResponses = groupService.getGroupsByOwner();
 
         Response response = new Response();
@@ -138,7 +136,7 @@ public class GroupController {
     }
 
     @GetMapping("/groups/attendance")
-    public ResponseEntity<?> getGroupsByAttendance(){
+    public ResponseEntity<?> getGroupsByAttendance() {
 
         Response response = new Response();
 

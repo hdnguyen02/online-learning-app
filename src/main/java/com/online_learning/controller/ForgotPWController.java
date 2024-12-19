@@ -1,7 +1,5 @@
 package com.online_learning.controller;
 
-
-
 import com.online_learning.dao.UserRepository;
 import com.online_learning.entity.User;
 import com.online_learning.dto.Response;
@@ -21,10 +19,10 @@ public class ForgotPWController {
     private final UserRepository userDao;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+
     @PostMapping("/api/v1/forgot-password")
-    public Response forgotPassword(@RequestBody Map<String, String> maps)  {
+    public Response forgotPassword(@RequestBody Map<String, String> maps) {
         String email = maps.get("email");
-        User user = userDao.findByEmail(email).orElseThrow();
         String accessToken = jwtService.generateTokenForgotPassword(email);
         String resetUrl = "http://localhost:5173/reset-password?access-token=" + accessToken;
         emailService.sendEmail(email, "Online Learning password recovery", resetUrl);
@@ -37,7 +35,6 @@ public class ForgotPWController {
 
     @PostMapping("/api/v1/reset-password")
     public Response resetPassword(@RequestBody Map<String, String> maps) {
-        System.out.println("vào được");
         String newPassword = maps.get("newPassword");
         String accessToken = maps.get("accessToken");
         String email = jwtService.extractUsername(accessToken);

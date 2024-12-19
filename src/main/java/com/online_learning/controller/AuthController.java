@@ -1,6 +1,5 @@
 package com.online_learning.controller;
 
-import com.google.api.gax.rpc.NotFoundException;
 import com.online_learning.dao.TokenDao;
 import com.online_learning.dto.auth.SignInRequest;
 import com.online_learning.dto.auth.SignUpRequest;
@@ -26,14 +25,15 @@ public class AuthController {
     private final TokenDao tokenDao;
 
     @PostMapping("/auth/sign-up")
-    public  ResponseEntity<?> signUp (@RequestBody SignUpRequest signUpRequest) throws Exception {
+    public ResponseEntity<?> signUp(@RequestBody SignUpRequest signUpRequest) throws Exception {
 
         // check otp
-        String email =signUpRequest.getEmail();
+        String email = signUpRequest.getEmail();
         String contentOtp = signUpRequest.getContentOtp();
 
         boolean isValidOtp = otpService.validateOTP(email, contentOtp);
-        if (!isValidOtp) throw new Exception("Invalid or expired OTP!");
+        if (!isValidOtp)
+            throw new Exception("Invalid or expired OTP!");
 
         AuthResponse auth = authService.signUp(signUpRequest);
         String message = "Signed Up successfully";
@@ -41,12 +41,11 @@ public class AuthController {
     }
 
     @PostMapping("/auth/sign-in")
-    public ResponseEntity<?> signIn (@RequestBody SignInRequest signInRequest) {
+    public ResponseEntity<?> signIn(@RequestBody SignInRequest signInRequest) {
         AuthResponse auth = authService.signIn(signInRequest);
         String message = "Logged in successfully";
         return new ResponseEntity<>(new Response(auth, message, true), HttpStatus.OK);
     }
-
 
     @PostMapping("/auth/sign-out")
     public ResponseEntity<String> signOut(HttpServletRequest request) {
@@ -58,14 +57,15 @@ public class AuthController {
         String accessToken = authorization.substring(7);
         Token token = tokenDao.findByCode(accessToken).orElse(null);
 
-        if (token == null)  return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Token not found.");
+        if (token == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Token not found.");
 
         token.setIsSignOut(true);
         tokenDao.save(token);
 
         SecurityContextHolder.clearContext();
 
-        return ResponseEntity.ok("Successfully signed out.");
+        return ResponseEntity.ok("Successfully signed out");
     }
 
 }
