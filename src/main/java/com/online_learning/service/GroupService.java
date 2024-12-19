@@ -217,10 +217,15 @@ public class GroupService {
         EmailDetail details = new EmailDetail();
         details.setSubject("Invitation letter to join the class");
         details.setRecipient(emailTo);
-        String link = "http://localhost:8080/groups/" + groupId + "/active?token=" + token;
-        details.setMsgBody("<p>Xin chào bạn,</p>" +
-                "<p>Please click <a href=\'" + link + "\'>this link</a> to join class.</p>" +
-                "    <p>Best regards,</p>");
+
+        String appHost = System.getenv("APP_HOST");
+        if (appHost == null || appHost.isEmpty()) {
+            appHost = "localhost:8080";
+        }
+
+        String link = "http://" + appHost + "/groups/" + groupId + "/active?token=" + token;
+        details.setMsgBody("<p>Hi,</p><p>Please click <a href=\'" + link
+                + "\'>this link</a> to join class.</p><p>Best regards,</p>");
         emailServiceImpl.sendMailWithAttachment(details);
     }
 

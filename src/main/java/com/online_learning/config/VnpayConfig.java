@@ -1,6 +1,6 @@
 package com.online_learning.config;
 
-import com.online_learning.util.VNPayUtil;
+import com.online_learning.util.VnpayUtil;
 import lombok.Getter;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,16 +28,16 @@ public class VnpayConfig {
         String vnp_TmnCode = "9JVNKK6K";
         vnpParamsMap.put("vnp_TmnCode", vnp_TmnCode);
         vnpParamsMap.put("vnp_CurrCode", "VND");
-        vnpParamsMap.put("vnp_TxnRef", VNPayUtil.getRandomNumber(8));
-        vnpParamsMap.put("vnp_OrderInfo", "Payment orders: " + VNPayUtil.getRandomNumber(8));
+        vnpParamsMap.put("vnp_TxnRef", VnpayUtil.getRandomNumber(8));
+        vnpParamsMap.put("vnp_OrderInfo", "Payment orders: " + VnpayUtil.getRandomNumber(8));
         String orderType = "other";
         vnpParamsMap.put("vnp_OrderType", orderType);
         vnpParamsMap.put("vnp_Locale", "vn");
         String appHost = System.getenv("APP_HOST");
         if (appHost == null || appHost.isEmpty()) {
-            appHost = "localhost";
+            appHost = "localhost:8080";
         }
-        String vnp_ReturnUrl = "http://" + appHost + ":8080/api/v1/payment-callback?email=" + email;
+        String vnp_ReturnUrl = "http://" + appHost + "/api/v1/payment-callback?email=" + email;
         vnpParamsMap.put("vnp_ReturnUrl", vnp_ReturnUrl);
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");

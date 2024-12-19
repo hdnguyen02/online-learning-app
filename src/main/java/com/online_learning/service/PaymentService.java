@@ -1,7 +1,7 @@
 package com.online_learning.service;
 
 import com.online_learning.config.VnpayConfig;
-import com.online_learning.util.VNPayUtil;
+import com.online_learning.util.VnpayUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,11 +23,11 @@ public class PaymentService {
         if (bankCode != null && !bankCode.isEmpty()) {
             vnpParamsMap.put("vnp_BankCode", bankCode);
         }
-        vnpParamsMap.put("vnp_IpAddr", VNPayUtil.getIpAddress(request));
+        vnpParamsMap.put("vnp_IpAddr", VnpayUtil.getIpAddress(request));
         // build query url
-        String queryUrl = VNPayUtil.getPaymentURL(vnpParamsMap, true);
-        String hashData = VNPayUtil.getPaymentURL(vnpParamsMap, false);
-        String vnpSecureHash = VNPayUtil.hmacSHA512(vnPayConfig.getSecretKey(), hashData);
+        String queryUrl = VnpayUtil.getPaymentURL(vnpParamsMap, true);
+        String hashData = VnpayUtil.getPaymentURL(vnpParamsMap, false);
+        String vnpSecureHash = VnpayUtil.hmacSHA512(vnPayConfig.getSecretKey(), hashData);
         queryUrl += "&vnp_SecureHash=" + vnpSecureHash;
         return vnPayConfig.getVnp_PayUrl() + "?" + queryUrl;
     }
