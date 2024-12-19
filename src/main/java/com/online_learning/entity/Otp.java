@@ -1,11 +1,14 @@
 package com.online_learning.entity;
 
 
+import com.online_learning.core.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
 
-@Table(name = "opts")
+import java.util.Date;
+
+@Table(name = "otp")
 @Entity
 @Getter
 @Setter
@@ -13,5 +16,8 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @ToString
-public class Opt {
+public class Otp extends BaseEntity {
+    private String email;
+    private String contentOtp;
+    private Date expirationTime;
 }

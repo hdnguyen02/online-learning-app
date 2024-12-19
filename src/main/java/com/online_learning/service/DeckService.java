@@ -26,7 +26,6 @@ public class DeckService {
     private final CardDao cardDao;
 
     public List<DeckResponse> getGlobalDecks() {
-        System.out.println("chạy vào service");
         return deckDao.getGlobal().stream().map(DeckResponse::new).toList();
     }
 
@@ -42,7 +41,7 @@ public class DeckService {
             Deck deck = deckDao.findById(id).orElseThrow();
 
             Deck deckClone = Deck.builder()
-                    .name(deck.getName())
+                    .name(deck.getName() + " - Clone")
                     .description(deck.getDescription())
                     .configLanguage(deck.getConfigLanguage())
                     .user(user)

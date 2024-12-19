@@ -1,13 +1,9 @@
 package com.online_learning.service;
 
+import com.online_learning.dao.*;
+import com.online_learning.entity.*;
 import com.online_learning.util.Helper;
-import com.online_learning.dao.GroupDao;
-import com.online_learning.dao.UserRepository;
-import com.online_learning.dao.UserGroupDao;
 import com.online_learning.dto.group.GroupResponse;
-import com.online_learning.entity.Group;
-import com.online_learning.entity.User;
-import com.online_learning.entity.UserGroup;
 import com.online_learning.dto.group.GroupRequest;
 import com.online_learning.dto.group.UserGroupRequest;
 import com.online_learning.sendmail.EmailDetail;
@@ -17,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.*;
 
 @Service
@@ -28,12 +23,57 @@ public class GroupService {
     private final GroupDao groupRepository;
     private final UserGroupDao userGroupRepository;
     private final UserRepository userRepository;
+    private final CommonDeckDao commonDeckDao;
+    private final CardDao cardDao;
+    private final DeckDao deckDao;
     private final Helper helper;
     private final EmailServiceImpl emailServiceImpl;
+
+
+    @Transactional
+    public void cloneDeck(long id) {
+        User user = helper.getUser();
+        CommonDeck commonDeck = commonDeckDao.findById(id).orElseThrow();
+        List<CommonCard> commonCards = commonDeck.getCards();
+
+        Deck deckClone = new Deck();
+        deckClone.setName(commonDeck.getName() + " - Clone");
+        deckClone.setDescription(commonDeck.getDescription());
+        deckClone.setConfigLanguage(commonDeck.getConfigLanguage());
+        deckClone.setIsPublic(false);
+        deckClone.setQuantityClones(0);
+        deckClone.setUser(user);
+
+        Deck deckCloneSaved = deckDao.save(deckClone);
+        List<Card> commonCardsClone = new ArrayList<>();
+        commonCards.forEach(commonCard -> {
+            commonCardsClone.add(
+                    Card.builder()
+                            .term(commonCard.getTerm())
+                            .definition(commonCard.getDefinition())
+                            .audio(commonCard.getAudio())
+                            .image(commonCard.getImage())
+                            .example(commonCard.getExample())
+                            .deck(deckCloneSaved)
+                            .build()
+            );
+        });
+        cardDao.saveAll(commonCardsClone);
+    }
+
 
     public List<GroupResponse> getGlobalGroups() {
         List<Group> groups = groupRepository.getGlobal();
         return groups.stream().map(GroupResponse::mapToGroupDto).toList();
+    }
+
+    public void outGroup(long id) throws Exception {
+        Group group = groupRepository.findById(id).orElseThrow();
+        User user = helper.getUser();
+
+        List<UserGroup> userGroups = userGroupRepository.findByUserAndGroup(user, group);
+        if (userGroups.isEmpty()) throw new Exception("User not in group with id: " + id);
+        userGroupRepository.delete(userGroups.get(0)); 
     }
 
     public GroupResponse joinGroup(Long idGroup) throws Exception {

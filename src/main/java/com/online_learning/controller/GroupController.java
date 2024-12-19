@@ -21,6 +21,13 @@ public class GroupController {
 
     private final GroupService groupService;
 
+
+    @PostMapping("/groups/common-decks/{id}/clone")
+    public ResponseEntity<?> cloneCommonDeck(@PathVariable long id) {
+        groupService.cloneDeck(id);
+        return ResponseEntity.status(HttpStatus.OK).body(true);
+    }
+
     @PostMapping("/groups/{idGroup}/join")
     public ResponseEntity<?> joinGroup(@PathVariable Long idGroup) throws Exception {
         Response response = Response.builder()
@@ -31,6 +38,11 @@ public class GroupController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PostMapping("groups/{id}/out")
+    public ResponseEntity<?> outGroup(@PathVariable long id) throws Exception {
+        groupService.outGroup(id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(true);
+    }
     @GetMapping("/global/groups")
     public ResponseEntity<?> getGlobalGroups(@RequestParam(required = false) String searchTerm) {
 

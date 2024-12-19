@@ -1,6 +1,7 @@
 package com.online_learning.entity;
 
 
+import com.online_learning.core.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,11 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Token {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-
+public class Token extends BaseEntity {
     @Column(nullable = false)
     private String code;
 

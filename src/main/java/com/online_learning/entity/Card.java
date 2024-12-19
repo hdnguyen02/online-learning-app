@@ -26,7 +26,6 @@ public class Card extends BaseEntity {
 
     private Boolean isFavourite;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_deck")
     private Deck deck;
