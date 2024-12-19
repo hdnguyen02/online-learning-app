@@ -64,6 +64,7 @@ public class AuthService {
                 .build();
 
         String accessToken = jwtService.generateToken(userRepository.save(user), isRemember);
+        saveToken(accessToken, user);
         return AuthResponse.builder()
                 .accessToken(accessToken)
                 .user(new UserResponse(user))
@@ -80,6 +81,8 @@ public class AuthService {
         User user = userRepository.findByEmail(email).orElseThrow();
         String accessToken = jwtService.generateToken(user, isRemember);
 
+        System.out.println(accessToken);
+        saveToken(accessToken, user);
         return AuthResponse.builder()
                 .accessToken(accessToken)
                 .user(new UserResponse(user))

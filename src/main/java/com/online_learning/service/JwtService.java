@@ -88,7 +88,7 @@ public class JwtService {
 
     public boolean isTokenValid (String token,UserDetails userDetail) {
         final String email = extractUsername(token);
-        // boolean isValid = tokenDao.findByCode(token).map(t -> !t.getIsSignOut()).orElse(false);
-        return email.equals(userDetail.getUsername()) && !isTokenExpired(token);
+         boolean isValid = tokenDao.findByCode(token).map(t -> !t.getIsSignOut()).orElse(false);
+        return isValid && email.equals(userDetail.getUsername()) && !isTokenExpired(token);
     }
 }

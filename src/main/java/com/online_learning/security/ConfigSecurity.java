@@ -49,11 +49,11 @@ public class ConfigSecurity {
                 )
                 .sessionManagement(ssm -> ssm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
-                .logout(l -> l.logoutUrl("/api/v1/auth/sign-out")
-                        .addLogoutHandler(logoutHandler)
-                        .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
-                );
+                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+//                .logout(l -> l.logoutUrl("/api/v1/auth/sign-out")
+//                        .addLogoutHandler(logoutHandler)
+//                        .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
+//                );
         return http.build();
     }
 }

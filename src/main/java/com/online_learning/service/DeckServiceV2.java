@@ -36,7 +36,6 @@ public class DeckServiceV2 {
         deck.setUser(user);
 
         List<Card> cards = createDeck.getCards().stream().map(createCard -> {
-            System.out.println(createCard.getTerm());
             Card card = Card.builder()
                     .term(createCard.getTerm())
                     .definition(createCard.getDefinition())
