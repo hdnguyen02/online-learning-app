@@ -60,7 +60,7 @@ public class GroupController {
     }
 
     @PostMapping("/groups")
-//    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> createGroup(@RequestBody GroupRequest groupRequest){
 
         Response response = new Response();
@@ -75,7 +75,7 @@ public class GroupController {
     }
 
     @PutMapping("/groups/{id}")
-//    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> updateGroup(@PathVariable Long id , @RequestBody GroupRequest groupRequest) {
 
         Response response = new Response();
@@ -110,7 +110,7 @@ public class GroupController {
     }
 
     @PreAuthorize("hasRole('TEACHER')")
-//    @PostMapping("/groups/{id}/invite")
+    @PostMapping("/groups/{id}/invite")
     public ResponseEntity<?> inviteUserGroup(
             @PathVariable Long id, @RequestParam(name = "email") String email) throws Exception {
 
@@ -150,7 +150,7 @@ public class GroupController {
 
     }
 
-//    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('TEACHER')")
     @DeleteMapping("/groups/{id}")
     public ResponseEntity<?> deleteGroupById(@PathVariable Long id) {
 

@@ -1,98 +1,123 @@
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\Application.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\config\BeanConfig.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\config\VnpayConfig.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\controller\AdminController.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\controller\AssignmentController.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\controller\AssignmentTeacherController.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\controller\AuthController.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\controller\CardController.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\controller\CommentController.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\controller\CommonDeckController.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\controller\DeckController.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\controller\ForgotPWController.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\controller\GroupController.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\controller\NotAuthController.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\controller\PaymentController.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\controller\SubmitStudentController.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\controller\UserController.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\controller\UserGroupController.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dao\AssignmentDao.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dao\CardDao.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dao\CommentDao.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dao\CommonDeckDao.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dao\DeckDao.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dao\GroupDao.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dao\InvoiceDao.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dao\RoleDao.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dao\SubmitDao.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dao\TokenDao.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dao\UserDao.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dao\UserGroupDao.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\auth\AuthResponse.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\auth\SignInRequest.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\auth\SignUpRequest.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\auth\UserResponse.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\card\CardOfDeck.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\card\CardResponse.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\card\DeckOfCard.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\deck\CommonDeckRequest.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\deck\CommonDeckResponse.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\deck\DeckRequest.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\deck\DeckResponse.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\deck\DetailCommonDeckResponse.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\deck\DetailDeckResponse.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\group\AssignmentRequest.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\group\AssignmentStudentDto.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\group\AssignmentTeacherDto.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\group\CommentRequest.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\group\CommentResponse.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\group\GroupRequest.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\group\GroupResponse.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\group\PaymentDto.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\group\SubmitDto.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\group\SubmitRequest.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\group\UserGroupRequest.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\group\UserGroupResponse.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\invoice\InvoiceResponse.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\dto\Response.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\entity\Assignment.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\entity\BaseEntity.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\entity\Card.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\entity\Comment.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\entity\CommonDeck.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\entity\Deck.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\entity\Group.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\entity\Invoice.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\entity\Role.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\entity\Submit.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\entity\Token.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\entity\User.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\entity\UserGroup.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\exception\GlobalExceptionHandler.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\exception\GroupAlreadyExistsException.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\HandleExceptionApp.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\security\ConfigSecurity.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\security\CustomLogoutHandler.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\security\JwtFilter.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\sendmail\EmailDetail.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\sendmail\EmailServiceImpl.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\sendmail\IEmailService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\service\AdminService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\service\AssignmentService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\service\AuthService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\service\CardService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\service\CommentService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\service\CommonDeckService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\service\DeckService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\service\EmailService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\service\FirebaseStorageService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\service\GroupService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\service\InvoiceService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\service\JwtService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\service\PaymentService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\service\RoleService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\service\SubmitService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\service\UserGroupService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\service\UserService.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\util\Helper.java
-D:\online learning\online learning (Spring)\src\main\java\com\hdnguyen\util\VNPayUtil.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\config\BeanConfig.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\config\VnpayConfig.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\controller\AdminController.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\controller\AuthController.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\controller\CardController.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\controller\CommentController.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\controller\CommonDeckController.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\controller\DeckController.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\controller\ForgotPWController.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\controller\GroupController.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\controller\HealthController.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\controller\InitController.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\controller\LanguageController.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\controller\NotAuthController.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\controller\OtpController.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\controller\PaymentController.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\controller\UserController.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\controller\UserGroupController.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\core\BaseEntity.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\core\EnumRole.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\core\Gender.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\core\ResponseV2.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dao\CardDao.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dao\CommentDao.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dao\CommonCardDao.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dao\CommonDeckDao.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dao\DeckDao.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dao\GroupDao.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dao\InvoiceDao.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dao\LanguageDao.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dao\OtpDao.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dao\RoleDao.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dao\TokenDao.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dao\UserGroupDao.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dao\UserRepository.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\auth\AuthResponse.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\auth\SignInRequest.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\auth\SignUpRequest.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\auth\UserResponse.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\card\CardOfDeck.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\card\CardResponse.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\card\DeckOfCard.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\common_deckv2\QueryCommonCard.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\common_deckv2\QueryCommonDeck.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\common_deckv2\UpdateCommonCard.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\common_deckv2\UpdateCommonDeck.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\deck\CommonDeckRequest.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\deck\CommonDeckResponse.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\deck\DeckRequest.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\deck\DeckResponse.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\deck\DetailDeckResponse.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\deckv2\Answer.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\deckv2\CreateCard.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\deckv2\CreateDeck.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\deckv2\JoinCardElement.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\deckv2\JoinCardRequest.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\deckv2\Question.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\deckv2\UpdateCard.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\deckv2\UpdateDeck.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\group\CommentRequest.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\group\CommentResponse.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\group\GroupRequest.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\group\GroupResponse.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\group\PaymentDto.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\group\UserGroupRequest.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\group\UserGroupResponse.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\Health.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\Init.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\invoice\InvoiceResponse.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\LanguageRequest.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\Response.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\statistic\StatisticDeckAndCard.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\statistic\StatisticLanguage.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\statistic\StatisticUserAndDeck.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\userv2\UpdateAvatarUser.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\userv2\UpdatePWUser.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\dto\userv2\UpdateUser.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\entity\Card.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\entity\Comment.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\entity\CommonCard.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\entity\CommonDeck.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\entity\Deck.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\entity\Group.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\entity\Invoice.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\entity\Language.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\entity\Otp.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\entity\Role.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\entity\Token.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\entity\User.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\entity\UserGroup.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\exception\GlobalExceptionHandler.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\exception\GroupAlreadyExistsException.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\HandleExceptionApp.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\OnlineLearningApplication.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\security\ConfigSecurity.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\security\CustomLogoutHandler.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\security\JwtFilter.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\sendmail\EmailDetail.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\sendmail\EmailServiceImpl.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\sendmail\IEmailService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\AdminService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\AuthService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\CardService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\CommentService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\CommonDeckService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\CommonDeckServiceV2.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\DeckService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\DeckServiceV2.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\EmailService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\FirebaseStorageService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\GroupService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\InitService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\InvoiceService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\JwtService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\LanguageService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\OtpService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\PaymentService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\RoleService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\StatisticsService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\UserGroupService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\service\UserService.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\util\Helper.java
+D:\Focus\online learning (Spring)\src\main\java\com\online_learning\util\VNPayUtil.java

@@ -1,11 +1,14 @@
 package com.online_learning.service;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.online_learning.dao.LanguageDao;
 import com.online_learning.dto.LanguageRequest;
 import com.online_learning.entity.Language;
 import lombok.RequiredArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,10 +16,8 @@ import org.springframework.stereotype.Service;
 public class LanguageService {
 
     private final LanguageDao languageDao;
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public void addLanguage(LanguageRequest languageRequest) {
-
 
         Language language = Language.builder()
                 .code(languageRequest.getCode())
@@ -27,14 +28,19 @@ public class LanguageService {
         languageDao.save(language);
     }
 
+    public void initLanguages() {
 
-//    List<String> getVoicesSupportedByLanguage(String code) {
-//        Language language = languageDao.findByCode(code).orElseThrow(() -> new RuntimeException("Language not found!"));
-//        try {
-//            return objectMapper.readValue(language.getVoicesSupported(), List.class);
-//        }
-//        catch (IOException e) {
-//            throw new RuntimeException("Error parsing voices JSON", e);
-//        }
-//    }
+        // khởi tạo cái này. Tiếng anh, pháp, tiếng việt
+        List<Language> languages = languageDao.findAll();
+        if (!languages.isEmpty())
+            return;
+
+        List<Language> initLanguages = new ArrayList<>();
+
+        initLanguages.add(new Language("en-us", "English", "Tiếng Anh"));
+        initLanguages.add(new Language("vi-vn", "Vietnamese", "Tiếng Việt"));
+        initLanguages.add(new Language("fr-fr", "French", "Tiếng Pháp"));
+
+        languageDao.saveAll(initLanguages);
+    }
 }

@@ -29,7 +29,4 @@ public class NotAuthController {
 
         return  ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
-    // bỏ vào đây đăng nhập + đăng ký.
-
 }

@@ -24,7 +24,6 @@ public class UserGroupController {
                 .data(userGroupService.deleteUserGroup(idUserGroup))
                 .success(true)
                 .build();
-
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

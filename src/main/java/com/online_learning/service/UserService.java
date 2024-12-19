@@ -1,6 +1,6 @@
 package com.online_learning.service;
 
-
+import com.online_learning.core.Gender;
 import com.online_learning.dao.DeckDao;
 import com.online_learning.dto.deck.DeckResponse;
 import com.online_learning.dto.userv2.UpdateAvatarUser;
@@ -18,7 +18,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -26,11 +28,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final DeckDao deckDao;
     private final Helper helper;
-    private final FirebaseStorageService firebaseStorageService;
     private final PasswordEncoder passwordEncoder;
 
-
-    public  boolean updateUser(UpdateUser updateUser) {
+    public boolean updateUser(UpdateUser updateUser) {
 
         User user = helper.getUser();
         user.setFirstName(updateUser.getFirstName());
@@ -48,13 +48,11 @@ public class UserService {
         return new UserResponse(helper.getUser());
     }
 
-
     // lấy ra thong tin nguoi dung.
     public UserResponse getInfoOtherUser(Long id) {
         User user = userRepository.findById(id).orElseThrow();
         return new UserResponse(user);
     }
-
 
     public User loadUserByEmail(String email) {
         return userRepository.findByEmail(email)
@@ -75,8 +73,10 @@ public class UserService {
         String confirmPW = updatePWUser.getConfirmPW();
         String oldPW = updatePWUser.getOldPW();
 
-        if (!passwordEncoder.matches(oldPW, user.getPassword())) throw new Exception("Mật khẩu cũ không chính xác!");
-        if (!newPW.equals(confirmPW)) throw new Exception("Mật khẩu mới và xác nhận không khớp!");
+        if (!passwordEncoder.matches(oldPW, user.getPassword()))
+            throw new Exception("Mật khẩu cũ không chính xác!");
+        if (!newPW.equals(confirmPW))
+            throw new Exception("Mật khẩu mới và xác nhận không khớp!");
 
         user.setPassword(passwordEncoder.encode(newPW));
         userRepository.save(user);
@@ -93,5 +93,34 @@ public class UserService {
     public List<DeckResponse> getDecks(Long id) {
         List<Deck> decks = deckDao.getDecks(id);
         return decks.stream().map(DeckResponse::new).toList();
+    }
+
+    public void initUsers() {
+
+        List<User> users = userRepository.findAll();
+        if (!users.isEmpty())
+            return;
+        User student = User.builder()
+                .email("n20dccn047@student.ptithcm.edu.com")
+                .password(passwordEncoder.encode("123456"))
+                .firstName("John")
+                .lastName("Doe")
+                .isEnabled(true)
+                .gender(Gender.MALE)
+                .phone("0971408119")
+                .roles(Set.of(new Role("STUDENT"))) // Assuming you have a Role entity
+                .build();
+
+        User admin = User.builder()
+                .email("hdnguyen7702@gmail.com")
+                .password(passwordEncoder.encode("123456"))
+                .firstName("Đức")
+                .lastName("Nguyên")
+                .isEnabled(true)
+                .gender(Gender.MALE)
+                .phone("0987654321")
+                .roles(Set.of(new Role("ADMIN"), new Role("TEACHER"), new Role("STUDENT")))
+                .build();
+        userRepository.saveAll(Arrays.asList(student, admin));
     }
 }

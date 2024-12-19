@@ -1,6 +1,5 @@
 package com.online_learning.service;
 
-
 import com.online_learning.dao.RoleDao;
 import com.online_learning.entity.Role;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,8 @@ public class RoleService {
 
     public void initRoles() {
         List<Role> roles = roleDao.findAll();
-        if (!roles.isEmpty()) return;
+        if (!roles.isEmpty())
+            return;
         Role roleStudent = new Role("STUDENT");
         Role roleTeacher = new Role("TEACHER");
         Role roleAdmin = new Role("ADMIN");

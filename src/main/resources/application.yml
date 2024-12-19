@@ -7,7 +7,7 @@ spring:
       ddl-auto: update
 
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:db_online_learning}
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/${MYSQL_DATABASE:db_online_learning}
     username: ${MYSQL_USER:root}
     password: ${MYSQL_PASSWORD:123456}
     driver-class-name: com.mysql.cj.jdbc.Driver

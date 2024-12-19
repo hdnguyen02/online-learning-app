@@ -43,10 +43,8 @@ public class InvoiceService {
     public List<Invoice> getInvoicesForLast12Months() {
         Calendar calendar = Calendar.getInstance();
         Date endDate = calendar.getTime();
-
         calendar.add(Calendar.YEAR, -1);
         Date startDate = calendar.getTime();
-
         return invoiceDao.findInvoicesByVnpPayDateRange(startDate, endDate);
     }
 
