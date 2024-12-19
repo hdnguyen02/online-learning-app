@@ -1,7 +1,6 @@
 package com.online_learning.service;
 
 import com.online_learning.dao.GroupDao;
-import com.online_learning.dto.group.GroupResponse;
 import com.online_learning.util.Helper;
 import com.online_learning.dao.CommentDao;
 import com.online_learning.dto.group.CommentResponse;
@@ -13,9 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,16 +24,14 @@ public class CommentService {
 
     private final GroupDao groupDao;
 
-
-
     @Autowired
     private Helper helper;
 
     public boolean createComment(CommentRequest commentRequest) {
 
-
         Optional<Group> groupOptional = groupDao.findById(commentRequest.getGroupId());
-        if (groupOptional.isEmpty()) throw new EntityNotFoundException("Not found group with id: " + commentRequest.getGroupId());
+        if (groupOptional.isEmpty())
+            throw new EntityNotFoundException("Not found group with id: " + commentRequest.getGroupId());
 
         Group group = groupOptional.get();
 

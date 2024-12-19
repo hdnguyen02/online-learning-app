@@ -1,11 +1,9 @@
 package com.online_learning.entity;
 
-
-import com.online_learning.core.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name="tokens")
+@Table(name = "tokens")
 @Entity
 @Getter
 @Setter
@@ -26,6 +24,6 @@ public class Token {
     private Boolean isSignOut;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="email_user")
+    @JoinColumn(name = "id_user")
     private User user;
 }

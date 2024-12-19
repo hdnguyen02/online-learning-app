@@ -28,7 +28,7 @@ public class Comment extends BaseEntity {
     private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "email_user")
+    @JoinColumn(name = "id_user")
     private User user;
 
     @ManyToOne

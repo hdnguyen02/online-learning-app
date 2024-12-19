@@ -1,6 +1,5 @@
 package com.online_learning.dto.deck;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.online_learning.dto.group.GroupResponse;
 import com.online_learning.entity.CommonDeck;
 import lombok.*;
@@ -25,7 +24,7 @@ public class CommonDeckResponse {
         this.name = commonDeck.getName();
         this.description = commonDeck.getDescription();
         this.quantityCards = commonDeck.getCards() == null ? 0 : commonDeck.getCards().size();
-        this.createdDate= commonDeck.getCreatedDate();
+        this.createdDate = commonDeck.getCreatedDate();
 
         this.group = GroupResponse.mapToGroupDto(commonDeck.getGroup());
     }

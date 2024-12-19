@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Table(name = "grades")
@@ -22,7 +21,7 @@ public class Group extends BaseEntity {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "email_owner")
+    @JoinColumn(name = "id_owner")
     private User owner;
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
@@ -35,7 +34,6 @@ public class Group extends BaseEntity {
     private List<CommonDeck> commonDecks;
 
     private Boolean isPublic;
-
 
     public Group(Long id) {
         super(id);

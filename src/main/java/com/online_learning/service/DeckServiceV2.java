@@ -1,6 +1,5 @@
 package com.online_learning.service;
 
-
 import com.online_learning.dao.CardDao;
 import com.online_learning.dao.DeckDao;
 import com.online_learning.dto.card.CardResponse;
@@ -22,9 +21,9 @@ public class DeckServiceV2 {
     private final DeckDao deckRepository;
     private final CardDao cardRepository;
     private final Helper helper;
+
     @Transactional
     public void createDeckV2(CreateDeck createDeck) {
-
 
         User user = helper.getUser();
         Deck deck = new Deck();
@@ -52,11 +51,11 @@ public class DeckServiceV2 {
         cardRepository.saveAll(cards);
     }
 
-
     @Transactional
     public boolean updateDeckV2(UpdateDeck updateDeck) {
 
-        Deck deck = deckRepository.findById(updateDeck.getId()).orElseThrow(() -> new RuntimeException("Deck not found"));
+        Deck deck = deckRepository.findById(updateDeck.getId())
+                .orElseThrow(() -> new RuntimeException("Deck not found"));
 
         deck.setName(updateDeck.getName());
         deck.setDescription(updateDeck.getDescription());
@@ -90,7 +89,6 @@ public class DeckServiceV2 {
                 .filter(card -> card.getId() == null) // Các thẻ cần thêm mới
                 .collect(Collectors.toList());
 
-
         for (UpdateCard cardRequest : cardsToUpdate) {
             Card existingCard = cardRepository.findById(cardRequest.getId())
                     .orElseThrow(() -> new RuntimeException("Card not found"));
@@ -116,18 +114,14 @@ public class DeckServiceV2 {
         return true;
     }
 
-
     public List<JoinCardElement> getJoinCards(long id, boolean isOnlyFavorite) {
         Deck deck = deckRepository.findById(id).orElseThrow();
-
 
         List<JoinCardElement> joinCardElements = new ArrayList<>();
 
         List<Card> cards = isOnlyFavorite
                 ? deck.getCards().stream().filter(Card::getIsFavourite).toList()
                 : deck.getCards();
-
-
 
         cards.forEach(card -> {
             String randomUUID = UUID.randomUUID().toString();
@@ -150,22 +144,6 @@ public class DeckServiceV2 {
 
         return joinCardElements;
     }
-
-    // Phương thức tạo JoinCardTerm
-//    private JoinCardTerm createJoinCardTerm(String term, String key) {
-//        JoinCardTerm joinCardTerm = new JoinCardTerm();
-//        joinCardTerm.setTerm(term);
-//        joinCardTerm.setKey(key);
-//        return joinCardTerm;
-//    }
-
-    // Phương thức tạo JoinCardDefinition
-//    private JoinCardDefinition createJoinCardDefinition(String definition, String key) {
-//        JoinCardDefinition joinCardDefinition = new JoinCardDefinition();
-//        joinCardDefinition.setDefinition(definition);
-//        joinCardDefinition.setKey(key);
-//        return joinCardDefinition;
-//    }
 
     // Làm bài kiểm tra
     public List<Question> generateQuiz(long id, int numberOfQuestions, String optionType, boolean isOnlyFavorite) {
@@ -196,9 +174,8 @@ public class DeckServiceV2 {
             String questionContent;
             Answer correctAnswer = new Answer();
             String contentCorrectAnswer;
-            String idContentCorrectAnswer;
-            String type;
 
+            String type;
 
             if ("TERM".equalsIgnoreCase(optionType)) {
                 questionContent = card.getTerm();
@@ -256,7 +233,6 @@ public class DeckServiceV2 {
         }
         return questions;
     }
-
 
     public List<CardResponse> getStudyCards(long id, boolean isFavorite) {
         Deck deck = deckRepository.findById(id).orElseThrow();

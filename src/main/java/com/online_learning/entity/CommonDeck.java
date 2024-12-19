@@ -3,12 +3,9 @@ package com.online_learning.entity;
 import com.online_learning.core.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Date;
 import java.util.List;
 
-
-@Table(name="common_decks")
+@Table(name = "common_decks")
 @Entity
 @Getter
 @Setter
@@ -21,7 +18,7 @@ public class CommonDeck extends BaseEntity {
 
     private String description;
 
-    @OneToMany(mappedBy = "commonDeck",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "commonDeck", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<CommonCard> cards;
 
     @ManyToOne(fetch = FetchType.EAGER)

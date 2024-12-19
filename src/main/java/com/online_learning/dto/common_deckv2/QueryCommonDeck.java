@@ -1,7 +1,5 @@
 package com.online_learning.dto.common_deckv2;
 
-import com.online_learning.dto.auth.UserResponse;
-import com.online_learning.dto.card.CardOfDeck;
 import com.online_learning.dto.group.GroupResponse;
 import com.online_learning.entity.CommonDeck;
 import lombok.*;

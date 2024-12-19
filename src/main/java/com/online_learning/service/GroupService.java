@@ -29,7 +29,6 @@ public class GroupService {
     private final Helper helper;
     private final EmailServiceImpl emailServiceImpl;
 
-
     @Transactional
     public void cloneDeck(long id) {
         User user = helper.getUser();
@@ -55,12 +54,10 @@ public class GroupService {
                             .image(commonCard.getImage())
                             .example(commonCard.getExample())
                             .deck(deckCloneSaved)
-                            .build()
-            );
+                            .build());
         });
         cardDao.saveAll(commonCardsClone);
     }
-
 
     public List<GroupResponse> getGlobalGroups() {
         List<Group> groups = groupRepository.getGlobal();
@@ -72,8 +69,9 @@ public class GroupService {
         User user = helper.getUser();
 
         List<UserGroup> userGroups = userGroupRepository.findByUserAndGroup(user, group);
-        if (userGroups.isEmpty()) throw new Exception("User not in group with id: " + id);
-        userGroupRepository.delete(userGroups.get(0)); 
+        if (userGroups.isEmpty())
+            throw new Exception("User not in group with id: " + id);
+        userGroupRepository.delete(userGroups.get(0));
     }
 
     public GroupResponse joinGroup(Long idGroup) throws Exception {
@@ -84,8 +82,10 @@ public class GroupService {
             throw new Exception("You've joined the class!");
         }
 
-        boolean notAttended = group.getUserGroups().stream().noneMatch(userGroup -> userGroup.getUser().getEmail().equals(email));
-        if (!notAttended) throw new Exception("You've joined the class!");
+        boolean notAttended = group.getUserGroups().stream()
+                .noneMatch(userGroup -> userGroup.getUser().getEmail().equals(email));
+        if (!notAttended)
+            throw new Exception("You've joined the class!");
         UserGroup userGroup = UserGroup.builder()
                 .group(group)
                 .user(helper.getUser())
@@ -99,7 +99,6 @@ public class GroupService {
 
     }
 
-
     public List<GroupResponse> searchGlobalGroups(String searchTerm) {
         List<Group> groups = groupRepository.searchGlobal(searchTerm);
         return groups.stream().map(GroupResponse::mapToGroupDto).toList();
@@ -107,8 +106,7 @@ public class GroupService {
 
     public Boolean createGroup(GroupRequest groupRequest) {
         Group group = new Group();
-        Date created = new Date();
-    
+
         String emailOwner = helper.getEmailUser();
         User owner = helper.getUser();
 
@@ -126,7 +124,6 @@ public class GroupService {
 
     public boolean updateGroup(Long id, GroupRequest groupRequest) {
 
-
         User user = helper.getUser();
         Group group = groupRepository.findById(id).orElseThrow();
 
@@ -140,12 +137,10 @@ public class GroupService {
         return true;
     }
 
-
     public GroupResponse getGroupById(Long id) {
         Group group = groupRepository.findById(id).orElseThrow();
         return GroupResponse.mapToGroupDtoDetail(group);
     }
-
 
     public List<GroupResponse> getGroupsByOwner() {
         User owner = helper.getUser(); // thông tin của người dùng
@@ -165,14 +160,15 @@ public class GroupService {
         return true;
     }
 
-
     public boolean inviteUserGroup(Long id, String email) throws Exception {
 
         Optional<User> userOptional = userRepository.findByEmail(email);
-        if (userOptional.isEmpty()) throw new UsernameNotFoundException("User whose email does not exist!");
+        if (userOptional.isEmpty())
+            throw new UsernameNotFoundException("User whose email does not exist!");
 
         Optional<Group> groupOptional = groupRepository.findById(id);
-        if (groupOptional.isEmpty()) throw new Exception("Group does not exist!");
+        if (groupOptional.isEmpty())
+            throw new Exception("Group does not exist!");
         User user = userOptional.get();
         Group group = groupOptional.get();
 
@@ -182,11 +178,11 @@ public class GroupService {
             UserGroup userGroupDB = userGroups.get(0);
             if (!userGroupDB.isActive()) {
                 userGroupDB.setTokenActive(token);
-                Thread threadSaveData = new Thread(()-> {
+                Thread threadSaveData = new Thread(() -> {
                     userGroupRepository.save(userGroupDB);
                 });
 
-                Thread threadSendMail = new Thread(()->{
+                Thread threadSendMail = new Thread(() -> {
                     sendMailAddGroup(id, email, token);
                 });
 
@@ -195,18 +191,18 @@ public class GroupService {
             }
 
         } else {
-            UserGroup userGroup =  new UserGroup();
+            UserGroup userGroup = new UserGroup();
             userGroup.setTokenActive(token);
 
             userGroup.setUser(user);
             userGroup.setGroup(group);
             userGroup.setActive(false);
 
-            Thread threadSendMail = new Thread(()->{
+            Thread threadSendMail = new Thread(() -> {
                 sendMailAddGroup(id, email, token);
             });
 
-            Thread threadSaveData = new Thread(()-> {
+            Thread threadSaveData = new Thread(() -> {
                 userGroupRepository.save(userGroup);
             });
 
@@ -221,9 +217,9 @@ public class GroupService {
         EmailDetail details = new EmailDetail();
         details.setSubject("Invitation letter to join the class");
         details.setRecipient(emailTo);
-        String link = "http://localhost:8080/groups/"+groupId+"/active?token=" + token;
+        String link = "http://localhost:8080/groups/" + groupId + "/active?token=" + token;
         details.setMsgBody("<p>Xin chào bạn,</p>" +
-                "<p>Please click <a href=\'"+link+"\'>this link</a> to join class.</p>" +
+                "<p>Please click <a href=\'" + link + "\'>this link</a> to join class.</p>" +
                 "    <p>Best regards,</p>");
         emailServiceImpl.sendMailWithAttachment(details);
     }
@@ -249,16 +245,14 @@ public class GroupService {
         return true;
     }
 
-
     public boolean deleteUserGroupById(UserGroupRequest userGroupRequest) {
         Optional<User> userOptional = userRepository.findByEmail(userGroupRequest.getEmail());
         if (userOptional.isEmpty()) {
             throw new UsernameNotFoundException("User whose email does not exist!");
         }
         List<UserGroup> userGroups = userGroupRepository.findByUserAndGroup(new User(userGroupRequest.getEmail()),
-                new Group(userGroupRequest.getIdGroup())
-        );
-        if (userGroups.isEmpty()){
+                new Group(userGroupRequest.getIdGroup()));
+        if (userGroups.isEmpty()) {
             throw new UsernameNotFoundException("User whose email is not in the group!");
         }
 
@@ -280,9 +274,9 @@ public class GroupService {
         return groupResponses;
     }
 
-
     public void initGroup() {
-        if (!groupRepository.findAll().isEmpty())  return;
+        if (!groupRepository.findAll().isEmpty())
+            return;
 
         Group group = new Group();
         group.setName("Tieng anh cap toc");
@@ -291,7 +285,7 @@ public class GroupService {
         group.setCreatedBy("hdnguyen7702@gmail.com");
         group.setIsPublic(true);
 
-        Group groupStored =  groupRepository.save(group);
+        Group groupStored = groupRepository.save(group);
 
         // thêm vào 2 thành viên vào lớp học
         UserGroup userGroup01 = UserGroup.builder()

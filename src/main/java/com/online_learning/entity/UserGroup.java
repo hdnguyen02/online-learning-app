@@ -14,7 +14,7 @@ import lombok.*;
 public class UserGroup extends BaseEntity {
 
     @ManyToOne()
-    @JoinColumn(name = "email_user")
+    @JoinColumn(name = "id_user")
     private User user;
 
     @ManyToOne()
@@ -26,4 +26,3 @@ public class UserGroup extends BaseEntity {
     private boolean isActive;
     private String approachType; // SEND_MAIL, SUBMIT
 }
-

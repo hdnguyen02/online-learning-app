@@ -1,14 +1,12 @@
 package com.online_learning.entity;
 
-import com.online_learning.core.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
-
-@Table(name="roles")
+@Table(name = "roles")
 @Entity
 @Getter
 @Setter

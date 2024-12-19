@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,40 +34,38 @@ public class DeckService {
     }
 
     @Transactional
-    public boolean cloneDeck(Long id){
+    public boolean cloneDeck(Long id) {
 
-            User user = helper.getUser();
-            Deck deck = deckDao.findById(id).orElseThrow();
+        User user = helper.getUser();
+        Deck deck = deckDao.findById(id).orElseThrow();
 
-            Deck deckClone = Deck.builder()
-                    .name(deck.getName() + " - Clone")
-                    .description(deck.getDescription())
-                    .configLanguage(deck.getConfigLanguage())
-                    .user(user)
-                    .isPublic(false)
-                    .quantityClones(0)
-                    .build();
+        Deck deckClone = Deck.builder()
+                .name(deck.getName() + " - Clone")
+                .description(deck.getDescription())
+                .configLanguage(deck.getConfigLanguage())
+                .user(user)
+                .isPublic(false)
+                .quantityClones(0)
+                .build();
 
-            Deck deckCloneSaved = deckDao.save(deckClone);
+        Deck deckCloneSaved = deckDao.save(deckClone);
 
-            List<Card> cardsClone = deck.getCards().stream().map(card -> Card.builder()
-                            .deck(deckCloneSaved)
-                            .audio(card.getAudio())
-                            .image(card.getImage())
-                            .term(card.getTerm())
-                            .definition(card.getDefinition())
-                            .example(card.getExample())
-                            .build()).toList();
-            cardDao.saveAll(cardsClone); // lưu lại.
-            deck.setQuantityClones(deckCloneSaved.getQuantityClones() + 1);
-            deckDao.save(deck);
-            return true;
-
+        List<Card> cardsClone = deck.getCards().stream().map(card -> Card.builder()
+                .deck(deckCloneSaved)
+                .audio(card.getAudio())
+                .image(card.getImage())
+                .term(card.getTerm())
+                .definition(card.getDefinition())
+                .example(card.getExample())
+                .build()).toList();
+        cardDao.saveAll(cardsClone); // lưu lại.
+        deck.setQuantityClones(deckCloneSaved.getQuantityClones() + 1);
+        deckDao.save(deck);
+        return true;
 
     }
 
-
-    public DeckResponse createDeck(DeckRequest deckRequest)  {
+    public DeckResponse createDeck(DeckRequest deckRequest) {
         User user = helper.getUser();
         Deck deck = Deck.builder()
                 .name(deckRequest.getName())
@@ -86,7 +83,6 @@ public class DeckService {
 
     }
 
-
     public List<DeckResponse> getDesks() {
         String emailUser = helper.getEmailUser();
         List<Deck> decks = deckDao.findByUserEmail(emailUser);
@@ -97,14 +93,14 @@ public class DeckService {
         return decksDto;
     }
 
-    public DeckResponse deleteDeck(Long id)  {
+    public DeckResponse deleteDeck(Long id) {
         String emailUser = helper.getEmailUser();
         Deck deck = deckDao.findFirstByIdAndUserEmail(id, emailUser).orElseThrow();
         deckDao.delete(deck);
         return new DeckResponse(deck);
     }
 
-    public DeckResponse updateDeck(Long id, DeckRequest deckRequest)  {
+    public DeckResponse updateDeck(Long id, DeckRequest deckRequest) {
         String emailUser = helper.getEmailUser();
         Deck deck = deckDao.findFirstByIdAndUserEmail(id, emailUser).orElseThrow();
         if (deckRequest.getName() != null) {
@@ -134,7 +130,8 @@ public class DeckService {
 
     public void initDeck() {
 
-        if (!deckDao.findAll().isEmpty())  return;
+        if (!deckDao.findAll().isEmpty())
+            return;
 
         Deck deckB1 = Deck.builder()
                 .name("Tu Vung B1")

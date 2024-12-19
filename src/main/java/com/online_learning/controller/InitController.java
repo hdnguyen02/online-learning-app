@@ -1,12 +1,10 @@
 
 package com.online_learning.controller;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.online_learning.dto.Init;
-import com.online_learning.dto.Response;
 import com.online_learning.service.InitService;
 import lombok.RequiredArgsConstructor;
 

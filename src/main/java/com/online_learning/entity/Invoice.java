@@ -1,6 +1,5 @@
 package com.online_learning.entity;
 
-
 import com.online_learning.core.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,7 +17,7 @@ import java.util.Date;
 @ToString
 public class Invoice extends BaseEntity {
     @ManyToOne
-    @JoinColumn(name = "email_user", updatable = false)
+    @JoinColumn(name = "id_user", updatable = false)
     private User user;
 
     @Column(updatable = false)

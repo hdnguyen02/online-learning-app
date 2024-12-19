@@ -10,8 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import java.util.*;
 
-
-@Table(name="users", indexes = {@Index(name = "idx_email", columnList = "email")})
+@Table(name = "users", indexes = { @Index(name = "idx_email", columnList = "email") })
 @Entity
 @Getter
 @Setter
@@ -48,7 +47,7 @@ public class User extends BaseEntity implements UserDetails {
     private List<Deck> decks;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable( name = "user_role", joinColumns = @JoinColumn(name = "email_user"),inverseJoinColumns = @JoinColumn(name = "name_role"))
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "name_role"))
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -78,6 +77,7 @@ public class User extends BaseEntity implements UserDetails {
     public User(String email) {
         this.email = email;
     }
+
     public User(Long id) {
         this.setId(id);
     }
