@@ -70,7 +70,7 @@ public class AdminController {
     public ResponseEntity<?> getStatistics() {
 
         List<Invoice> invoices = invoiceService.getInvoicesForLast12Months();
-
+    
         Response response = Response.builder()
                 .data(invoiceService.getMonthlyRevenue(invoices))
                 .message("Query successful")

@@ -100,7 +100,7 @@ public class UserService {
         if (!users.isEmpty())
             return;
         User student = User.builder()
-                .email("n20dccn047@student.ptithcm.edu.com")
+                .email("n20dccn047@student.ptithcm.edu.vn")
                 .password(passwordEncoder.encode("123456"))
                 .firstName("John")
                 .lastName("Doe")
