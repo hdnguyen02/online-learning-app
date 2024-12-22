@@ -2,10 +2,13 @@ package com.online_learning.service;
 
 import com.online_learning.dao.CommonCardDao;
 import com.online_learning.dao.CommonDeckDao;
+import com.online_learning.dao.LanguageDao;
 import com.online_learning.dto.common_deckv2.UpdateCommonCard;
 import com.online_learning.dto.common_deckv2.UpdateCommonDeck;
 import com.online_learning.entity.CommonCard;
 import com.online_learning.entity.CommonDeck;
+import com.online_learning.entity.Language;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,16 +23,25 @@ public class CommonDeckServiceV2 {
 
         private final CommonDeckDao commonDeckDao;
         private final CommonCardDao commonCardDao;
+        private final LanguageDao languageDao;
 
         @Transactional
-        public boolean updateDeckV2(UpdateCommonDeck updateCommonDeck) {
+        public boolean updateCommonDeckV2(UpdateCommonDeck updateCommonDeck) throws Exception {
 
-                CommonDeck commonDeck = commonDeckDao.findById(updateCommonDeck.getId())
-                                .orElseThrow(() -> new RuntimeException("Deck not found"));
+                CommonDeck commonDeck = commonDeckDao.findById(updateCommonDeck.getId()).orElse(null);
+                if (commonDeck == null) {
+                        throw new Exception("Not found common deck with id: " + updateCommonDeck.getId());
+                }
 
-                commonDeck.setName(commonDeck.getName());
-                commonDeck.setDescription(commonDeck.getDescription());
-                commonDeck.setConfigLanguage(commonDeck.getConfigLanguage());
+                Language language = languageDao.findByCode(updateCommonDeck.getConfigLanguage()).orElse(null);
+                if (language == null) {
+                        throw new Exception("Not found language");
+                }
+
+                commonDeck.setName(updateCommonDeck.getName());
+                commonDeck.setDescription(updateCommonDeck.getDescription());
+
+                commonDeck.setLanguage(language);
 
                 commonDeckDao.save(commonDeck);
 

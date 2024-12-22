@@ -34,15 +34,18 @@ public class DeckService {
     }
 
     @Transactional
-    public boolean cloneDeck(Long id) {
+    public boolean cloneDeck(Long id) throws Exception {
 
         User user = helper.getUser();
-        Deck deck = deckDao.findById(id).orElseThrow();
+        Deck deck = deckDao.findById(id).orElse(null);
+        if (deck == null) {
+            throw new Exception("Not found deck with id: " + id);
+        }
 
         Deck deckClone = Deck.builder()
                 .name(deck.getName() + " - Clone")
                 .description(deck.getDescription())
-                .configLanguage(deck.getConfigLanguage())
+                .language(deck.getLanguage())
                 .user(user)
                 .isPublic(false)
                 .quantityClones(0)

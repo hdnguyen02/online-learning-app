@@ -1,6 +1,5 @@
 package com.online_learning.service;
 
-
 import com.online_learning.dao.InvoiceDao;
 import com.online_learning.dao.UserRepository;
 import com.online_learning.dto.invoice.InvoiceResponse;
@@ -21,8 +20,7 @@ public class InvoiceService {
     private final UserRepository userRepository;
 
     public void createInvoice(String emailUser, String vnpResponseCode, BigDecimal vnpAmount,
-                              String vnpBankCode, String vnpCardType, String vnpOrderInfo, Date vnpPayDate
-                              ) {
+            String vnpBankCode, String vnpCardType, String vnpOrderInfo, Date vnpPayDate) {
 
         User user = userRepository.findByEmail(emailUser).orElseThrow();
         Invoice invoice = Invoice.builder()
@@ -38,7 +36,6 @@ public class InvoiceService {
         invoiceDao.save(invoice);
 
     }
-
 
     public List<Invoice> getInvoicesForLast12Months() {
         Calendar calendar = Calendar.getInstance();
@@ -68,14 +65,14 @@ public class InvoiceService {
         return revenueList;
     }
 
-
     public List<InvoiceResponse> getInvoices() {
         return invoiceDao.findAll().stream().map(InvoiceResponse::new).toList();
     }
 
     // khởi tạo invoice
     public void initInvoice() {
-        if (!invoiceDao.findAll().isEmpty())  return;
+        if (!invoiceDao.findAll().isEmpty())
+            return;
 
         List<Invoice> invoices = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();

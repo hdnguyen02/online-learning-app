@@ -8,6 +8,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -25,7 +26,6 @@ public class DetailDeckResponse {
     private Integer quantityCards;
     private String configLanguage;
 
-
     public DetailDeckResponse(Deck deck) {
         cards = new ArrayList<>();
         this.id = deck.getId();
@@ -40,6 +40,6 @@ public class DetailDeckResponse {
         this.user = new UserResponse(deck.getUser());
         this.quantityCards = this.cards.size();
         this.createdDate = deck.getCreatedDate();
-        this.configLanguage = deck.getConfigLanguage();
+        this.configLanguage = deck.getLanguage().getCode();
     }
 }

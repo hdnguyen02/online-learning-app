@@ -31,5 +31,8 @@ public class Deck extends BaseEntity {
 
     private Integer quantityClones;
 
-    private String configLanguage; // lưu lại config.
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_language")
+    private Language language;
+
 }

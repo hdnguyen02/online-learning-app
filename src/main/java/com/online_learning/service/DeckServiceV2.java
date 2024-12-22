@@ -2,10 +2,12 @@ package com.online_learning.service;
 
 import com.online_learning.dao.CardDao;
 import com.online_learning.dao.DeckDao;
+import com.online_learning.dao.LanguageDao;
 import com.online_learning.dto.card.CardResponse;
 import com.online_learning.dto.deckv2.*;
 import com.online_learning.entity.Card;
 import com.online_learning.entity.Deck;
+import com.online_learning.entity.Language;
 import com.online_learning.entity.User;
 import com.online_learning.util.Helper;
 import lombok.RequiredArgsConstructor;
@@ -20,17 +22,25 @@ import java.util.stream.Collectors;
 public class DeckServiceV2 {
     private final DeckDao deckRepository;
     private final CardDao cardRepository;
+    private final LanguageDao languageDao;
     private final Helper helper;
 
     @Transactional
-    public void createDeckV2(CreateDeck createDeck) {
+    public void createDeckV2(CreateDeck createDeck) throws Exception {
 
         User user = helper.getUser();
         Deck deck = new Deck();
         deck.setName(createDeck.getName());
         deck.setDescription(createDeck.getDescription());
         deck.setIsPublic(createDeck.getIsPublic());
-        deck.setConfigLanguage(createDeck.getConfigLanguage());
+        // deck.setConfigLanguage(createDeck.getConfigLanguage());
+
+        Language language = languageDao.findByCode(createDeck.getConfigLanguage()).orElse(null);
+        if (language == null) {
+            throw new Exception("Not found language with code: " + createDeck.getConfigLanguage());
+        }
+
+        deck.setLanguage(language);
         deck.setQuantityClones(0);
         deck.setUser(user);
 
@@ -52,7 +62,7 @@ public class DeckServiceV2 {
     }
 
     @Transactional
-    public boolean updateDeckV2(UpdateDeck updateDeck) {
+    public boolean updateDeckV2(UpdateDeck updateDeck) throws Exception {
 
         Deck deck = deckRepository.findById(updateDeck.getId())
                 .orElseThrow(() -> new RuntimeException("Deck not found"));
@@ -60,8 +70,13 @@ public class DeckServiceV2 {
         deck.setName(updateDeck.getName());
         deck.setDescription(updateDeck.getDescription());
         deck.setIsPublic(updateDeck.getIsPublic());
-        deck.setConfigLanguage(updateDeck.getConfigLanguage());
 
+        Language language = languageDao.findByCode(updateDeck.getConfigLanguage()).orElse(null);
+        if (language == null) {
+            throw new Exception("Not found language with code: " + updateDeck.getConfigLanguage());
+        }
+
+        deck.setLanguage(language);
         deckRepository.save(deck);
 
         List<Long> incomingCardIds = updateDeck.getCards().stream()

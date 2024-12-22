@@ -1,6 +1,5 @@
 package com.online_learning.controller;
 
-
 import com.online_learning.dao.LanguageDao;
 import com.online_learning.dto.LanguageRequest;
 import com.online_learning.dto.Response;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("${system.version}")
 public class LanguageController {
 
-    private final LanguageDao languageDao;
     private final LanguageService languageService;
 
     @PostMapping("/languages")
@@ -28,10 +26,10 @@ public class LanguageController {
     @GetMapping("/languages")
     public ResponseEntity<?> getAllLanguage() throws Exception {
         Response response = Response.builder()
-                    .message("Query successful")
-                    .data(languageDao.findAll())
-                    .success(true)
-                    .build();
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        }
+                .message("Query successful")
+                .data(languageService.getLanguages())
+                .success(true)
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 }

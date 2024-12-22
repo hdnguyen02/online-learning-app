@@ -22,7 +22,7 @@ public class CommonDeckController {
 
     @PostMapping("/common-decks")
     @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<?> createCommonDeck(@RequestBody CommonDeckRequest commonDeckRequest) {
+    public ResponseEntity<?> createCommonDeck(@RequestBody CommonDeckRequest commonDeckRequest) throws Exception {
 
         boolean result = commonDeckService.createCommonDeck(commonDeckRequest);
         Response response = Response.builder()
@@ -58,8 +58,8 @@ public class CommonDeckController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // @PreAuthorize("hasRole('TEACHER')")
     @PutMapping("/common-decks/{id}")
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<?> editCommonDeck(@PathVariable Long id,
             @RequestBody CommonDeckRequest commonDeckRequest) {
 
@@ -73,8 +73,8 @@ public class CommonDeckController {
     }
 
     @PutMapping("/common-decks")
-    public ResponseEntity<?> updateCommonDeckV2(@RequestBody UpdateCommonDeck updateCommonDeck) {
-        commonDeckServiceV2.updateDeckV2(updateCommonDeck);
+    public ResponseEntity<?> updateCommonDeckV2(@RequestBody UpdateCommonDeck updateCommonDeck) throws Exception {
+        commonDeckServiceV2.updateCommonDeckV2(updateCommonDeck);
         Response response = new Response(true, "Edit common card set was successful", true);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

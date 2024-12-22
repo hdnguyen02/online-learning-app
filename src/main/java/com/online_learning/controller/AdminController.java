@@ -65,12 +65,12 @@ public class AdminController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/admin/statistics")
+    @GetMapping("/admin/statistics-invoices")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getStatistics() {
 
         List<Invoice> invoices = invoiceService.getInvoicesForLast12Months();
-    
+
         Response response = Response.builder()
                 .data(invoiceService.getMonthlyRevenue(invoices))
                 .message("Query successful")
@@ -130,5 +130,4 @@ public class AdminController {
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
 }

@@ -11,4 +11,7 @@ import java.util.List;
 public interface InvoiceDao extends JpaRepository<Invoice, Long> {
     @Query("SELECT i FROM Invoice i WHERE i.vnpPayDate BETWEEN :startDate AND :endDate")
     List<Invoice> findInvoicesByVnpPayDateRange(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+    @Query(value = "SELECT * FROM invoices WHERE vnp_pay_date >= DATE_ADD(CURRENT_DATE, INTERVAL -6 MONTH)", nativeQuery = true)
+    List<Invoice> findInvoicesForLastSixMonths();
 }

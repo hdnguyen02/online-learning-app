@@ -2,8 +2,10 @@ package com.online_learning.service;
 
 import com.online_learning.dao.CardDao;
 import com.online_learning.dao.DeckDao;
+import com.online_learning.dao.InvoiceDao;
 import com.online_learning.dao.LanguageDao;
 import com.online_learning.dao.UserRepository;
+import com.online_learning.dto.MonthlyRevenueResponse;
 import com.online_learning.dto.statistic.StatisticDeckAndCard;
 import com.online_learning.dto.statistic.StatisticLanguage;
 import com.online_learning.dto.statistic.StatisticUserAndDeck;
@@ -24,6 +26,7 @@ public class StatisticsService {
     private final CardDao cardDao;
     private final UserRepository userRepository;
     private final LanguageDao languageDao;
+    private final InvoiceDao invoiceDao;
 
     public List<StatisticUserAndDeck> getStatisticsDecksAndUsers(LocalDate start, LocalDate end) {
         List<StatisticUserAndDeck> stats = new ArrayList<>();
@@ -62,7 +65,8 @@ public class StatisticsService {
         List<StatisticLanguage> statisticLanguages = new ArrayList<>();
 
         for (Language language : languages) {
-            int count = deckRepository.countByConfigLanguage(language.getCode());
+            // int count = deckRepository.countByConfigLanguage(language.getCode());
+            int count = language.countDecks();
             statisticLanguages
                     .add(new StatisticLanguage(language.getNameInternational(), language.getNameVietnamese(), count));
         }
@@ -96,4 +100,7 @@ public class StatisticsService {
 
         return stats;
     }
+
+    // Viết hàm thống kê số doanh thu trong 6 tháng gần nhất.
+
 }

@@ -30,15 +30,18 @@ public class GroupService {
     private final EmailServiceImpl emailServiceImpl;
 
     @Transactional
-    public void cloneDeck(long id) {
+    public void cloneDeck(long id) throws Exception {
         User user = helper.getUser();
-        CommonDeck commonDeck = commonDeckDao.findById(id).orElseThrow();
+        CommonDeck commonDeck = commonDeckDao.findById(id).orElse(null);
+        if (commonDeck == null) {
+            throw new Exception("Not found common deck with id: " + id);
+        }
         List<CommonCard> commonCards = commonDeck.getCards();
 
         Deck deckClone = new Deck();
         deckClone.setName(commonDeck.getName() + " - Clone");
         deckClone.setDescription(commonDeck.getDescription());
-        deckClone.setConfigLanguage(commonDeck.getConfigLanguage());
+        deckClone.setLanguage(commonDeck.getLanguage());
         deckClone.setIsPublic(false);
         deckClone.setQuantityClones(0);
         deckClone.setUser(user);

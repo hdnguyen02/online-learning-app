@@ -25,5 +25,9 @@ public class CommonDeck extends BaseEntity {
     @JoinColumn(name = "id_group", nullable = false)
     private Group group;
 
-    private String configLanguage; // lưu lại config.
+    // private String configLanguage; // lưu lại config.
+    // thay đổi language
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_language")
+    private Language language;
 }

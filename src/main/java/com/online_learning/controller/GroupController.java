@@ -22,7 +22,7 @@ public class GroupController {
     private final GroupService groupService;
 
     @PostMapping("/groups/common-decks/{id}/clone")
-    public ResponseEntity<?> cloneCommonDeck(@PathVariable long id) {
+    public ResponseEntity<?> cloneCommonDeck(@PathVariable long id) throws Exception {
         groupService.cloneDeck(id);
         return ResponseEntity.status(HttpStatus.OK).body(true);
     }

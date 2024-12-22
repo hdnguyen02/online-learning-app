@@ -2,11 +2,14 @@ package com.online_learning.service;
 
 import com.online_learning.dao.CommonDeckDao;
 import com.online_learning.dao.GroupDao;
+import com.online_learning.dao.LanguageDao;
 import com.online_learning.dto.deck.CommonDeckRequest;
 import com.online_learning.dto.deck.CommonDeckResponse;
 import com.online_learning.dto.common_deckv2.QueryCommonDeck;
 import com.online_learning.entity.CommonDeck;
 import com.online_learning.entity.Group;
+import com.online_learning.entity.Language;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +21,23 @@ public class CommonDeckService {
 
     private final CommonDeckDao commonDeckDao;
     private final GroupDao groupDao;
+    private final LanguageDao languageDao;
 
-    public boolean createCommonDeck(CommonDeckRequest commonDeckRequest) {
-        Group group = groupDao.findById(commonDeckRequest.getIdGroup()).orElseThrow();
+    public boolean createCommonDeck(CommonDeckRequest commonDeckRequest) throws Exception {
+        Group group = groupDao.findById(commonDeckRequest.getIdGroup()).orElse(null);
+        if (group == null) {
+            throw new Exception("Not found group with id: " + commonDeckRequest.getIdGroup());
+        }
+
+        Language language = languageDao.findByCode(commonDeckRequest.getConfigLanguage()).orElse(null);
+        if (language == null) {
+            throw new Exception("Not found language");
+        }
 
         CommonDeck commonDeck = CommonDeck.builder()
                 .name(commonDeckRequest.getName())
                 .description(commonDeckRequest.getDescription())
-                .configLanguage(commonDeckRequest.getConfigLanguage())
+                .language(language)
                 .group(group)
                 .build();
         try {

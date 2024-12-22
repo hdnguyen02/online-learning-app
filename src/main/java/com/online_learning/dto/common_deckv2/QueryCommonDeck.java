@@ -24,7 +24,7 @@ public class QueryCommonDeck {
         this.id = commonDeck.getId();
         this.description = commonDeck.getDescription();
         this.name = commonDeck.getName();
-        this.configLanguage = commonDeck.getConfigLanguage();
+        this.configLanguage = commonDeck.getLanguage().getCode();
         this.createdDate = commonDeck.getCreatedDate();
         commonDeck.getCards().forEach(card -> {
             this.cards.add(new QueryCommonCard(card));

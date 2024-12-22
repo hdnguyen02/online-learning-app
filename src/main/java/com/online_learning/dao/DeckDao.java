@@ -14,6 +14,7 @@ import java.util.Optional;
 public interface DeckDao extends JpaRepository<Deck, Long>, PagingAndSortingRepository<Deck, Long> {
 
     List<Deck> findByUserEmail(String email);
+
     Optional<Deck> findFirstByIdAndUserEmail(Long idDeck, String emailUser);
 
     // viết 1 hàm chỉ lấy ra với public = true
@@ -24,16 +25,14 @@ public interface DeckDao extends JpaRepository<Deck, Long>, PagingAndSortingRepo
     @Query("SELECT d FROM Deck d WHERE d.user.email = ?1 AND CONCAT(d.name, ' ', d.description) LIKE %?2%")
     List<Deck> search(String emailUser, String searchTerm);
 
-
     @Query("SELECT d FROM Deck d WHERE CONCAT(d.name, ' ', d.description) LIKE %?1%")
     List<Deck> searchGlobal(String searchTerm);
 
     @Query("SELECT d FROM Deck d WHERE d.user.id = ?1 AND d.isPublic = true")
     List<Deck> getDecks(Long id);
 
-
     long countByCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-    @Query("SELECT COUNT(d) FROM Deck d WHERE d.configLanguage = ?1")
-    int countByConfigLanguage(String configLanguage);
+    // @Query("SELECT COUNT(d) FROM Deck d WHERE d.configLanguage = ?1")
+    // int countByConfigLanguage(String configLanguage);
 }

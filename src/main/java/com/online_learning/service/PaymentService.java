@@ -16,7 +16,7 @@ public class PaymentService {
 
     public String createVnPayPayment(HttpServletRequest request) {
         String email = request.getParameter("email");
-        long amount = 299000 * 100L;
+        long amount = 299000;
         String bankCode = request.getParameter("bankCode");
         Map<String, String> vnpParamsMap = vnPayConfig.getVnPayConfig(email);
         vnpParamsMap.put("vnp_Amount", String.valueOf(amount));

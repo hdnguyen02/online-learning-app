@@ -43,7 +43,7 @@ public class DeckController {
 
     // clone bộ thẻ.
     @PostMapping("/decks/{idDeck}/clone")
-    public ResponseEntity<?> cloneDeck(@PathVariable Long idDeck) {
+    public ResponseEntity<?> cloneDeck(@PathVariable Long idDeck) throws Exception {
 
         boolean result = deckService.cloneDeck(idDeck);
         Response response = Response.builder()
@@ -69,7 +69,7 @@ public class DeckController {
     }
 
     @PostMapping("/decks")
-    public ResponseEntity<?> createDeck(@RequestBody CreateDeck createDeck) {
+    public ResponseEntity<?> createDeck(@RequestBody CreateDeck createDeck) throws Exception {
         deckServiceV2.createDeckV2(createDeck);
         return new ResponseEntity<>(true, HttpStatus.CREATED);
     }
@@ -83,7 +83,7 @@ public class DeckController {
     }
 
     @PutMapping("/decks")
-    public ResponseEntity<Response> updateDeck(@RequestBody UpdateDeck updateDeck) {
+    public ResponseEntity<Response> updateDeck(@RequestBody UpdateDeck updateDeck) throws Exception {
         deckServiceV2.updateDeckV2(updateDeck);
         Response response = new Response(true, "Edit card set was successful", true);
         return new ResponseEntity<>(response, HttpStatus.OK);
