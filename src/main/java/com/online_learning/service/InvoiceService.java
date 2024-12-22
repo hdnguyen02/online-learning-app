@@ -26,7 +26,7 @@ public class InvoiceService {
         Invoice invoice = Invoice.builder()
                 .user(user)
                 .vnpResponseCode(vnpResponseCode)
-                .vnpAmount(vnpAmount)
+                .vnpAmount(BigDecimal.valueOf(299000L))
                 .vnpBankCode(vnpBankCode)
                 .vnpCardType(vnpCardType)
                 .vnpOrderInfo(vnpOrderInfo)
@@ -40,9 +40,10 @@ public class InvoiceService {
     public List<Invoice> getInvoicesForLast12Months() {
         Calendar calendar = Calendar.getInstance();
         Date endDate = calendar.getTime();
-        calendar.add(Calendar.YEAR, -1);
+        calendar.add(Calendar.MONTH, -6); // Lùi lại 6 tháng thay vì 1 năm
         Date startDate = calendar.getTime();
         return invoiceDao.findInvoicesByVnpPayDateRange(startDate, endDate);
+
     }
 
     public List<Map<String, Object>> getMonthlyRevenue(List<Invoice> invoices) {
@@ -70,7 +71,7 @@ public class InvoiceService {
     }
 
     // khởi tạo invoice
-    public void initInvoice() {
+    public void initInvoice() throws Exception {
         if (!invoiceDao.findAll().isEmpty())
             return;
 
@@ -78,10 +79,15 @@ public class InvoiceService {
         LocalDateTime now = LocalDateTime.now();
         Random random = new Random();
 
+        // tìm kiếm 1 user.
+        User user = userRepository.findByEmail("hdnguyen7702@gmail.com").orElse(null);
+        if (user == null) {
+            throw new Exception("Not found user with email: hdnguyen7702@gmail.com");
+        }
         for (int i = 0; i < 12; i++) {
             LocalDateTime payDate = now.minusMonths(i);
             Invoice invoice = Invoice.builder()
-                    .user(new User("hdnguyen7702@gmail.com"))
+                    .user(user)
                     .vnpResponseCode("00")
                     .vnpAmount(BigDecimal.valueOf(1000 + random.nextInt(9000)))
                     .vnpBankCode("VCB")

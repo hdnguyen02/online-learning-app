@@ -15,7 +15,7 @@ public class InitController {
     private final InitService initService;
 
     @PostMapping("/init")
-    public Init init() {
+    public Init init() throws Exception {
         initService.init();
         Init init = new Init();
         init.setMessage("Init success");

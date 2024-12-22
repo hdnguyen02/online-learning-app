@@ -12,11 +12,13 @@ public class InitService {
     private final UserService userService;
     private final RoleService roleService;
     private final LanguageService languageService;
+    private final InvoiceService invoiceService;
 
-    public void init() {
+    public void init() throws Exception {
         languageService.initLanguages();
         roleService.initRoles();
         userService.initUsers();
+        invoiceService.initInvoice();
     }
 
 }

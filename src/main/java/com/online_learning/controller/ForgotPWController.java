@@ -24,7 +24,11 @@ public class ForgotPWController {
     public Response forgotPassword(@RequestBody Map<String, String> maps) {
         String email = maps.get("email");
         String accessToken = jwtService.generateTokenForgotPassword(email);
-        String resetUrl = "http://localhost:5173/reset-password?access-token=" + accessToken;
+        String appHost = System.getenv("APP_HOST");
+        if (appHost == null || appHost.isEmpty()) {
+            appHost = "localhost:8080";
+        }
+        String resetUrl = "http://" + appHost + ":5173/reset-password?access-token=" + accessToken;
         emailService.sendEmail(email, "Online Learning password recovery", resetUrl);
         return Response.builder()
                 .message("Password recovery link has been sent to your email")
