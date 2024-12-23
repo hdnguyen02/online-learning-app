@@ -6,10 +6,14 @@ import com.online_learning.util.Helper;
 import com.online_learning.dto.group.GroupResponse;
 import com.online_learning.dto.group.GroupRequest;
 import com.online_learning.dto.group.UserGroupRequest;
+import com.online_learning.dto.groupv2.OverviewGroupsResponseV2;
+import com.online_learning.dto.groupv2.PublicGroupResponseV2;
 import com.online_learning.sendmail.EmailDetail;
 import com.online_learning.sendmail.EmailServiceImpl;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+
+import org.aspectj.apache.bcel.classfile.Module.Uses;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +32,7 @@ public class GroupService {
     private final DeckDao deckDao;
     private final Helper helper;
     private final EmailServiceImpl emailServiceImpl;
+    private final UserGroupDao userGroupDao;
 
     @Transactional
     public void cloneDeck(long id) throws Exception {
@@ -63,8 +68,48 @@ public class GroupService {
     }
 
     public List<GroupResponse> getGlobalGroups() {
-        List<Group> groups = groupRepository.getGlobal();
+        List<Group> groups = groupRepository.getGroupsPublic();
+
         return groups.stream().map(GroupResponse::mapToGroupDto).toList();
+    }
+
+    public OverviewGroupsResponseV2 getGroups() {
+        User user = helper.getUser();
+
+        List<UserGroup> userGroups = userGroupDao.findByUserAndIsActive(user, true);
+
+        List<Group> groupsAttendance = userGroups.stream()
+                .map(userGroup -> userGroup.getGroup())
+                .toList();
+
+        List<Group> groupsOwner = groupRepository.findByOwner(user);
+        return new OverviewGroupsResponseV2(groupsOwner, groupsAttendance);
+    }
+
+    public PublicGroupResponseV2 getGroupsGlobalV2() {
+
+        User user = helper.getUser();
+
+        List<UserGroup> userGroups = userGroupDao.findByUserAndIsActive(user, true);
+
+        List<Group> groupsAttendance = userGroups.stream()
+                .map(userGroup -> userGroup.getGroup())
+                .toList();
+
+        List<Group> groupsOwner = groupRepository.findByOwner(user); // lấy ra các group owner lun.
+
+        List<Group> groupsJoined = new ArrayList<>();
+        groupsJoined.addAll(groupsAttendance);
+        groupsJoined.addAll(groupsOwner);
+
+        List<Long> idGroupsJoined = groupsJoined.stream().map(group -> {
+            return group.getId();
+        }).toList();
+        List<Group> groups = groupRepository.getGroupsPublic().stream()
+                .filter(group -> !idGroupsJoined.contains(group.getId()))
+                .toList();
+
+        return new PublicGroupResponseV2(groupsJoined, groups);
     }
 
     public void outGroup(long id) throws Exception {
@@ -165,14 +210,28 @@ public class GroupService {
 
     public boolean inviteUserGroup(Long id, String email) throws Exception {
 
+        User currentUser = helper.getUser();
+        if (currentUser.getEmail().equals(email)) {
+            throw new UsernameNotFoundException("Bạn không thể tự mời chính mình!");
+        }
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isEmpty())
-            throw new UsernameNotFoundException("User whose email does not exist!");
+            throw new Exception("Not found user with email: " + email);
 
+        User user = userOptional.get();
+
+        // check xem người dùng có đang tự mời chính mình không.
+
+        boolean validRole = user.getRoles().stream()
+                .anyMatch(role -> role.getName().equalsIgnoreCase("GROUP_ACTIVITIES_ACCESS"));
+
+        if (!validRole) {
+            throw new Exception("Người dùng không có quyền truy cập vào hoạt động nhóm!");
+        }
         Optional<Group> groupOptional = groupRepository.findById(id);
         if (groupOptional.isEmpty())
             throw new Exception("Group does not exist!");
-        User user = userOptional.get();
+
         Group group = groupOptional.get();
 
         List<UserGroup> userGroups = userGroupRepository.findByUserAndGroup(user, group);

@@ -41,6 +41,19 @@ public class DeckController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PostMapping("/decks/share")
+    public ResponseEntity<?> shareDeck(@RequestBody ShareDeckRequest shareDeckRequest) throws Exception {
+
+        deckServiceV2.shareDeckV2(shareDeckRequest);
+        Response response = Response.builder()
+                .message("Share the card set successfully")
+                .data(null)
+                .success(true)
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     // clone bộ thẻ.
     @PostMapping("/decks/{idDeck}/clone")
     public ResponseEntity<?> cloneDeck(@PathVariable Long idDeck) throws Exception {
@@ -75,7 +88,7 @@ public class DeckController {
     }
 
     @DeleteMapping("/decks/{id}")
-    public ResponseEntity<Response> deleteDeck(@PathVariable Long id) {
+    public ResponseEntity<Response> deleteDeck(@PathVariable Long id) throws Exception {
         DeckResponse deckResponse = deckService.deleteDeck(id);
         String message = "Deleted successfully";
         Response response = new Response(deckResponse, message, true);

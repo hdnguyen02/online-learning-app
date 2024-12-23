@@ -16,12 +16,12 @@ public class RoleService {
         List<Role> roles = roleDao.findAll();
         if (!roles.isEmpty())
             return;
-        Role roleStudent = new Role("STUDENT");
-        Role roleTeacher = new Role("TEACHER");
-        Role roleAdmin = new Role("ADMIN");
-        roles.add(roleStudent);
-        roles.add(roleTeacher);
-        roles.add(roleAdmin);
+        Role userRole = new Role("USER");
+        Role groupActivitiesAccessRole = new Role("GROUP_ACTIVITIES_ACCESS");
+        Role adminRole = new Role("ADMIN");
+        roles.add(userRole);
+        roles.add(groupActivitiesAccessRole);
+        roles.add(adminRole);
         roleDao.saveAll(roles);
     }
 

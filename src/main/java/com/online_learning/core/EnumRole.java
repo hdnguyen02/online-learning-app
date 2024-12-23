@@ -1,5 +1,5 @@
 package com.online_learning.core;
 
 public enum EnumRole {
-    STUDENT, TEACHER, ADMIN
+    USER, ADMIN, GROUP_ACTIVITIES_ACCESS
 }

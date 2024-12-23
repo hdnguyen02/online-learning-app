@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 @Data
 public class UserGroupResponse {
     private Long id; // idUserGroup
@@ -21,6 +20,7 @@ public class UserGroupResponse {
     private String avatar;
     private String gender;
     private String phone;
+
     public UserGroupResponse(UserGroup userGroup) {
 
         id = userGroup.getId();

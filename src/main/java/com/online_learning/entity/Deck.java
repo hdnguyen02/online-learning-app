@@ -24,7 +24,7 @@ public class Deck extends BaseEntity {
     @JoinColumn(name = "id_user")
     private User user;
 
-    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "deck", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Card> cards;
 
     private Boolean isPublic;

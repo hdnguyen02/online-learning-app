@@ -25,7 +25,7 @@ public abstract class BaseEntity {
     }
 
     @PrePersist
-    public void  prePersist() {
+    public void prePersist() {
         this.createdDate = new Date();
     }
 }

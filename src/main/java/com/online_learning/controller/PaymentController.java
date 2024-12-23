@@ -38,7 +38,6 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-
     @GetMapping("/payment-callback")
     @Transactional
     public ResponseEntity<?> paymentCallbackHandler(HttpServletRequest request) throws ParseException {
@@ -49,23 +48,26 @@ public class PaymentController {
         String vnpBankCode = request.getParameter("vnp_BankCode");
         String vnpCardType = request.getParameter("vnp_CardType");
         String vnpOrderInfo = request.getParameter("vnp_OrderInfo");
-        Date vnpPayDate = Helper.convertTimestampToDate(request.getParameter("vnp_PayDate")) ;
+        Date vnpPayDate = Helper.convertTimestampToDate(request.getParameter("vnp_PayDate"));
 
         if (vnpResponseCode.equals("00")) {
+            System.out.println("vnpResponseCode: " + vnpResponseCode);
             try {
-                invoiceService.createInvoice(emailUser, vnpResponseCode, vnpAmount, vnpBankCode, vnpCardType, vnpOrderInfo, vnpPayDate);
-                userService.updateUserWithRoleTeacher(emailUser);
+                invoiceService.createInvoice(emailUser, vnpResponseCode, vnpAmount, vnpBankCode, vnpCardType,
+                        vnpOrderInfo, vnpPayDate);
+                userService.updateUserWithRoleGroupActivitiesAccess(emailUser);
+                return ResponseEntity.status(HttpStatus.FOUND) // HTTP 302
+                        .header("Location", "http://localhost:5173/groups?payment_status=success")
+                        .build();
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.FOUND)
+                        .header("Location", "http://localhost:5173/groups?payment_status=refund")
+                        .build();
             }
-            catch (Exception e) {
-                System.out.println("Payment error: " + e.getMessage());
-            }
-
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(Response.builder().success(true).message("Payment success").data(null).build());
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Response.builder().success(false).message("Payment failed").data(null).build());
         }
+
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .header("Location", "http://localhost:5173/groups?payment_status=fail")
+                .build();
     }
 }
-

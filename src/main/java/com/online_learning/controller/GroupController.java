@@ -3,6 +3,7 @@ package com.online_learning.controller;
 import com.online_learning.dto.group.GroupResponse;
 import com.online_learning.dto.group.GroupRequest;
 import com.online_learning.dto.group.UserGroupRequest;
+import com.online_learning.entity.User;
 import com.online_learning.dto.Response;
 import com.online_learning.service.GroupService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @CrossOrigin("*")
@@ -21,13 +24,28 @@ public class GroupController {
 
     private final GroupService groupService;
 
+    @GetMapping("/groups")
+    @PreAuthorize("hasRole('GROUP_ACTIVITIES_ACCESS')")
+    public ResponseEntity<?> getGroups() {
+
+        Response response = Response.builder()
+                .message("Query successful")
+                .data(groupService.getGroups())
+                .success(true)
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+    }
+
     @PostMapping("/groups/common-decks/{id}/clone")
+    @PreAuthorize("hasRole('GROUP_ACTIVITIES_ACCESS')")
     public ResponseEntity<?> cloneCommonDeck(@PathVariable long id) throws Exception {
         groupService.cloneDeck(id);
         return ResponseEntity.status(HttpStatus.OK).body(true);
     }
 
     @PostMapping("/groups/{idGroup}/join")
+    @PreAuthorize("hasRole('GROUP_ACTIVITIES_ACCESS')")
     public ResponseEntity<?> joinGroup(@PathVariable Long idGroup) throws Exception {
         Response response = Response.builder()
                 .message("Query successful")
@@ -38,23 +56,18 @@ public class GroupController {
     }
 
     @PostMapping("groups/{id}/out")
+    @PreAuthorize("hasRole('GROUP_ACTIVITIES_ACCESS')")
     public ResponseEntity<?> outGroup(@PathVariable long id) throws Exception {
         groupService.outGroup(id);
         return ResponseEntity.status(HttpStatus.CREATED).body(true);
     }
 
-    @GetMapping("/global/groups")
-    public ResponseEntity<?> getGlobalGroups(@RequestParam(required = false) String searchTerm) {
-
-        List<GroupResponse> groupResponses;
-        if (searchTerm != null)
-            groupResponses = groupService.searchGlobalGroups(searchTerm);
-        else
-            groupResponses = groupService.getGlobalGroups();
-
+    @GetMapping("/groups/global")
+    @PreAuthorize("hasRole('GROUP_ACTIVITIES_ACCESS')")
+    public ResponseEntity<?> getGlobalGroups() {
         Response response = Response.builder()
                 .message("Query successful")
-                .data(groupResponses)
+                .data(groupService.getGroupsGlobalV2())
                 .success(true)
                 .build();
 
@@ -62,7 +75,7 @@ public class GroupController {
     }
 
     @PostMapping("/groups")
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('GROUP_ACTIVITIES_ACCESS')")
     public ResponseEntity<?> createGroup(@RequestBody GroupRequest groupRequest) {
 
         Response response = new Response();
@@ -75,7 +88,7 @@ public class GroupController {
     }
 
     @PutMapping("/groups/{id}")
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('GROUP_ACTIVITIES_ACCESS')")
     public ResponseEntity<?> updateGroup(@PathVariable Long id, @RequestBody GroupRequest groupRequest) {
 
         Response response = new Response();
@@ -87,6 +100,7 @@ public class GroupController {
     }
 
     @GetMapping("/groups/{id}")
+    @PreAuthorize("hasRole('GROUP_ACTIVITIES_ACCESS')")
     public ResponseEntity<?> getGroupById(@PathVariable long id) {
         Response response = new Response();
 
@@ -99,7 +113,10 @@ public class GroupController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    // tính tới chuyện phân quyền sau.
+
     @PostMapping("/groups/delete-user")
+    @PreAuthorize("hasRole('GROUP_ACTIVITIES_ACCESS')")
     public ResponseEntity<?> deleteUserGroup(@RequestBody UserGroupRequest userGroupRequest) {
         Response response = new Response();
         response.setData(groupService.deleteUserGroupById(userGroupRequest));
@@ -109,13 +126,16 @@ public class GroupController {
     }
 
     @PostMapping("/groups/{id}/invite")
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('GROUP_ACTIVITIES_ACCESS')")
     public ResponseEntity<?> inviteUserGroup(
-            @PathVariable Long id, @RequestParam(name = "email") String email) throws Exception {
-
+            @PathVariable Long id, @RequestParam String email) throws Exception {
         Response response = new Response();
 
-        response.setMessage("Sending email to user successfully");
+
+        // tìm kiếm user đó check xem có quyền truy cập hoạt động nhóm không
+  
+
+        response.setMessage("Bạn đã gửi lời mời thành công");
         response.setData(groupService.inviteUserGroup(id, email));
         response.setSuccess(true);
 
@@ -123,6 +143,7 @@ public class GroupController {
     }
 
     @GetMapping("/groups/owner")
+    @PreAuthorize("hasRole('GROUP_ACTIVITIES_ACCESS')")
     public ResponseEntity<?> getGroupsByUser() {
 
         List<GroupResponse> groupResponses = groupService.getGroupsByOwner();
@@ -136,6 +157,7 @@ public class GroupController {
     }
 
     @GetMapping("/groups/attendance")
+    @PreAuthorize("hasRole('GROUP_ACTIVITIES_ACCESS')")
     public ResponseEntity<?> getGroupsByAttendance() {
 
         Response response = new Response();
@@ -148,8 +170,8 @@ public class GroupController {
 
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
     @DeleteMapping("/groups/{id}")
+    @PreAuthorize("hasRole('GROUP_ACTIVITIES_ACCESS')")
     public ResponseEntity<?> deleteGroupById(@PathVariable Long id) {
 
         Response response = new Response();

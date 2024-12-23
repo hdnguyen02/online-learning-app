@@ -96,9 +96,12 @@ public class DeckService {
         return decksDto;
     }
 
-    public DeckResponse deleteDeck(Long id) {
-        String emailUser = helper.getEmailUser();
-        Deck deck = deckDao.findFirstByIdAndUserEmail(id, emailUser).orElseThrow();
+    public DeckResponse deleteDeck(Long id) throws Exception {
+
+        Deck deck = deckDao.findById(id).orElse(null);
+        if (deck == null) {
+            throw new Exception("Not found deck with id: " + id);
+        }
         deckDao.delete(deck);
         return new DeckResponse(deck);
     }

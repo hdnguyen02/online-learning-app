@@ -5,7 +5,6 @@ import com.online_learning.dao.DeckDao;
 import com.online_learning.dao.InvoiceDao;
 import com.online_learning.dao.LanguageDao;
 import com.online_learning.dao.UserRepository;
-import com.online_learning.dto.MonthlyRevenueResponse;
 import com.online_learning.dto.statistic.StatisticDeckAndCard;
 import com.online_learning.dto.statistic.StatisticLanguage;
 import com.online_learning.dto.statistic.StatisticUserAndDeck;
@@ -26,7 +25,6 @@ public class StatisticsService {
     private final CardDao cardDao;
     private final UserRepository userRepository;
     private final LanguageDao languageDao;
-    private final InvoiceDao invoiceDao;
 
     public List<StatisticUserAndDeck> getStatisticsDecksAndUsers(LocalDate start, LocalDate end) {
         List<StatisticUserAndDeck> stats = new ArrayList<>();

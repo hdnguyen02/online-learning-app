@@ -42,15 +42,15 @@ public class AuthService {
                 String password = signUpRequest.getPassword();
                 Boolean isRemember = signUpRequest.getIsRemember() != null;
 
-                Role role = new Role(EnumRole.STUDENT.toString());
+                Role role = new Role(EnumRole.USER.toString());
                 Set<Role> roles = new HashSet<>();
                 roles.add(role);
 
                 User userCheck = userRepository.findByEmail(signUpRequest.getEmail()).orElse(null);
                 if (userCheck != null)
-                        throw new Exception("email has been used!");
+                        throw new Exception("Email đã được sử dụng!");
                 if (signUpRequest.getPassword().length() < 6)
-                        throw new Exception("Password needs to be >= 6 characters!");
+                        throw new Exception("Mật khẩu phải ≥ 6 ký tự!");
                 var user = User.builder()
                                 .email(email)
                                 .firstName(signUpRequest.getFirstName())

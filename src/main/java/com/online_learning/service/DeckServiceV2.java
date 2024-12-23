@@ -1,19 +1,24 @@
 package com.online_learning.service;
 
 import com.online_learning.dao.CardDao;
+import com.online_learning.dao.CommonCardDao;
+import com.online_learning.dao.CommonDeckDao;
 import com.online_learning.dao.DeckDao;
+import com.online_learning.dao.GroupDao;
 import com.online_learning.dao.LanguageDao;
 import com.online_learning.dto.card.CardResponse;
 import com.online_learning.dto.deckv2.*;
 import com.online_learning.entity.Card;
+import com.online_learning.entity.CommonCard;
+import com.online_learning.entity.CommonDeck;
 import com.online_learning.entity.Deck;
+import com.online_learning.entity.Group;
 import com.online_learning.entity.Language;
 import com.online_learning.entity.User;
 import com.online_learning.util.Helper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,6 +29,45 @@ public class DeckServiceV2 {
     private final CardDao cardRepository;
     private final LanguageDao languageDao;
     private final Helper helper;
+    private final GroupDao groupDao;
+    private final CommonDeckDao commonDeckDao;
+    private final CommonCardDao commonCardDao;
+
+    @Transactional
+    public void shareDeckV2(ShareDeckRequest shareDeckRequest) throws Exception {
+
+        User user = helper.getUser();
+
+        // lấy ra deck đi.
+        Deck deck = deckRepository.findById(shareDeckRequest.getIdDeck()).orElse(null);
+        if (deck == null) {
+            throw new Exception("Not found deck with id: " + shareDeckRequest.getIdDeck());
+        }
+        // tiếp theo lấy các group trong đó ra.
+        List<Group> groups = groupDao.findAllById(shareDeckRequest.getIdGroups());
+        groups.forEach(group -> {
+            CommonDeck commonDeck = new CommonDeck();
+            commonDeck.setName(deck.getName() + " - Share");
+            commonDeck.setDescription(deck.getDescription());
+            commonDeck.setLanguage(deck.getLanguage());
+            commonDeck.setCreatedBy(user.getEmail());
+            commonDeck.setGroup(group);
+            commonDeckDao.save(commonDeck);
+            List<CommonCard> commonCards = deck.getCards().stream().map(card -> {
+                CommonCard commonCard = new CommonCard();
+                commonCard.setCommonDeck(commonDeck);
+                commonCard.setTerm(card.getTerm());
+                commonCard.setDefinition(card.getDefinition());
+                commonCard.setExample(card.getExample());
+                commonCard.setAudio(card.getAudio());
+                commonCard.setImage(card.getImage());
+                commonCard.setCreatedBy(user.getEmail());
+                return commonCard;
+            }).toList();
+            commonCardDao.saveAll(commonCards);
+        });
+
+    }
 
     @Transactional
     public void createDeckV2(CreateDeck createDeck) throws Exception {

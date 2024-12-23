@@ -83,9 +83,14 @@ public class UserService {
     }
 
     // update role TEACHER
-    public void updateUserWithRoleTeacher(String emailUser) {
-        User userStored = userRepository.findByEmail(emailUser).orElseThrow();
-        userStored.getRoles().add(new Role("TEACHER"));
+
+    public void updateUserWithRoleGroupActivitiesAccess(String emailUser) throws Exception {
+        User userStored = userRepository.findByEmail(emailUser).orElse(null);
+        if (userStored == null) {
+            throw new Exception("Not found user with email: " + emailUser);
+        }
+        System.out.println("Có chạy vào hàm này!");
+        userStored.getRoles().add(new Role("GROUP_ACTIVITIES_ACCESS"));
         userRepository.save(userStored);
     }
 
@@ -99,7 +104,7 @@ public class UserService {
         List<User> users = userRepository.findAll();
         if (!users.isEmpty())
             return;
-        User student = User.builder()
+        User user1 = User.builder()
                 .email("n20dccn047@student.ptithcm.edu.vn")
                 .password(passwordEncoder.encode("123456"))
                 .firstName("John")
@@ -107,19 +112,30 @@ public class UserService {
                 .isEnabled(true)
                 .gender(Gender.MALE)
                 .phone("0971408119")
-                .roles(Set.of(new Role("STUDENT"))) // Assuming you have a Role entity
+                .roles(Set.of(new Role("USER"))) // Assuming you have a Role entity
                 .build();
 
-        User admin = User.builder()
+        User user2 = User.builder()
                 .email("hdnguyen7702@gmail.com")
                 .password(passwordEncoder.encode("123456"))
                 .firstName("Đức")
                 .lastName("Nguyên")
                 .isEnabled(true)
                 .gender(Gender.MALE)
-                .phone("0987654321")
-                .roles(Set.of(new Role("ADMIN"), new Role("TEACHER"), new Role("STUDENT")))
+                .phone("0953335644")
+                .roles(Set.of(new Role("USER"), new Role("GROUP_ACTIVITIES_ACCESS")))
                 .build();
-        userRepository.saveAll(Arrays.asList(student, admin));
+
+        User user3 = User.builder()
+                .email("nguyen.ho@gosmartlog.com")
+                .password(passwordEncoder.encode("123456"))
+                .firstName("Nguyên")
+                .lastName("Hồ")
+                .isEnabled(true)
+                .gender(Gender.MALE)
+                .phone("0953335644")
+                .roles(Set.of(new Role("ADMIN")))
+                .build();
+        userRepository.saveAll(Arrays.asList(user1, user2, user3));
     }
 }
